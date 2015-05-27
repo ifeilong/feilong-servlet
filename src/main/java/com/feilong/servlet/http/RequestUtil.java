@@ -159,7 +159,7 @@ public final class RequestUtil{
      *            the request
      * @return the parameter single value map
      * @see #getParameterMap(HttpServletRequest)
-     * @since 1.1.2
+     * @since 1.2.0
      */
     public static Map<String, String> getParameterSingleValueMap(HttpServletRequest request){
 
