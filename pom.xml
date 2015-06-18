@@ -11,12 +11,6 @@
 	<name>feilong-servlet</name>
 	<description>${project.name} ${project.version} API</description>
 
-	<properties>
-		<!-- -->
-		<maven-compiler-plugin.source>1.6</maven-compiler-plugin.source>
-		<maven-compiler-plugin.target>1.6</maven-compiler-plugin.target>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

@@ -138,7 +138,7 @@ public class DomainListener implements ServletContextListener{
         }
         Class<? extends DomainListener> klass = this.getClass();
 
-        servletContext.log("will load Properties from :" + domainConfigLocation);
+        servletContext.log("will load Properties from :[" + domainConfigLocation + "]");
         Properties domainProperties = PropertiesUtil.getPropertiesWithClassLoader(klass, domainConfigLocation);
         return domainProperties;
     }
