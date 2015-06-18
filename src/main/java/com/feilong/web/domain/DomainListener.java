@@ -86,6 +86,10 @@ public class DomainListener implements ServletContextListener{
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent){
 
+        if (log.isInfoEnabled()){
+            log.info("begin initialized DomainListener");
+        }
+
         Date beginDate = new Date();
 
         ServletContext servletContext = servletContextEvent.getServletContext();
@@ -93,11 +97,11 @@ public class DomainListener implements ServletContextListener{
 
         Date endDate = new Date();
 
-        String message = Slf4jUtil.formatMessage(
-                        "Domain Listener Initialized time:{}",
-                        DateExtensionUtil.getIntervalForView(beginDate, endDate));
-
         if (log.isInfoEnabled()){
+            String message = Slf4jUtil.formatMessage(
+                            "{}:initialization completed,use time:{}",
+                            getClass().getSimpleName(),
+                            DateExtensionUtil.getIntervalForView(beginDate, endDate));
             log.info(message);
         }
     }
@@ -110,13 +114,17 @@ public class DomainListener implements ServletContextListener{
      */
     private void initDomain(ServletContext servletContext){
         String domainConfigLocation = getDomainConfigLocation(servletContext);
+        if (log.isInfoEnabled()){
+            log.info("domainConfigLocation parse value is :[{}]", domainConfigLocation);
+        }
+
         Properties properties = loadDomainProperties(servletContext, domainConfigLocation);
         Map<String, DomainConfig> domainConfigMap = propertiesToMap(servletContext, properties);
 
         setServletContextAttribute(servletContext, domainConfigMap);
 
         if (log.isInfoEnabled()){
-            log.info("domain config info:{}", JsonUtil.format(domainConfigMap));
+            log.info("domain config info:[{}]", JsonUtil.format(domainConfigMap));
         }
     }
 
