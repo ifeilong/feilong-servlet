@@ -48,7 +48,10 @@ import com.feilong.core.lang.ClassLoaderUtil;
  * </ul>
  * 
  * @author <a href="mailto:venusdrogon@163.com">金鑫</a>
- * @version 1.0 Nov 9, 2012 5:16:58 PM
+ * @version 1.0.4 Nov 9, 2012 5:16:58 PM
+ * @see org.owasp.esapi.reference.DefaultSecurityConfiguration
+ * @see org.owasp.esapi.reference.DefaultSecurityConfiguration#customDirectory
+ * @see org.owasp.esapi.reference.DefaultSecurityConfiguration#getResourceFile(String)
  */
 public class ESAPIContextListener implements ServletContextListener{
 
@@ -76,11 +79,13 @@ public class ESAPIContextListener implements ServletContextListener{
             servletContext.log("ESAPI.properties getAbsolutePath():" + file.getAbsolutePath());
             servletContext.log("customDirectory != null && file.canRead():" + (customDirectory != null && file.canRead()) + "");
 
+            servletContext.log("set setProperty org.owasp.esapi.resources:" + customDirectory);
+
             // 设置值 以便esapi使用
             System.setProperty("org.owasp.esapi.resources", customDirectory);
-            servletContext.log("set setProperty org.owasp.esapi.resources:" + customDirectory);
         }catch (URISyntaxException e){
             log.error(e.getClass().getName(), e);
+            throw new ESAPIException(e);
         }
     }
 
