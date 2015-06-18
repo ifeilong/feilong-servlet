@@ -132,11 +132,13 @@ public class DomainListener implements ServletContextListener{
      * @since 1.0.9
      */
     //TODO 自动识别
-    protected Properties loadDomainProperties(@SuppressWarnings("unused") ServletContext servletContext,String domainConfigLocation){
+    protected Properties loadDomainProperties(ServletContext servletContext,String domainConfigLocation){
         if (Validator.isNullOrEmpty(domainConfigLocation)){
             domainConfigLocation = DEFAULT_CONFIGURATION_FILE;
         }
         Class<? extends DomainListener> klass = this.getClass();
+
+        servletContext.log("will load Properties from :" + domainConfigLocation);
         Properties domainProperties = PropertiesUtil.getPropertiesWithClassLoader(klass, domainConfigLocation);
         return domainProperties;
     }
