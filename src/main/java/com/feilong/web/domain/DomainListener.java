@@ -34,7 +34,35 @@ import com.feilong.core.tools.json.JsonUtil;
 import com.feilong.core.util.Validator;
 
 /**
- * 初始化配置 监听器.
+ * 初始化配置监听器.
+ * 
+ * <h3>说明(仅支持固定地址配置路径形式):</h3>
+ * 
+ * 
+ * <blockquote>
+ * <p style="color:red">
+ * 本Listener解析的是 固定文件 {@link #DEFAULT_CONFIGURATION_FILE},或者 web.xml 配置的参数 context-param {@link #CONFIG_LOCATION_PARAM} (固定地址),<br>
+ * 不支持解析配置参数地址中含变量形式的地址.
+ * </p>
+ * 
+ * <p >
+ * 如果有支持动态参数的需求, 比如
+ * </p>
+ * 
+ * <pre>
+ * {@code
+ *     <context-param>
+ *         <param-name>domainConfigLocation</param-name>
+ *         <param-value>classpath:config/${spring.profiles.active}/domain.properties</param-value>
+ *     </context-param>
+ * }
+ * </pre>
+ * <p >
+ * 请使用 feilong-spring-web 项目的 {@link "com.feilong.spring.web.listener.DomainPlaceholderSupportListener"}
+ * </p>
+ * 
+ * </blockquote>
+ * 
  * 
  * <h3>关于配置文件</h3>
  * 
@@ -72,10 +100,10 @@ public class DomainListener implements ServletContextListener{
     /** The Constant log. */
     private static final Logger log                        = LoggerFactory.getLogger(DomainListener.class);
 
-    /** The Constant CONFIG_LOCATION_PARAM. */
+    /** <code>{@value}</code>. */
     private static final String CONFIG_LOCATION_PARAM      = "domainConfigLocation";
 
-    /** 默认的配置地址. */
+    /** 默认的配置地址 <code>{@value}</code>. */
     private static final String DEFAULT_CONFIGURATION_FILE = "domain.properties";
 
     /*
