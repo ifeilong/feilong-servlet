@@ -41,7 +41,9 @@ import com.feilong.servlet.ServletContextUtil;
  * @author <a href="mailto:venusdrogon@163.com">feilong</a>
  * @version 1.0.8 2014年11月23日 上午3:51:21
  * @since 1.0.8
+ * @deprecated 想个更好的办法
  */
+@Deprecated
 public class ApplicationInfoServlet extends HttpServlet{
 
     /** The Constant serialVersionUID. */
