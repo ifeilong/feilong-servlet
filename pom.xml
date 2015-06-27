@@ -11,6 +11,21 @@
 	<name>feilong-servlet</name>
 	<description>${project.name} ${project.version} API</description>
 
+	<url>https://github.com/venusdrogon/feilong-servlet</url>
+
+	<!-- 软件配置管理，如cvs 和svn -->
+	<scm>
+		<url>https://github.com/venusdrogon/feilong-servlet</url>
+		<connection>https://github.com/venusdrogon/feilong-servlet</connection>
+		<developerConnection>git@github.com:venusdrogon/feilong-servlet.git</developerConnection>
+	</scm>
+
+	<!-- 用于管理此项目的发布跟踪（bug跟踪） -->
+	<issueManagement>
+		<system>github</system>
+		<url>https://github.com/venusdrogon/feilong-servlet/issues</url>
+	</issueManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
