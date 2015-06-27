@@ -16,8 +16,8 @@
 	<!-- 软件配置管理，如cvs 和svn -->
 	<scm>
 		<url>https://github.com/venusdrogon/feilong-servlet</url>
-		<connection>https://github.com/venusdrogon/feilong-servlet</connection>
-		<developerConnection>git@github.com:venusdrogon/feilong-servlet.git</developerConnection>
+		<connection>scm:git:https://github.com/venusdrogon/feilong-servlet</connection>
+		<developerConnection>scm:git:git@github.com:venusdrogon/feilong-servlet.git</developerConnection>
 	</scm>
 
 	<!-- 用于管理此项目的发布跟踪（bug跟踪） -->
@@ -25,6 +25,10 @@
 		<system>github</system>
 		<url>https://github.com/venusdrogon/feilong-servlet/issues</url>
 	</issueManagement>
+
+	<properties>
+		<version.esapi>2.1.0</version.esapi>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -101,10 +105,13 @@
 			<scope>provided</scope>
 			</dependency> -->
 
+
 		<!-- esapi -->
 		<dependency>
 			<groupId>org.owasp.esapi</groupId>
 			<artifactId>esapi</artifactId>
+			<version>${version.esapi}</version>
+
 			<!--
 				表明是可选依赖，它们只会对当前项目产生影响，其他项目依赖于B时候，这两个依赖不会被传递。
 				如果真要使用这个依赖，需要在项目中直接声明。
@@ -114,6 +121,15 @@
 			-->
 			<optional>true</optional>
 			<exclusions>
+				<exclusion>
+					<artifactId>log4j</artifactId>
+					<groupId>log4j</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-beanutils-core</artifactId>
+					<groupId>commons-beanutils</groupId>
+				</exclusion>
+
 				<exclusion>
 					<artifactId>commons-fileupload</artifactId>
 					<groupId>commons-fileupload</groupId>
@@ -132,6 +148,5 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 	</dependencies>
 </project>
