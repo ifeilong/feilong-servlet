@@ -40,8 +40,8 @@ import com.feilong.servlet.http.entity.CookieEntity;
  */
 public final class CookieUtil{
 
-    /** The Constant log. */
-    private static final Logger log = LoggerFactory.getLogger(CookieUtil.class);
+    /** The Constant LOGGER. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CookieUtil.class);
 
     /** Don't let anyone instantiate this class. */
     private CookieUtil(){
@@ -85,7 +85,7 @@ public final class CookieUtil{
                 }
             }
         }
-        log.warn("can'nt find the cookie:{}", cookieName);
+        LOGGER.warn("can'nt find the cookie:{}", cookieName);
         return null;
     }
 

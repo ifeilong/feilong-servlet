@@ -49,8 +49,8 @@ import com.feilong.servlet.http.entity.HttpHeaders;
  */
 public final class ResponseUtil{
 
-    /** The Constant log. */
-    private static final Logger log = LoggerFactory.getLogger(ResponseUtil.class);
+    /** The Constant LOGGER. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtil.class);
 
     /** Don't let anyone instantiate this class. */
     private ResponseUtil(){
@@ -154,8 +154,8 @@ public final class ResponseUtil{
                     HttpServletResponse response) throws UncheckedIOException{
         Date beginDate = new Date();
 
-        if (log.isInfoEnabled()){
-            log.info("begin download~~,saveFileName:[{}],contentLength:[{}]", saveFileName, FileUtil.formatSize(contentLength.longValue()));
+        if (LOGGER.isInfoEnabled()){
+            LOGGER.info("begin download~~,saveFileName:[{}],contentLength:[{}]", saveFileName, FileUtil.formatSize(contentLength.longValue()));
         }
         try{
             OutputStream outputStream = response.getOutputStream();
@@ -166,9 +166,9 @@ public final class ResponseUtil{
             //outputStream.write(buffer);
 
             IOWriteUtil.write(inputStream, outputStream);
-            if (log.isInfoEnabled()){
+            if (LOGGER.isInfoEnabled()){
                 Date endDate = new Date();
-                log.info(
+                LOGGER.info(
                                 "end download,saveFileName:[{}],contentLength:[{}],time use:[{}]",
                                 saveFileName,
                                 FileUtil.formatSize(contentLength.longValue()),
@@ -185,13 +185,13 @@ public final class ResponseUtil{
             final String exceptionName = e.getClass().getName();
 
             if (StringUtil.isContain(exceptionName, "ClientAbortException") || StringUtil.isContain(e.getMessage(), "ClientAbortException")){
-                log.warn(
+                LOGGER.warn(
                                 "[ClientAbortException],maybe user use Thunder soft or abort client soft download,exceptionName:[{}],exception message:[{}] ,request User-Agent:[{}]",
                                 exceptionName,
                                 e.getMessage(),
                                 RequestUtil.getHeaderUserAgent(request));
             }else{
-                log.error("[download exception],exception name: " + exceptionName, e);
+                LOGGER.error("[download exception],exception name: " + exceptionName, e);
                 throw new UncheckedIOException(e);
             }
         }

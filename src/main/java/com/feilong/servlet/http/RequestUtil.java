@@ -50,8 +50,8 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
  */
 public final class RequestUtil{
 
-    /** The Constant log. */
-    private static final Logger log = LoggerFactory.getLogger(RequestUtil.class);
+    /** The Constant LOGGER. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtil.class);
 
     /** Don't let anyone instantiate this class. */
     private RequestUtil(){
@@ -702,8 +702,8 @@ public final class RequestUtil{
                 map.put("6.ipAddress", ipAddress);
             }
         }
-        if (log.isDebugEnabled()){
-            log.debug(JsonUtil.format(map));
+        if (LOGGER.isDebugEnabled()){
+            LOGGER.debug(JsonUtil.format(map));
         }
         return ipAddress;
     }
@@ -822,14 +822,14 @@ public final class RequestUtil{
             // "parent",
             // "defaultAssertionStatus",
             // "URLs" };
-            // log.debug("\n\tbegin name:[{}]", name);
+            // LOGGER.debug("\n\tbegin name:[{}]", name);
             //
             // String string = JsonUtil.format(attributeValue, excludes);
-            // log.debug("\n\tname:[{}],\n\t:{}", name, string);
+            // LOGGER.debug("\n\tname:[{}],\n\t:{}", name, string);
             map.put(name, attributeValue);
         }
 
-        // log.debug("the param request attributeNames:{}", JsonUtil.toJSON(map.keySet()).toString(4, 4));
+        // LOGGER.debug("the param request attributeNames:{}", JsonUtil.toJSON(map.keySet()).toString(4, 4));
         return map;
     }
 

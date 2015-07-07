@@ -87,7 +87,7 @@ public final class ServletContextUtil{
     }
 
     /**
-     * 获得 attribute string map for log.
+     * 获得 attribute string map for LOGGER.
      *
      * @param servletContext
      *            the servlet context

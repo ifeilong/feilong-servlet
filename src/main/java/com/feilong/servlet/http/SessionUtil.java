@@ -44,8 +44,8 @@ import com.feilong.core.util.CollectionsUtil;
  */
 public final class SessionUtil{
 
-    /** The Constant log. */
-    private static final Logger log = LoggerFactory.getLogger(SessionUtil.class);
+    /** The Constant LOGGER. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionUtil.class);
 
     /** Don't let anyone instantiate this class. */
     private SessionUtil(){
@@ -157,12 +157,12 @@ public final class SessionUtil{
             // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
             session = request.getSession();
             Map<String, Object> map = getAttributeMap(session);
-            log.debug("old session: {}", session.getId());
+            LOGGER.debug("old session: {}", session.getId());
 
             session.invalidate();
 
             session = request.getSession();
-            log.debug("new session: {}", session.getId());
+            LOGGER.debug("new session: {}", session.getId());
 
             for (String key : map.keySet()){
                 session.setAttribute(key, map.get(key));

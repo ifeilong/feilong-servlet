@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ServletContextPathListener implements ServletContextListener{
 
-    /** The Constant log. */
-    private static final Logger log                       = LoggerFactory.getLogger(ServletContextPathListener.class);
+    /** The Constant LOGGER. */
+    private static final Logger LOGGER                       = LoggerFactory.getLogger(ServletContextPathListener.class);
 
     /** base 路径. */
     //TODO 设置 init param
@@ -53,8 +53,8 @@ public class ServletContextPathListener implements ServletContextListener{
         String msg = "Set servletContext setAttribute: '" + APPLICATIONATTRIBUTE_BASE + "' = [" + contextPath + "]";
         servletContext.log(msg);
 
-        if (log.isInfoEnabled()){
-            log.info(msg);
+        if (LOGGER.isInfoEnabled()){
+            LOGGER.info(msg);
         }
     }
 

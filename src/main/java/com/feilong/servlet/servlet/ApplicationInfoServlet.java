@@ -49,8 +49,8 @@ public class ApplicationInfoServlet extends HttpServlet{
     /** The Constant serialVersionUID. */
     private static final long   serialVersionUID = 672020928153455796L;
 
-    /** The Constant log. */
-    private static final Logger log              = LoggerFactory.getLogger(ApplicationInfoServlet.class);
+    /** The Constant LOGGER. */
+    private static final Logger LOGGER              = LoggerFactory.getLogger(ApplicationInfoServlet.class);
 
     /*
      * (non-Javadoc)
@@ -70,8 +70,8 @@ public class ApplicationInfoServlet extends HttpServlet{
         map.put("System Env Map", SystemUtil.getEnvMapForLog());
         map.put("System Properties Map", SystemUtil.getPropertiesMapForLog());
 
-        if (log.isInfoEnabled()){
-            log.info("ApplicationInfoServlet:{}", JsonUtil.format(map));
+        if (LOGGER.isInfoEnabled()){
+            LOGGER.info("ApplicationInfoServlet:{}", JsonUtil.format(map));
         }
 
         super.init();
