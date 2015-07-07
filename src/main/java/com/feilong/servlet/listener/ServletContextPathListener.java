@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 feilong (venusdrogon@163.com)
+ * Copyright (C) 2008 feilong
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 设置 servlet context path 到 {@link javax.servlet.ServletContext} attribute {@link #APPLICATIONATTRIBUTE_BASE}
  *
- * @author <a href="mailto:venusdrogon@163.com">feilong</a>
+ * @author feilong
  * @version 1.0.9 2015年1月3日 上午5:00:38
  * @since 1.0.9
  */

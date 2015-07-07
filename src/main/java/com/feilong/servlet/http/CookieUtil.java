@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 feilong (venusdrogon@163.com)
+ * Copyright (C) 2008 feilong
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import com.feilong.servlet.http.entity.CookieEntity;
 /**
  * {@link javax.servlet.http.Cookie} 工具 类.
  *
- * @author <a href="mailto:venusdrogon@163.com">feilong</a>
+ * @author feilong
  * @version 金鑫 2010-6-24 上午08:05:32
  * @version 金鑫 2012-5-18 14:53
  * @see javax.servlet.http.Cookie

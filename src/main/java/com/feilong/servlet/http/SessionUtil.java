@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 feilong (venusdrogon@163.com)
+ * Copyright (C) 2008 feilong
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import com.feilong.core.util.CollectionsUtil;
 /**
  * {@link javax.servlet.http.HttpSession} 工具类.
  * 
- * @author <a href="mailto:venusdrogon@163.com">金鑫</a>
+ * @author feilong
  * @version 1.0.0 2010-7-6 下午02:10:33
  * @version 1.0.1 Jan 15, 2013 2:31:32 PM 进行精简
  * @version 1.0.7 2014-6-17 14:32 删除历史不用的方法

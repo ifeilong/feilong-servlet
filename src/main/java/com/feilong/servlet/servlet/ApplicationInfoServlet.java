@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 feilong (venusdrogon@163.com)
+ * Copyright (C) 2008 feilong
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import com.feilong.servlet.ServletContextUtil;
 /**
  * 应用信息（用于监控查看）.
  * 
- * @author <a href="mailto:venusdrogon@163.com">feilong</a>
+ * @author feilong
  * @version 1.0.8 2014年11月23日 上午3:51:21
  * @since 1.0.8
  * @deprecated 想个更好的办法
