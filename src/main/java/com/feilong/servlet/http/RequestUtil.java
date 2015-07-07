@@ -31,7 +31,7 @@ import com.feilong.core.lang.ObjectUtil;
 import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.net.URIUtil;
-import com.feilong.core.tools.json.JsonUtil;
+import com.feilong.core.tools.jsonlib.JsonUtil;
 import com.feilong.core.util.StringUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.entity.HttpHeaders;
