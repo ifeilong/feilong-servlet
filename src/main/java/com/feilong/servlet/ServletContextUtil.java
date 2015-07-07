@@ -15,7 +15,6 @@
  */
 package com.feilong.servlet;
 
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -141,13 +140,11 @@ public final class ServletContextUtil{
      * @param fileName
      *            文件名称 如:register.html
      * @return 读取文件内容
-     * @throws IOException
-     *             the IO exception
      * @see "org.springframework.web.util.WebUtils#getRealPath(ServletContext, String)"
      * @deprecated 待重构
      */
     @Deprecated
-    public static String getFileContent(ServletContext servletContext,String directoryName,String fileName) throws IOException{
+    public static String getFileContent(ServletContext servletContext,String directoryName,String fileName){
         if (Validator.isNullOrEmpty(fileName)){
             throw new IllegalArgumentException("fileName can't be null/empty");
         }

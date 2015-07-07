@@ -63,16 +63,14 @@ public final class RequestUtil{
     // ******************************是否包含******************************************
     /**
      * 请求路径中是否包含某个参数名称 (注意:这是判断是否包含参数,而不是判断参数值是否为空).
-     * 
+     *
      * @param request
      *            请求
      * @param param
      *            参数名称
      * @return 包含该参数返回true,不包含返回false
-     * @throws NullPointerException
-     *             isNullOrEmpty(param)
      */
-    public static boolean isContainsParam(HttpServletRequest request,String param) throws NullPointerException{
+    public static boolean isContainsParam(HttpServletRequest request,String param){
         if (Validator.isNullOrEmpty(param)){
             throw new NullPointerException("param can't be null/empty!");
         }
@@ -102,10 +100,8 @@ public final class RequestUtil{
      * @param param
      *            参数名称
      * @return 不包含该参数返回true
-     * @throws NullPointerException
-     *             the null pointer exception
      */
-    public static boolean isNotContainsParam(HttpServletRequest request,String param) throws NullPointerException{
+    public static boolean isNotContainsParam(HttpServletRequest request,String param){
         return !isContainsParam(request, param);
     }
 

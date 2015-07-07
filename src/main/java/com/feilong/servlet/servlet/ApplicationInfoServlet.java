@@ -15,18 +15,13 @@
  */
 package com.feilong.servlet.servlet;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +45,7 @@ public class ApplicationInfoServlet extends HttpServlet{
     private static final long   serialVersionUID = 672020928153455796L;
 
     /** The Constant LOGGER. */
-    private static final Logger LOGGER              = LoggerFactory.getLogger(ApplicationInfoServlet.class);
+    private static final Logger LOGGER           = LoggerFactory.getLogger(ApplicationInfoServlet.class);
 
     /*
      * (non-Javadoc)
@@ -75,65 +70,5 @@ public class ApplicationInfoServlet extends HttpServlet{
         }
 
         super.init();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
-        super.doGet(req, resp);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#getLastModified(javax.servlet.http.HttpServletRequest)
-     */
-    @Override
-    protected long getLastModified(HttpServletRequest req){
-        return super.getLastModified(req);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void doPost(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
-        super.doPost(req, resp);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    protected void service(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
-        super.service(req, resp);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.http.HttpServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
-     */
-    @Override
-    public void service(ServletRequest req,ServletResponse res) throws ServletException,IOException{
-        super.service(req, res);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see javax.servlet.GenericServlet#destroy()
-     */
-    @Override
-    public void destroy(){
-        super.destroy();
     }
 }

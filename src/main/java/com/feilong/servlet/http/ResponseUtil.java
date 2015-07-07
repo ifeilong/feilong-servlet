@@ -72,8 +72,6 @@ public final class ResponseUtil{
      *            用来 获取request相关信息 记录log
      * @param response
      *            response
-     * @throws IOException
-     *             the IO exception
      * @see IOWriteUtil#write(InputStream, OutputStream)
      * @see "org.springframework.http.MediaType"
      */
@@ -82,7 +80,7 @@ public final class ResponseUtil{
                     InputStream inputStream,
                     Number contentLength,
                     HttpServletRequest request,
-                    HttpServletResponse response) throws IOException{
+                    HttpServletResponse response){
         //均采用默认的
         String contentType = null;
         String contentDisposition = null;
@@ -106,8 +104,6 @@ public final class ResponseUtil{
      *            用来 获取request相关信息 记录log
      * @param response
      *            response
-     * @throws IOException
-     *             the IO exception
      * @see IOWriteUtil#write(InputStream, OutputStream)
      * @see "org.springframework.http.MediaType"
      * @see "org.apache.http.HttpHeaders"
@@ -122,7 +118,7 @@ public final class ResponseUtil{
                     String contentType,
                     String contentDisposition,
                     HttpServletRequest request,
-                    HttpServletResponse response) throws IOException{
+                    HttpServletResponse response){
 
         setDownloadResponseHeader(saveFileName, contentLength, contentType, contentDisposition, response);
 
@@ -143,19 +139,20 @@ public final class ResponseUtil{
      *            the request
      * @param response
      *            the response
-     * @throws UncheckedIOException
-     *             the unchecked io exception
      */
     private static void downLoadData(
                     String saveFileName,
                     InputStream inputStream,
                     Number contentLength,
                     HttpServletRequest request,
-                    HttpServletResponse response) throws UncheckedIOException{
+                    HttpServletResponse response){
         Date beginDate = new Date();
 
         if (LOGGER.isInfoEnabled()){
-            LOGGER.info("begin download~~,saveFileName:[{}],contentLength:[{}]", saveFileName, FileUtil.formatSize(contentLength.longValue()));
+            LOGGER.info(
+                            "begin download~~,saveFileName:[{}],contentLength:[{}]",
+                            saveFileName,
+                            FileUtil.formatSize(contentLength.longValue()));
         }
         try{
             OutputStream outputStream = response.getOutputStream();
@@ -279,10 +276,8 @@ public final class ResponseUtil{
      *            HttpServletResponse
      * @param url
      *            跳转路径
-     * @throws UncheckedIOException
-     *             the unchecked io exception
      */
-    public static void setNoCacheAndRedirect(HttpServletResponse response,String url) throws UncheckedIOException{
+    public static void setNoCacheAndRedirect(HttpServletResponse response,String url){
         setNoCacheHeader(response);
         try{
             response.sendRedirect(url);
@@ -354,14 +349,12 @@ public final class ResponseUtil{
      *            HttpServletResponse
      * @param content
      *            相应内容
-     * @throws UncheckedIOException
-     *             the unchecked io exception
      * @see javax.servlet.ServletResponse#getWriter()
      * @see java.io.PrintWriter#print(Object)
      * @see java.io.PrintWriter#flush()
      * @see #write(HttpServletResponse, Object, String, String)
      */
-    public static void write(HttpServletResponse response,Object content) throws UncheckedIOException{
+    public static void write(HttpServletResponse response,Object content){
         String contentType = null;
         String characterEncoding = null;
         write(response, content, contentType, characterEncoding);
@@ -378,15 +371,12 @@ public final class ResponseUtil{
      *            the content type
      * @param characterEncoding
      *            the character encoding
-     * @throws UncheckedIOException
-     *             the unchecked io exception
      * @see javax.servlet.ServletResponse#getWriter()
      * @see java.io.PrintWriter#print(Object)
      * @see java.io.PrintWriter#flush()
      * @since 1.0.9
      */
-    public static void write(HttpServletResponse response,Object content,String contentType,String characterEncoding)
-                    throws UncheckedIOException{
+    public static void write(HttpServletResponse response,Object content,String contentType,String characterEncoding){
         try{
             //编码 需要在 getWriter之前设置
             if (Validator.isNotNullOrEmpty(contentType)){
