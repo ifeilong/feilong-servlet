@@ -32,8 +32,8 @@ import com.feilong.servlet.http.entity.CookieEntity;
  * {@link javax.servlet.http.Cookie} 工具 类.
  *
  * @author feilong
- * @version 金鑫 2010-6-24 上午08:05:32
- * @version 金鑫 2012-5-18 14:53
+ * @version 2010-6-24 上午08:05:32
+ * @version 2012-5-18 14:53
  * @see javax.servlet.http.Cookie
  * @see "org.springframework.web.util.CookieGenerator"
  * @since 1.0.0
