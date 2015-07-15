@@ -66,15 +66,20 @@ public final class RequestLogSwitch implements Serializable{
     /** 显示和Error相关. */
     private boolean           showErrors;
 
+    /** 显示和forward相关. */
+    private boolean           showForwardInfos;
+
+    /** 显示和include相关信息. */
+    private boolean           showIncludeInfos;
+
     /**
-     * Instantiates a new request log switch<br>
+     * Instantiates a new request log switch.<br>
      * 默认
      * <ul>
      * <li>showFullURL = true;</li>
      * <li>showMethod = true;</li>
      * <li>showParams = true;</li>
      * </ul>
-     * .
      */
     public RequestLogSwitch(){
         super();
@@ -98,6 +103,8 @@ public final class RequestLogSwitch implements Serializable{
             this.showParams = true;
             this.showPorts = true;
             this.showURLs = true;
+            this.showForwardInfos = true;
+            this.showIncludeInfos = true;
         }
     }
 
@@ -289,6 +296,36 @@ public final class RequestLogSwitch implements Serializable{
      */
     public void setShowMethod(boolean showMethod){
         this.showMethod = showMethod;
+    }
+
+    /**
+     * @return the showForwardInfos
+     */
+    public boolean getShowForwardInfos(){
+        return showForwardInfos;
+    }
+
+    /**
+     * @param showForwardInfos
+     *            the showForwardInfos to set
+     */
+    public void setShowForwardInfos(boolean showForwardInfos){
+        this.showForwardInfos = showForwardInfos;
+    }
+
+    /**
+     * @return the showIncludeInfos
+     */
+    public boolean getShowIncludeInfos(){
+        return showIncludeInfos;
+    }
+
+    /**
+     * @param showIncludeInfos
+     *            the showIncludeInfos to set
+     */
+    public void setShowIncludeInfos(boolean showIncludeInfos){
+        this.showIncludeInfos = showIncludeInfos;
     }
 
 }

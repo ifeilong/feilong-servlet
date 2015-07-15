@@ -41,6 +41,15 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
 /**
  * {@link javax.servlet.http.HttpServletRequest}工具类.
  * 
+ * <h3>{@link HttpServletRequest#getRequestURI() getRequestURI()} && {@link HttpServletRequest#getRequestURL() getRequestURL()}:</h3>
+ * 
+ * <blockquote>
+ * <ul>
+ * <li><span style="color:red">request.getRequestURI()</span> 返回值类似：/feilong/requestdemo.jsp</li>
+ * <li><span style="color:red">request.getRequestURL()</span> 返回值类似：http://localhost:8080/feilong/requestdemo.jsp</li>
+ * </ul>
+ * </blockquote>
+ * 
  * @author feilong
  * @version 1.0 2011-11-3 下午02:24:55
  * @version 1.0.4 2014-3-27 14:38
@@ -232,6 +241,42 @@ public final class RequestUtil{
     }
 
     /**
+     * 获得 include map.
+     *
+     * @param request
+     *            the request
+     * @return the include map
+     * @since 1.2.2
+     */
+    public static Map<String, String> getIncludeMap(HttpServletRequest request){
+        Map<String, String> map = new LinkedHashMap<String, String>();
+        map.put(RequestAttributes.INCLUDE_CONTEXT_PATH, getAttributeToString(request, RequestAttributes.INCLUDE_CONTEXT_PATH));
+        map.put(RequestAttributes.INCLUDE_PATH_INFO, getAttributeToString(request, RequestAttributes.INCLUDE_PATH_INFO));
+        map.put(RequestAttributes.INCLUDE_QUERY_STRING, getAttributeToString(request, RequestAttributes.INCLUDE_QUERY_STRING));
+        map.put(RequestAttributes.INCLUDE_REQUEST_URI, getAttributeToString(request, RequestAttributes.INCLUDE_REQUEST_URI));
+        map.put(RequestAttributes.INCLUDE_SERVLET_PATH, getAttributeToString(request, RequestAttributes.INCLUDE_SERVLET_PATH));
+        return map;
+    }
+
+    /**
+     * 获得 forward map.
+     *
+     * @param request
+     *            the request
+     * @return the forward map
+     * @since 1.2.2
+     */
+    public static Map<String, String> getForwardMap(HttpServletRequest request){
+        Map<String, String> map = new LinkedHashMap<String, String>();
+        map.put(RequestAttributes.FORWARD_CONTEXT_PATH, getAttributeToString(request, RequestAttributes.FORWARD_CONTEXT_PATH));
+        map.put(RequestAttributes.FORWARD_REQUEST_URI, getAttributeToString(request, RequestAttributes.FORWARD_REQUEST_URI));
+        map.put(RequestAttributes.FORWARD_SERVLET_PATH, getAttributeToString(request, RequestAttributes.FORWARD_SERVLET_PATH));
+        map.put(RequestAttributes.FORWARD_PATH_INFO, getAttributeToString(request, RequestAttributes.FORWARD_PATH_INFO));
+        map.put(RequestAttributes.FORWARD_QUERY_STRING, getAttributeToString(request, RequestAttributes.FORWARD_QUERY_STRING));
+        return map;
+    }
+
+    /**
      * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).<br>
      * 使用默认的 {@link RequestLogSwitch}
      * 
@@ -356,7 +401,7 @@ public final class RequestUtil{
             //Returns a java.security.Principal object containing the name of the current authenticated user. If the user has not been authenticated, the method returns null.
             aboutElseMap.put("request.getUserPrincipal()", request.getUserPrincipal());
 
-            //			aboutElseMap.put("request.isUserInRole(role)", request.isUserInRole(role));
+            //          aboutElseMap.put("request.isUserInRole(role)", request.isUserInRole(role));
 
             map.put("about Else Map", aboutElseMap);
         }
@@ -400,6 +445,14 @@ public final class RequestUtil{
         // _errorMap
         if (requestLogSwitch.getShowErrors()){
             map.put("_errorMap", getErrorMap(request));
+        }
+        // _forwardMap
+        if (requestLogSwitch.getShowForwardInfos()){
+            map.put("_forwardMap", getForwardMap(request));
+        }
+        // _includeMap
+        if (requestLogSwitch.getShowIncludeInfos()){
+            map.put("_includeMap", getIncludeMap(request));
         }
 
         // 避免json渲染出错，只放 key
@@ -544,16 +597,18 @@ public final class RequestUtil{
     }
 
     /**
-     * 获得请求的?部分前面的地址.<br>
-     * 识别 request 是否 forword
+     * 获得请求的?部分前面的地址.
+     * <p>
+     * <span style="color:red">自动识别 request 是否 forword</span>,如果是forword过来的,那么 取 {@link RequestAttributes#FORWARD_REQUEST_URI}变量
+     * </p>
      * 
      * <pre>
      * 如:http://localhost:8080/feilong/requestdemo.jsp?id=2
      * 返回:http://localhost:8080/feilong/requestdemo.jsp
      * 
      * 注:
-     * request.getRequestURI() 返回值类似：/feilong/requestdemo.jsp
-     * request.getRequestURL() 返回值类似：http://localhost:8080/feilong/requestdemo.jsp
+     * <span style="color:red">request.getRequestURI()</span> 返回值类似：/feilong/requestdemo.jsp
+     * <span style="color:red">request.getRequestURL()</span> 返回值类似：http://localhost:8080/feilong/requestdemo.jsp
      * </pre>
      * 
      * @param request
@@ -709,7 +764,7 @@ public final class RequestUtil{
     // *****************************Header区域**************************************
 
     /**
-     * 　User Agent中文名为用户代理，简称 UA，<br>
+     * User Agent中文名为用户代理，简称 UA，<br>
      * 它是一个特殊字符串头，使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。.
      * 
      * @param request
