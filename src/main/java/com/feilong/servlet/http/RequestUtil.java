@@ -535,7 +535,9 @@ public final class RequestUtil{
      * @param name
      *            属性名称
      * @return 取到的object类型会调用 ObjectUtil.toString(value)
+     * @deprecated 不推荐使用
      */
+    @Deprecated
     public static final String getAttributeToString(HttpServletRequest request,String name){
         Object value = request.getAttribute(name);
         return ObjectUtil.toString(value);
@@ -791,15 +793,15 @@ public final class RequestUtil{
 
     /**
      * 遍历显示request的attribute,将 name /attributeValue 存入到map.
+     * <p style="color:red">
+     * 目前如果直接 转json 如果属性有级联关系,会报错,
+     * </p>
      * 
      * @param request
      *            the request
      * @return the attribute map
-     * @deprecated 目前如果直接 转json 如果属性有级联关系,会报错,待重构
      */
-    @Deprecated
-    // XXX
-    private static Map<String, Object> getAttributeMap(HttpServletRequest request){
+    public static Map<String, Object> getAttributeMap(HttpServletRequest request){
         Map<String, Object> map = new HashMap<String, Object>();
         @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = request.getAttributeNames();
@@ -824,7 +826,6 @@ public final class RequestUtil{
             // LOGGER.debug("\n\tname:[{}],\n\t:{}", name, string);
             map.put(name, attributeValue);
         }
-
         // LOGGER.debug("the param request attributeNames:{}", JsonUtil.toJSON(map.keySet()).toString(4, 4));
         return map;
     }
@@ -898,7 +899,9 @@ public final class RequestUtil{
      * @param paramName
      *            the param name
      * @return 取到参数值,没有返回null,有去除空格返回
+     * @deprecated 不推荐使用
      */
+    @Deprecated
     public static String getParameterWithTrim(HttpServletRequest request,String paramName){
         String returnValue = getParameter(request, paramName);
         if (Validator.isNotNullOrEmpty(returnValue)){
