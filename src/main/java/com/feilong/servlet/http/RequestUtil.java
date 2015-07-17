@@ -15,18 +15,27 @@
  */
 package com.feilong.servlet.http;
 
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestWrapper;
+import javax.servlet.ServletResponse;
+import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.io.CharsetType;
+import com.feilong.core.io.UncheckedIOException;
 import com.feilong.core.lang.ObjectUtil;
 import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.URIComponents;
@@ -694,6 +703,90 @@ public final class RequestUtil{
     }
 
     // [end]
+
+    /**
+     * Forwards a request from a servlet to another resource (servlet, JSP file, or HTML file) on the server.<br>
+     * This method allows one servlet to do preliminary processing of a request and another resource to generate the response.
+     * 
+     * <p>
+     * For a <code>RequestDispatcher</code> obtained via <code>getRequestDispatcher()</code>, the <code>ServletRequest</code> object has its
+     * path elements and parameters adjusted to match the path of the target resource.
+     * </p>
+     * 
+     * <p>
+     * <code>forward</code> should be called before the response has been committed to the client (before response body output has been
+     * flushed). If the response already has been committed, this method throws an <code>IllegalStateException</code>. Uncommitted output in
+     * the response buffer is automatically cleared before the forward.
+     * </p>
+     * 
+     * <p>
+     * The request and response parameters must be either the same objects as were passed to the calling servlet's service method or be
+     * subclasses of the {@link ServletRequestWrapper} or {@link ServletResponseWrapper} classes that wrap them.
+     * </p>
+     * 
+     * @param path
+     *            the path
+     * @param request
+     *            a {@link ServletRequest} object
+     *            that represents the request the client
+     *            makes of the servlet
+     * @param response
+     *            a {@link ServletResponse} object
+     *            that represents the response the servlet
+     *            returns to the client
+     * @since 1.2.2
+     */
+    public static final void forward(String path,HttpServletRequest request,HttpServletResponse response){
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        try{
+            requestDispatcher.forward(request, response);
+        }catch (ServletException e){
+            LOGGER.error("", e);
+            throw new RuntimeException(e);
+        }catch (IOException e){
+            LOGGER.error("", e);
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Includes the content of a resource (servlet, JSP page,HTML file) in the response. <br>
+     * In essence, this method enables programmatic server-side includes.
+     * 
+     * <p>
+     * The {@link ServletResponse} object has its path elements and parameters remain unchanged from the caller's. The included servlet
+     * cannot change the response status code or set headers; any attempt to make a change is ignored.
+     * </p>
+     * 
+     * <p>
+     * The request and response parameters must be either the same objects as were passed to the calling servlet's service method or be
+     * subclasses of the {@link ServletRequestWrapper} or {@link ServletResponseWrapper} classes that wrap them.
+     * </p>
+     * 
+     * @param path
+     *            the path
+     * @param request
+     *            a {@link ServletRequest} object
+     *            that contains the client's request
+     * @param response
+     *            a {@link ServletResponse} object
+     *            that contains the servlet's response
+     * @see javax.servlet.RequestDispatcher#include(ServletRequest, ServletResponse)
+     * @since 1.2.2
+     */
+    public static final void include(String path,HttpServletRequest request,HttpServletResponse response){
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
+        try{
+            requestDispatcher.include(request, response);
+        }catch (ServletException e){
+            LOGGER.error("", e);
+            throw new RuntimeException(e);
+        }catch (IOException e){
+            LOGGER.error("", e);
+            throw new UncheckedIOException(e);
+        }
+    }
+
     // ****************************LocalAddr*****************************************
 
     /**
