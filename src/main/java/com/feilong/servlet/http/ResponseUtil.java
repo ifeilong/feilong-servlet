@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,7 +41,55 @@ import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.entity.HttpHeaders;
 
 /**
- * {@link javax.servlet.http.HttpServletResponse} 工具类.
+ * {@link javax.servlet.http.HttpServletResponse HttpServletResponse} 工具类.
+ * 
+ * <h3>关于 {@link RequestDispatcher#forward(javax.servlet.ServletRequest, javax.servlet.ServletResponse) RequestDispatcher.forward} 和
+ * {@link HttpServletResponse#sendRedirect(String) HttpServletResponse.sendRedirect}</h3>
+ * 
+ * <blockquote>
+ * <table border="1" cellspacing="0" cellpadding="4">
+ * <tr style="background-color:#ccccff">
+ * <th align="left">{@link RequestDispatcher#forward(javax.servlet.ServletRequest, javax.servlet.ServletResponse) RequestDispatcher.forward}
+ * </th>
+ * <th align="left">{@link HttpServletResponse#sendRedirect(String) HttpServletResponse.sendRedirect}</th>
+ * </tr>
+ * <tr valign="top">
+ * <td>只能将请求转发给同一个Web应用中的组件；</td>
+ * <td>可以定向到应用程序外的其他资源。</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>重定向后URL不会改变；</td>
+ * <td>URL会改变</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>在服务器端内部将请求转发给另一个资源， 浏览器只知道发出请求并得到相应结果，并不知在服务器内部发生的转发行为</td>
+ * <td>对浏览器的请求直接作出响应，响应的结果告诉浏览器重新发出对另外一个URL的访问请求</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>调用者与被调用者之间共享相同的request、response对象，它们属于同一个访问请求和相应过程；</td>
+ * <td>调用者和被调用者使用各自的request、response对象，它们属于两个独立的访问请求和相应过程</td>
+ * </tr>
+ * <tr>
+ * <td>适用于一次请求响应过程由Web程序内部的多个资源来协同完成， 需要在同一个Web程序内部资源之间跳转， 使用 {@link HttpServletRequest#setAttribute(String, Object)}方法将预处理结果传递给下一个资源。</td>
+ * <td>适用于不同Web程序之间的重定向。</td>
+ * </tr>
+ * </table>
+ * </blockquote>
+ * 
+ * 
+ * <h3>关于 {@link HttpServletResponse#sendRedirect(String)}:</h3>
+ * 
+ * <blockquote>
+ * <p>
+ * 用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
+ * </p>
+ * 
+ * <p>
+ * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span> <br>
+ * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
+ * 既然您已要做转向了，那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+ * </p>
+ * </blockquote>
  *
  * @author feilong
  * @version 1.0 2011-11-3 下午02:26:14
@@ -271,14 +320,46 @@ public final class ResponseUtil{
 
     /**
      * 设置不缓存并跳转.
-     *
+     * <p>
+     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
+     * </p>
+     * <p>
+     * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span> <br>
+     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
+     * 既然您已要做转向了，那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+     * </p>
+     * 
      * @param response
      *            HttpServletResponse
      * @param url
      *            跳转路径
+     * @see #setNoCacheHeader(HttpServletResponse)
+     * @see #sendRedirect(HttpServletResponse, String)
      */
     public static void setNoCacheAndRedirect(HttpServletResponse response,String url){
         setNoCacheHeader(response);
+        sendRedirect(response, url);
+    }
+
+    /**
+     * 跳转.
+     * <p>
+     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
+     * </p>
+     * <p>
+     * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span>; <br>
+     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
+     * 既然您已要做转向了，那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+     * </p>
+     *
+     * @param response
+     *            the response
+     * @param url
+     *            the redirect location URL
+     * @see HttpServletResponse#sendRedirect(String)
+     * @since 1.2.2
+     */
+    public static void sendRedirect(HttpServletResponse response,String url){
         try{
             response.sendRedirect(url);
         }catch (IOException e){
