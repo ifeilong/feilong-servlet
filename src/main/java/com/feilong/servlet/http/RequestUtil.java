@@ -705,9 +705,11 @@ public final class RequestUtil{
     // [end]
 
     /**
+     * 用于将请求转发到 {@link RequestDispatcher} 对象封装的资源，Servlet程序在调用该方法进行转发之前可以对请求进行前期预处理。
+     * <p>
      * Forwards a request from a servlet to another resource (servlet, JSP file, or HTML file) on the server.<br>
      * This method allows one servlet to do preliminary processing of a request and another resource to generate the response.
-     * 
+     * </p>
      * <p>
      * For a <code>RequestDispatcher</code> obtained via <code>getRequestDispatcher()</code>, the <code>ServletRequest</code> object has its
      * path elements and parameters adjusted to match the path of the target resource.
@@ -750,12 +752,17 @@ public final class RequestUtil{
     }
 
     /**
-     * Includes the content of a resource (servlet, JSP page,HTML file) in the response. <br>
-     * In essence, this method enables programmatic server-side includes.
+     * 用于将 {@link RequestDispatcher} 对象封装的资源内容作为当前响应内容的一部分包含进来，从而实现可编程服务器的服务器端包含功能。
      * 
      * <p>
-     * The {@link ServletResponse} object has its path elements and parameters remain unchanged from the caller's. The included servlet
-     * cannot change the response status code or set headers; any attempt to make a change is ignored.
+     * Includes the content of a resource (servlet, JSP page,HTML file) in the response. <br>
+     * In essence, this method enables programmatic server-side includes.
+     * </p>
+     * 
+     * <p>
+     * 注：被包含的Servlet程序不能改变响应信息的状态码和响应头，如果里面包含这样的语句将被忽略。<br>
+     * The {@link ServletResponse} object has its path elements and parameters remain unchanged from the caller's. <br>
+     * The included servlet cannot change the response status code or set headers; any attempt to make a change is ignored.
      * </p>
      * 
      * <p>
@@ -772,6 +779,7 @@ public final class RequestUtil{
      *            a {@link ServletResponse} object
      *            that contains the servlet's response
      * @see javax.servlet.RequestDispatcher#include(ServletRequest, ServletResponse)
+     * @see "org.springframework.web.servlet.ResourceServlet"
      * @since 1.2.2
      */
     public static final void include(String path,HttpServletRequest request,HttpServletResponse response){
@@ -857,8 +865,11 @@ public final class RequestUtil{
     // *****************************Header区域**************************************
 
     /**
-     * User Agent中文名为用户代理，简称 UA，<br>
-     * 它是一个特殊字符串头，使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。.
+     * User Agent中文名为用户代理，简称 UA.
+     * 
+     * <p>
+     * 它是一个特殊字符串头，使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
+     * </p>
      * 
      * @param request
      *            the request
@@ -873,6 +884,7 @@ public final class RequestUtil{
      * 
      * <pre>
      * 请用于常规请求,必须走http协议才有值,javascript跳转无效
+     * 
      * 以下情况请慎用:
      * 也就是说要通过&lt;a href=&quot;url&quot;&gt;sss&lt;/a&gt;标记才能获得那个值
      * 而通过改变location或是&lt;a href=&quot;javascript:location='url'&quot;&gt;sss&lt;/a&gt;都是得不到那个值得
@@ -904,9 +916,12 @@ public final class RequestUtil{
     }
 
     /**
-     * 判断一个请求是否是ajax请求.<br>
+     * 判断一个请求是否是ajax请求.
+     * 
+     * <p>
      * 注:x-requested-with这个头是某些JS类库给加上去的，直接写AJAX是没有这个头的,<br>
-     * jquery/ext 确定添加,暂时可以使用这个来判断<br>
+     * jquery/ext 确定添加,暂时可以使用这个来判断
+     * </p>
      * 
      * <p>
      * The X-Requested-With is a non-standard HTTP header which is mainly used to identify Ajax requests. <br>
@@ -941,6 +956,7 @@ public final class RequestUtil{
 
     /**
      * 遍历显示request的attribute,将 name /attributeValue 存入到map.
+     * 
      * <p style="color:red">
      * 目前如果直接 转json 如果属性有级联关系,会报错,
      * </p>
@@ -1015,18 +1031,22 @@ public final class RequestUtil{
     }
 
     /**
-     * 原样获得参数值(request.getParameter()函数时，会自动进行一次URI的解码过程，调用时内置的解码过程会导致乱码出现)
+     * 原样获得参数值.
      * 
-     * <pre>
-     * url参数是什么,取到的就是什么,不经过处理
-     * </pre>
+     * <p>
+     * <span style="color:red">注:url参数是什么,取到的就是什么,不经过处理</span>
+     * </p>
+     * 
+     * <p>
+     * 注:({@link javax.servlet.ServletRequest#getParameter(String)}函数时，会自动进行一次URI的解码过程，调用时内置的解码过程会导致乱码出现)
+     * </p>
      * 
      * @param request
      *            请求
      * @param paramName
      *            参数名称
      * @return 原样获得参数值
-     * @deprecated
+     * @deprecated 有使用场景吗?
      */
     @Deprecated
     public static String getParameterAsItIsDecode(HttpServletRequest request,String paramName){
