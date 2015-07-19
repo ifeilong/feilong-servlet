@@ -41,6 +41,32 @@ import com.feilong.core.date.TimeInterval;
  * </table>
  * </blockquote>
  * 
+ * <h3>关于 maxAge</h3>
+ * 
+ * <blockquote>
+ * <table border="1" cellspacing="0" cellpadding="4">
+ * <tr style="background-color:#ccccff">
+ * <th align="left">字段</th>
+ * <th align="left">说明</th>
+ * </tr>
+ * <tr valign="top">
+ * <td>正数(positive value)</td>
+ * <td>则表示该cookie会在max-age秒之后自动失效。<br>
+ * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>负数(negative value)</td>
+ * <td>表示不保存不持久化,当浏览器退出就会删除</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>0(zero value)</td>
+ * <td>表示删除</td>
+ * </tr>
+ * </table>
+ * 默认和servlet 保持一致,为-1,表示不保存不持久化, 浏览器退出就删除,如果需要设置有效期,可以调用 {@link TimeInterval}类
+ * </blockquote>
+ * 
+ * 
  * @author feilong
  * @version 1.0.0 2010-6-24 上午08:07:11
  * @since 1.0.0
@@ -60,11 +86,27 @@ public class CookieEntity implements Serializable{
     /**
      * 设置存活时间,单位秒.
      * 
-     * <ul>
-     * <li>负数(positive value),表示不保存不持久化,当浏览器退出就会删除</li>
-     * <li>负数(negative value),表示不保存不持久化,当浏览器退出就会删除</li>
-     * <li>0(zero value),表示删除</li>
-     * </ul>
+     * <blockquote>
+     * <table border="1" cellspacing="0" cellpadding="4">
+     * <tr style="background-color:#ccccff">
+     * <th align="left">字段</th>
+     * <th align="left">说明</th>
+     * </tr>
+     * <tr valign="top">
+     * <td>正数(positive value)</td>
+     * <td>则表示该cookie会在max-age秒之后自动失效。<br>
+     * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>负数(negative value)</td>
+     * <td>表示不保存不持久化,当浏览器退出就会删除</td>
+     * </tr>
+     * <tr valign="top">
+     * <td>0(zero value)</td>
+     * <td>表示删除</td>
+     * </tr>
+     * </table>
+     * </blockquote>
      * 
      * 默认和servlet 保持一致,为-1,表示不保存不持久化, 浏览器退出就删除,如果需要设置有效期,可以调用 {@link TimeInterval}类
      * 
@@ -125,9 +167,9 @@ public class CookieEntity implements Serializable{
      * The Constructor.
      * 
      * @param name
-     *            the name
+     *            name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
      * @param value
-     *            the value
+     *            value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
      */
     public CookieEntity(String name, String value){
         this.name = name;
@@ -138,11 +180,37 @@ public class CookieEntity implements Serializable{
      * The Constructor.
      *
      * @param name
-     *            the name
+     *            name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
      * @param value
-     *            the value
+     *            value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
      * @param maxAge
-     *            the max age
+     *            设置存活时间,单位秒.
+     *            <blockquote>
+     *            <table border="1" cellspacing="0" cellpadding="4">
+     *            <tr style="background-color:#ccccff">
+     *            <th align="left">字段</th>
+     *            <th align="left">说明</th>
+     *            </tr>
+     *            <tr valign="top">
+     *            <td>正数(positive value)</td>
+     *            <td>则表示该cookie会在max-age秒之后自动失效。<br>
+     *            浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     *            </tr>
+     *            <tr valign="top" style="background-color:#eeeeff">
+     *            <td>负数(negative value)</td>
+     *            <td>表示不保存不持久化,当浏览器退出就会删除</td>
+     *            </tr>
+     *            <tr valign="top">
+     *            <td>0(zero value)</td>
+     *            <td>表示删除</td>
+     *            </tr>
+     *            </table>
+     *            </blockquote>
+     * 
+     *            默认和servlet 保持一致,为-1,表示不保存不持久化, 浏览器退出就删除,如果需要设置有效期,可以调用 {@link TimeInterval}类
+     *            <p>
+     *            ;Max-Age=VALUE
+     *            </p>
      */
     public CookieEntity(String name, String value, int maxAge){
         this.name = name;
@@ -190,7 +258,28 @@ public class CookieEntity implements Serializable{
 
     /**
      * 获得 设置存活时间,单位秒.
-     *
+     * <blockquote>
+     * <table border="1" cellspacing="0" cellpadding="4">
+     * <tr style="background-color:#ccccff">
+     * <th align="left">字段</th>
+     * <th align="left">说明</th>
+     * </tr>
+     * <tr valign="top">
+     * <td>正数(positive value)</td>
+     * <td>则表示该cookie会在max-age秒之后自动失效。<br>
+     * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>负数(negative value)</td>
+     * <td>表示不保存不持久化,当浏览器退出就会删除</td>
+     * </tr>
+     * <tr valign="top">
+     * <td>0(zero value)</td>
+     * <td>表示删除</td>
+     * </tr>
+     * </table>
+     * </blockquote>
+     * 
      * @return the maxAge
      */
     public int getMaxAge(){
@@ -199,7 +288,28 @@ public class CookieEntity implements Serializable{
 
     /**
      * 设置 设置存活时间,单位秒.
-     *
+     * <blockquote>
+     * <table border="1" cellspacing="0" cellpadding="4">
+     * <tr style="background-color:#ccccff">
+     * <th align="left">字段</th>
+     * <th align="left">说明</th>
+     * </tr>
+     * <tr valign="top">
+     * <td>正数(positive value)</td>
+     * <td>则表示该cookie会在max-age秒之后自动失效。<br>
+     * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>负数(negative value)</td>
+     * <td>表示不保存不持久化,当浏览器退出就会删除</td>
+     * </tr>
+     * <tr valign="top">
+     * <td>0(zero value)</td>
+     * <td>表示删除</td>
+     * </tr>
+     * </table>
+     * </blockquote>
+     * 
      * @param maxAge
      *            the maxAge to set
      */
