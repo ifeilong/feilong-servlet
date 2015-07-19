@@ -116,8 +116,6 @@ public final class SessionUtil{
         return map;
     }
 
-    // [start] getAttributeMap
-
     /**
      * 遍历显示session的attribute,将 name /attributeValue 存入到map.
      * 
@@ -137,10 +135,6 @@ public final class SessionUtil{
         }
         return map;
     }
-
-    // [end]
-
-    // [start] replaceSession
 
     /**
      * 替换session,防止利用JSESSIONID 伪造url进行session hack.
@@ -173,5 +167,4 @@ public final class SessionUtil{
         }
         return session;
     }
-    // [end]
 }

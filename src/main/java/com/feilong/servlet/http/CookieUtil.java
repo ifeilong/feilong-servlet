@@ -131,13 +131,11 @@ public final class CookieUtil{
      *            cookieEntity
      * @param response
      *            response
-     * 
      * @see "org.apache.catalina.connector.Response#generateCookieString(Cookie, boolean)"
      */
     public static void addCookie(CookieEntity cookieEntity,HttpServletResponse response){
         Cookie cookie = new Cookie(cookieEntity.getName(), cookieEntity.getValue());
 
-        // 设置Cookie过期之前的时间,以秒计
         cookie.setMaxAge(cookieEntity.getMaxAge());//设置以秒计的cookie的最大存活时间。
         cookie.setComment(cookieEntity.getComment());//指定一个注释来描述cookie的目的。
         cookie.setDomain(cookieEntity.getDomain());// 指明cookie应当被声明的域。
@@ -145,7 +143,7 @@ public final class CookieUtil{
         cookie.setSecure(cookieEntity.getSecure());// 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
         cookie.setVersion(cookieEntity.getVersion());//设置本cookie遵循的cookie的协议的版本
 
-        //@since Servlet 3.0
+        //TODO @since Servlet 3.0
         //cookie.setHttpOnly(cookieEntity.getHttpOnly());
 
         response.addCookie(cookie);
