@@ -18,10 +18,28 @@ package com.feilong.servlet.http.entity;
 import java.io.Serializable;
 
 import com.feilong.core.date.TimeInterval;
-import com.feilong.servlet.http.CookieUtil;
 
 /**
  * cookie实体.
+ * 
+ * <h3>关于 name && value字符说明:</h3>
+ * 
+ * <blockquote>
+ * <table border="1" cellspacing="0" cellpadding="4">
+ * <tr style="background-color:#ccccff">
+ * <th align="left">字段</th>
+ * <th align="left">说明</th>
+ * </tr>
+ * <tr valign="top">
+ * <td>name</td>
+ * <td>名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>value</td>
+ * <td>名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.</td>
+ * </tr>
+ * </table>
+ * </blockquote>
  * 
  * @author feilong
  * @version 1.0.0 2010-6-24 上午08:07:11
@@ -92,8 +110,7 @@ public class CookieEntity implements Serializable{
     private int               version          = 0;
 
     /**
-     * Not in cookie specs, but supported by browsers.<br>
-     * 注：这个参数 只有servlet3.0+才支持，目前 {@link CookieUtil}不支持这个参数
+     * Not in cookie specs, but supported by browsers.
      */
     private boolean           httpOnly;
 
@@ -286,8 +303,7 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * 获得 not in cookie specs, but supported by browsers.<br>
-     * 注：这个参数 只有servlet3.0+才支持，目前 {@link CookieUtil}不支持这个参数
+     * 获得 not in cookie specs, but supported by browsers.
      *
      * @return the httpOnly
      */
@@ -296,8 +312,7 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * 设置 not in cookie specs, but supported by browsers.<br>
-     * 注：这个参数 只有servlet3.0+才支持，目前 {@link CookieUtil}不支持这个参数
+     * 设置 not in cookie specs, but supported by browsers.
      *
      * @param httpOnly
      *            the httpOnly to set
@@ -305,4 +320,5 @@ public class CookieEntity implements Serializable{
     public void setHttpOnly(boolean httpOnly){
         this.httpOnly = httpOnly;
     }
+
 }

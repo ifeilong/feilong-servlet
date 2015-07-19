@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet.http;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,6 +24,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.security.SecurityUtil;
+import org.apache.tomcat.util.http.ServerCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,9 +147,68 @@ public final class CookieUtil{
         cookie.setSecure(cookieEntity.getSecure());// 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
         cookie.setVersion(cookieEntity.getVersion());//设置本cookie遵循的cookie的协议的版本
 
-        //TODO @since Servlet 3.0
-        //cookie.setHttpOnly(cookieEntity.getHttpOnly());
+        boolean httpOnly = cookieEntity.getHttpOnly();
 
-        response.addCookie(cookie);
+        //TODO @since Servlet 3.0
+        //cookie.setHttpOnly();
+        if (httpOnly){
+            StringBuffer cookieString = generateCookieStringInTomcat(cookie, true);
+            response.addHeader("Set-Cookie", cookieString.toString());
+        }else{
+            response.addCookie(cookie);
+        }
+    }
+
+    /**
+     * Generate cookie string in tomcat.
+     *
+     * @param cookie
+     *            the cookie
+     * @param httpOnly
+     *            the http only
+     * @return the string buffer
+     */
+    private static StringBuffer generateCookieStringInTomcat(final Cookie cookie,final boolean httpOnly){
+        final StringBuffer cookieStringBuffer = new StringBuffer();
+        // web application code can receive a IllegalArgumentException
+        // from the appendCookieValue invokation
+        if (SecurityUtil.isPackageProtectionEnabled()){
+            AccessController.doPrivileged(new PrivilegedAction<Object>(){
+
+                @Override
+                public Object run(){
+                    constructCookieStringBuffer(cookieStringBuffer, cookie, httpOnly);
+                    return null;
+                }
+            });
+        }else{
+            constructCookieStringBuffer(cookieStringBuffer, cookie, httpOnly);
+        }
+        return cookieStringBuffer;
+    }
+
+    /**
+     * Construct cookie string buffer.
+     *
+     * @param cookie
+     *            the cookie
+     * @param httpOnly
+     *            the http only
+     * @param cookieStringBuffer
+     *            the cookie string buffer
+     * @since 1.2.2
+     */
+    private static void constructCookieStringBuffer(final StringBuffer cookieStringBuffer,final Cookie cookie,final boolean httpOnly){
+        ServerCookie.appendCookieValue(
+                        cookieStringBuffer,
+                        cookie.getVersion(),
+                        cookie.getName(),
+                        cookie.getValue(),
+                        cookie.getPath(),
+                        cookie.getDomain(),
+                        cookie.getComment(),
+                        cookie.getMaxAge(),
+                        cookie.getSecure(),
+                        httpOnly);
     }
 }
