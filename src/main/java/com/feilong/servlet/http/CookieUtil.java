@@ -149,15 +149,11 @@ public final class CookieUtil{
             throw new NullPointerException("cookieName can't be null/empty!");
         }
 
-        //设置以秒计的cookie的最大存活时间。
-        int maxAge = cookieEntity.getMaxAge();
-        if (0 == maxAge){
-            deleteCookie(cookieName, response);
-            return;
-        }
-
         String value = cookieEntity.getValue();
         Cookie cookie = new Cookie(cookieName, value);
+
+        //设置以秒计的cookie的最大存活时间。
+        int maxAge = cookieEntity.getMaxAge();
         cookie.setMaxAge(maxAge);
 
         //指定一个注释来描述cookie的目的。
