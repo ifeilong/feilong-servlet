@@ -138,14 +138,53 @@ public final class CookieUtil{
      * @see "org.apache.catalina.connector.Response#generateCookieString(Cookie, boolean)"
      */
     public static void addCookie(CookieEntity cookieEntity,HttpServletResponse response){
-        Cookie cookie = new Cookie(cookieEntity.getName(), cookieEntity.getValue());
 
-        cookie.setMaxAge(cookieEntity.getMaxAge());//设置以秒计的cookie的最大存活时间。
-        cookie.setComment(cookieEntity.getComment());//指定一个注释来描述cookie的目的。
-        cookie.setDomain(cookieEntity.getDomain());// 指明cookie应当被声明的域。
-        cookie.setPath(cookieEntity.getPath());//指定客户端将cookie返回的cookie的路径。
-        cookie.setSecure(cookieEntity.getSecure());// 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
-        cookie.setVersion(cookieEntity.getVersion());//设置本cookie遵循的cookie的协议的版本
+        if (Validator.isNullOrEmpty(cookieEntity)){
+            throw new NullPointerException("cookieEntity can't be null/empty!");
+        }
+
+        String cookieName = cookieEntity.getName();
+
+        if (Validator.isNullOrEmpty(cookieName)){
+            throw new NullPointerException("cookieName can't be null/empty!");
+        }
+
+        //设置以秒计的cookie的最大存活时间。
+        int maxAge = cookieEntity.getMaxAge();
+        if (0 == maxAge){
+            deleteCookie(cookieName, response);
+            return;
+        }
+
+        String value = cookieEntity.getValue();
+        Cookie cookie = new Cookie(cookieName, value);
+        cookie.setMaxAge(maxAge);
+
+        //指定一个注释来描述cookie的目的。
+        String comment = cookieEntity.getComment();
+        if (Validator.isNotNullOrEmpty(comment)){
+            cookie.setComment(comment);
+        }
+
+        // 指明cookie应当被声明的域。
+        String domain = cookieEntity.getDomain();
+        if (Validator.isNotNullOrEmpty(domain)){ //NullPointerException at javax.servlet.http.Cookie.setDomain(Cookie.java:213) ~[servlet-api-6.0.37.jar:na]
+            cookie.setDomain(domain);
+        }
+
+        //指定客户端将cookie返回的cookie的路径。
+        String path = cookieEntity.getPath();
+        if (Validator.isNotNullOrEmpty(path)){
+            cookie.setPath(path);
+        }
+
+        // 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+        boolean secure = cookieEntity.getSecure();
+        cookie.setSecure(secure);
+
+        //设置本cookie遵循的cookie的协议的版本
+        int version = cookieEntity.getVersion();
+        cookie.setVersion(version);
 
         boolean httpOnly = cookieEntity.getHttpOnly();
 

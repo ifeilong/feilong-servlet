@@ -394,8 +394,14 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * 获得 this class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
-     *
+     * This class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
+     * 
+     * By default, cookies are created using Version 0 to ensure the best interoperability.
+     * 
+     * <p>
+     * ;Version=1 ... means RFC 2109++ style
+     * </p>
+     * 
      * @return the version
      */
     public int getVersion(){
@@ -403,8 +409,14 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * 设置 this class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
-     *
+     * This class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
+     * 
+     * By default, cookies are created using Version 0 to ensure the best interoperability.
+     * 
+     * <p>
+     * ;Version=1 ... means RFC 2109++ style
+     * </p>
+     * 
      * @param version
      *            the version to set
      */
