@@ -29,6 +29,7 @@ import org.apache.tomcat.util.http.ServerCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.tools.jsonlib.JsonUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.entity.CookieEntity;
 
@@ -85,6 +86,9 @@ public final class CookieUtil{
         if (Validator.isNotNullOrEmpty(cookies)){
             for (Cookie cookie : cookies){
                 if (cookie.getName().equals(cookieName)){
+                    if (LOGGER.isDebugEnabled()){
+                        LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie));
+                    }
                     return cookie;
                 }
             }
@@ -126,6 +130,11 @@ public final class CookieUtil{
         int expiry = 0;
         CookieEntity cookieEntity = new CookieEntity(cookieName, null, expiry);
         addCookie(cookieEntity, response);
+
+        if (LOGGER.isDebugEnabled()){
+            LOGGER.debug("deleteCookie,cookieName:[{}]", cookieName);
+        }
+
     }
 
     /**
@@ -188,8 +197,18 @@ public final class CookieUtil{
         //cookie.setHttpOnly();
         if (httpOnly){
             StringBuffer cookieString = generateCookieStringInTomcat(cookie, true);
+
+            if (LOGGER.isDebugEnabled()){
+                LOGGER.debug(
+                                "input cookieEntity info:[{}],httpOnly is true,response.addHeader[Set-Cookie]:[{}]",
+                                JsonUtil.format(cookieEntity),
+                                cookieString);
+            }
             response.addHeader("Set-Cookie", cookieString.toString());
         }else{
+            if (LOGGER.isDebugEnabled()){
+                LOGGER.debug("input cookieEntity info:[{}],httpOnly is false,response.addCookie", JsonUtil.format(cookieEntity));
+            }
             response.addCookie(cookie);
         }
     }
