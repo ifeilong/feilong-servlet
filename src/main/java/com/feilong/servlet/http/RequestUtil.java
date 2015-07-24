@@ -34,9 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.io.CharsetType;
 import com.feilong.core.io.UncheckedIOException;
-import com.feilong.core.lang.ObjectUtil;
 import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.net.URIUtil;
@@ -602,7 +602,7 @@ public final class RequestUtil{
     @Deprecated
     public static final String getAttributeToString(HttpServletRequest request,String name){
         Object value = request.getAttribute(name);
-        return ObjectUtil.toString(value);
+        return ConvertUtil.toString(value);
     }
 
     /**
