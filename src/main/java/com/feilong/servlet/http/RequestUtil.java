@@ -53,10 +53,71 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
  * <h3>{@link HttpServletRequest#getRequestURI() getRequestURI()} && {@link HttpServletRequest#getRequestURL() getRequestURL()}:</h3>
  * 
  * <blockquote>
- * <ul>
- * <li><span style="color:red">request.getRequestURI()</span> 返回值类似：/feilong/requestdemo.jsp</li>
- * <li><span style="color:red">request.getRequestURL()</span> 返回值类似：http://localhost:8080/feilong/requestdemo.jsp</li>
- * </ul>
+ * <table border="1" cellspacing="0" cellpadding="4">
+ * <tr style="background-color:#ccccff">
+ * <th align="left">字段</th>
+ * <th align="left">返回值</th>
+ * </tr>
+ * <tr valign="top">
+ * <td><span style="color:red">request.getRequestURI()</span></td>
+ * <td>/feilong/requestdemo.jsp</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td><span style="color:red">request.getRequestURL()</span></td>
+ * <td>http://localhost:8080/feilong/requestdemo.jsp</td>
+ * </tr>
+ * </table>
+ * </blockquote>
+ * 
+ * 
+ * <h3>关于从request中获得相关路径和url：</h3>
+ * 
+ * <blockquote>
+ * 
+ * <ol>
+ * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符（windows系统是"\"，linux系统是"/"），而getPathInfo()以"/"开头。</li>
+ * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值，其他时候都返回null。</li>
+ * <li>在servlet的url-pattern被设置为*.xx之类的pattern时，getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
+ * </ol>
+ * 
+ * <table border="1" cellspacing="0" cellpadding="4">
+ * <tr style="background-color:#ccccff">
+ * <th align="left">字段</th>
+ * <th align="left">说明</th>
+ * </tr>
+ * <tr valign="top">
+ * <td>request.getContextPath()</td>
+ * <td>request.getContextPath()</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>request.getPathInfo()</td>
+ * <td>Returns any extra path information associated with the URL the client sent when it made this request. <br>
+ * Servlet访问路径之后，QueryString之前的中间部分</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>request.getServletPath()</td>
+ * <td>web.xml中定义的Servlet访问路径</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>request.getPathTranslated()</td>
+ * <td>等于getServletContext().getRealPath("/") + getPathInfo()</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>request.getRequestURI()</td>
+ * <td>等于getContextPath() + getServletPath() + getPathInfo()</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>request.getRequestURL()</td>
+ * <td>等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>request.getQueryString()</td>
+ * <td>&之后GET方法的参数部分<br>
+ * Returns the query string that is contained in the request URL after the path. <br>
+ * This method returns null if the URL does not have a query string. <br>
+ * Same as the value of the CGI variable QUERY_STRING.</td>
+ * </tr>
+ * </table>
  * </blockquote>
  * 
  * @author feilong
@@ -166,9 +227,12 @@ public final class RequestUtil{
     }
 
     /**
-     * 获得参数&单值map.<br>
-     * 由于 j2ee {@link javax.servlet.ServletRequest#getParameterMap()}返回的map 值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request)，不便于后续处理
-     *
+     * 获得参数 and 单值map.
+     * 
+     * <p>
+     * 由于 j2ee {@link ServletRequest#getParameterMap()}返回的map 值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request)，不便于后续处理
+     * </p>
+     * 
      * @param request
      *            the request
      * @return the parameter single value map
@@ -201,6 +265,8 @@ public final class RequestUtil{
      * @param request
      *            the request
      * @return the query string
+     * @see javax.servlet.http.HttpServletRequest#getMethod()
+     * @see URIUtil#combineQueryString(Map, String)
      */
     public static String getQueryStringLog(HttpServletRequest request){
         String returnValue = "";
@@ -235,15 +301,15 @@ public final class RequestUtil{
      *         如果 request没有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,返回null
      */
     public static Map<String, String> getErrorMap(HttpServletRequest request){
-        String errorCode = getAttributeToString(request, RequestAttributes.ERROR_STATUS_CODE);
+        String errorCode = getAttribute(request, RequestAttributes.ERROR_STATUS_CODE);
         if (Validator.isNotNullOrEmpty(errorCode)){
             Map<String, String> map = new LinkedHashMap<String, String>();
             map.put(RequestAttributes.ERROR_STATUS_CODE, errorCode);
-            map.put(RequestAttributes.ERROR_REQUEST_URI, getAttributeToString(request, RequestAttributes.ERROR_REQUEST_URI));
-            map.put(RequestAttributes.ERROR_EXCEPTION, getAttributeToString(request, RequestAttributes.ERROR_EXCEPTION));
-            map.put(RequestAttributes.ERROR_EXCEPTION_TYPE, getAttributeToString(request, RequestAttributes.ERROR_EXCEPTION_TYPE));
-            map.put(RequestAttributes.ERROR_MESSAGE, getAttributeToString(request, RequestAttributes.ERROR_MESSAGE));
-            map.put(RequestAttributes.ERROR_SERVLET_NAME, getAttributeToString(request, RequestAttributes.ERROR_SERVLET_NAME));
+            map.put(RequestAttributes.ERROR_REQUEST_URI, (String) getAttribute(request, RequestAttributes.ERROR_REQUEST_URI));
+            map.put(RequestAttributes.ERROR_EXCEPTION, (String) getAttribute(request, RequestAttributes.ERROR_EXCEPTION));
+            map.put(RequestAttributes.ERROR_EXCEPTION_TYPE, (String) getAttribute(request, RequestAttributes.ERROR_EXCEPTION_TYPE));
+            map.put(RequestAttributes.ERROR_MESSAGE, (String) getAttribute(request, RequestAttributes.ERROR_MESSAGE));
+            map.put(RequestAttributes.ERROR_SERVLET_NAME, (String) getAttribute(request, RequestAttributes.ERROR_SERVLET_NAME));
             return map;
         }
         return null;
@@ -259,11 +325,11 @@ public final class RequestUtil{
      */
     public static Map<String, String> getIncludeMap(HttpServletRequest request){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put(RequestAttributes.INCLUDE_CONTEXT_PATH, getAttributeToString(request, RequestAttributes.INCLUDE_CONTEXT_PATH));
-        map.put(RequestAttributes.INCLUDE_PATH_INFO, getAttributeToString(request, RequestAttributes.INCLUDE_PATH_INFO));
-        map.put(RequestAttributes.INCLUDE_QUERY_STRING, getAttributeToString(request, RequestAttributes.INCLUDE_QUERY_STRING));
-        map.put(RequestAttributes.INCLUDE_REQUEST_URI, getAttributeToString(request, RequestAttributes.INCLUDE_REQUEST_URI));
-        map.put(RequestAttributes.INCLUDE_SERVLET_PATH, getAttributeToString(request, RequestAttributes.INCLUDE_SERVLET_PATH));
+        map.put(RequestAttributes.INCLUDE_CONTEXT_PATH, (String) getAttribute(request, RequestAttributes.INCLUDE_CONTEXT_PATH));
+        map.put(RequestAttributes.INCLUDE_PATH_INFO, (String) getAttribute(request, RequestAttributes.INCLUDE_PATH_INFO));
+        map.put(RequestAttributes.INCLUDE_QUERY_STRING, (String) getAttribute(request, RequestAttributes.INCLUDE_QUERY_STRING));
+        map.put(RequestAttributes.INCLUDE_REQUEST_URI, (String) getAttribute(request, RequestAttributes.INCLUDE_REQUEST_URI));
+        map.put(RequestAttributes.INCLUDE_SERVLET_PATH, (String) getAttribute(request, RequestAttributes.INCLUDE_SERVLET_PATH));
         return map;
     }
 
@@ -277,17 +343,20 @@ public final class RequestUtil{
      */
     public static Map<String, String> getForwardMap(HttpServletRequest request){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put(RequestAttributes.FORWARD_CONTEXT_PATH, getAttributeToString(request, RequestAttributes.FORWARD_CONTEXT_PATH));
-        map.put(RequestAttributes.FORWARD_REQUEST_URI, getAttributeToString(request, RequestAttributes.FORWARD_REQUEST_URI));
-        map.put(RequestAttributes.FORWARD_SERVLET_PATH, getAttributeToString(request, RequestAttributes.FORWARD_SERVLET_PATH));
-        map.put(RequestAttributes.FORWARD_PATH_INFO, getAttributeToString(request, RequestAttributes.FORWARD_PATH_INFO));
-        map.put(RequestAttributes.FORWARD_QUERY_STRING, getAttributeToString(request, RequestAttributes.FORWARD_QUERY_STRING));
+        map.put(RequestAttributes.FORWARD_CONTEXT_PATH, (String) getAttribute(request, RequestAttributes.FORWARD_CONTEXT_PATH));
+        map.put(RequestAttributes.FORWARD_REQUEST_URI, (String) getAttribute(request, RequestAttributes.FORWARD_REQUEST_URI));
+        map.put(RequestAttributes.FORWARD_SERVLET_PATH, (String) getAttribute(request, RequestAttributes.FORWARD_SERVLET_PATH));
+        map.put(RequestAttributes.FORWARD_PATH_INFO, (String) getAttribute(request, RequestAttributes.FORWARD_PATH_INFO));
+        map.put(RequestAttributes.FORWARD_QUERY_STRING, (String) getAttribute(request, RequestAttributes.FORWARD_QUERY_STRING));
         return map;
     }
 
     /**
-     * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).<br>
+     * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
+     * 
+     * <p>
      * 使用默认的 {@link RequestLogSwitch}
+     * </p>
      * 
      * @param request
      *            the request
@@ -590,19 +659,40 @@ public final class RequestUtil{
     // ******************************* url参数相关 getAttribute*****************************************************.
     // [start] url参数相关
     /**
-     * 取到request里面的属性值.
-     * 
+     * 取到request里面的属性值,<span style="color:green">自动转换类型</span>.
+     *
+     * @param <T>
+     *            the generic type
      * @param request
      *            请求
      * @param name
      *            属性名称
-     * @return 取到的object类型会调用 ObjectUtil.toString(value)
-     * @deprecated 不推荐使用
+     * @param klass
+     *            the klass
+     * @return the attribute
+     * @see com.feilong.core.bean.ConvertUtil#convert(Object, Class)
+     * @since 1.3.0
      */
-    @Deprecated
-    public static String getAttributeToString(HttpServletRequest request,String name){
+    public static <T> T getAttribute(HttpServletRequest request,String name,Class<T> klass){
         Object value = request.getAttribute(name);
-        return ConvertUtil.toString(value);
+        return ConvertUtil.convert(value, klass);
+    }
+
+    /**
+     * 获得 attribute.
+     *
+     * @param <T>
+     *            the generic type
+     * @param request
+     *            the request
+     * @param name
+     *            the name
+     * @return the attribute
+     * @since 1.3.0
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getAttribute(HttpServletRequest request,String name){
+        return (T) request.getAttribute(name);
     }
 
     /**
@@ -614,11 +704,26 @@ public final class RequestUtil{
      * <pre>
      * 如:http://localhost:8080/feilong/requestdemo.jsp?id=2
      * 返回:http://localhost:8080/feilong/requestdemo.jsp
+     * </pre>
      * 
      * 注:
-     * <span style="color:red">request.getRequestURI()</span> 返回值类似：/feilong/requestdemo.jsp
-     * <span style="color:red">request.getRequestURL()</span> 返回值类似：http://localhost:8080/feilong/requestdemo.jsp
-     * </pre>
+     * 
+     * <blockquote>
+     * <table border="1" cellspacing="0" cellpadding="4">
+     * <tr style="background-color:#ccccff">
+     * <th align="left">字段</th>
+     * <th align="left">返回值</th>
+     * </tr>
+     * <tr valign="top">
+     * <td><span style="color:red">request.getRequestURI()</span></td>
+     * <td>/feilong/requestdemo.jsp</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td><span style="color:red">request.getRequestURL()</span></td>
+     * <td>http://localhost:8080/feilong/requestdemo.jsp</td>
+     * </tr>
+     * </table>
+     * </blockquote>
      * 
      * @param request
      *            the request
@@ -649,6 +754,7 @@ public final class RequestUtil{
 
     /**
      * 获得请求的全地址.
+     * 
      * <ul>
      * <li>如果request不含queryString,直接返回 requestURL(比如post请求)</li>
      * <li>如果request含queryString,直接返回 requestURL+编码后的queryString</li>
@@ -672,12 +778,16 @@ public final class RequestUtil{
     }
 
     /**
-     * scheme+port+getContextPath. <br>
-     * 区分 http 和https.<br>
+     * scheme+port+getContextPath.
+     * 
+     * <p>
+     * 区分 http 和https.
+     * <p>
      * 
      * @param request
      *            the request
      * @return 如:http://localhost:8080/feilong/
+     * @see org.apache.catalina.connector.Request#getRequestURL()
      */
     public static String getServerRootWithContextPath(HttpServletRequest request){
 
@@ -935,10 +1045,7 @@ public final class RequestUtil{
      */
     public static boolean isAjaxRequest(HttpServletRequest request){
         String header = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
-        if (Validator.isNotNullOrEmpty(header) && header.equalsIgnoreCase(HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX)){
-            return true;
-        }
-        return false;
+        return Validator.isNotNullOrEmpty(header) && header.equalsIgnoreCase(HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX);
     }
 
     /**
@@ -972,25 +1079,8 @@ public final class RequestUtil{
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
             Object attributeValue = request.getAttribute(name);
-            // String[] excludes = {
-            // "autowireCapableBeanFactory",
-            // "classLoader",
-            // "servletConfig",
-            // "servletContext",
-            // "beanClassLoader",
-            // "environment",
-            // "beanFactory",
-            // "parentBeanFactory",
-            // "parent",
-            // "defaultAssertionStatus",
-            // "URLs" };
-            // LOGGER.debug("\n\tbegin name:[{}]", name);
-            //
-            // String string = JsonUtil.format(attributeValue, excludes);
-            // LOGGER.debug("\n\tname:[{}],\n\t:{}", name, string);
             map.put(name, attributeValue);
         }
-        // LOGGER.debug("the param request attributeNames:{}", JsonUtil.toJSON(map.keySet()).toString(4, 4));
         return map;
     }
 
