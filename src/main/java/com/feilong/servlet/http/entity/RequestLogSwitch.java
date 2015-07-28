@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2008 feilong
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -299,6 +299,8 @@ public final class RequestLogSwitch implements Serializable{
     }
 
     /**
+     * 获得 显示和forward相关.
+     *
      * @return the showForwardInfos
      */
     public boolean getShowForwardInfos(){
@@ -306,6 +308,8 @@ public final class RequestLogSwitch implements Serializable{
     }
 
     /**
+     * 设置 显示和forward相关.
+     *
      * @param showForwardInfos
      *            the showForwardInfos to set
      */
@@ -314,6 +318,8 @@ public final class RequestLogSwitch implements Serializable{
     }
 
     /**
+     * 获得 显示和include相关信息.
+     *
      * @return the showIncludeInfos
      */
     public boolean getShowIncludeInfos(){
@@ -321,6 +327,8 @@ public final class RequestLogSwitch implements Serializable{
     }
 
     /**
+     * 设置 显示和include相关信息.
+     *
      * @param showIncludeInfos
      *            the showIncludeInfos to set
      */

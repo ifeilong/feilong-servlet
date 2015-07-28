@@ -32,11 +32,11 @@ import org.slf4j.LoggerFactory;
 public class ServletContextPathListener implements ServletContextListener{
 
     /** The Constant LOGGER. */
-    private static final Logger LOGGER                       = LoggerFactory.getLogger(ServletContextPathListener.class);
+    private static final Logger LOGGER                    = LoggerFactory.getLogger(ServletContextPathListener.class);
 
     /** base 路径. */
     //TODO 设置 init param
-    private static String       APPLICATIONATTRIBUTE_BASE = "base";
+    private static final String APPLICATIONATTRIBUTE_BASE = "base";
 
     /*
      * (non-Javadoc)
