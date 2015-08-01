@@ -53,7 +53,7 @@ Reduce development, Release ideas
 			<dependency>
 				<groupId>com.feilong.platform</groupId>
 				<artifactId>feilong-servlet</artifactId>
-				<version>1.2.2</version>
+				<version>1.3.0</version>
 			</dependency>
 			....
 		</dependencies>
