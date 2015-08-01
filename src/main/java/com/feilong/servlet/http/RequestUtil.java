@@ -38,10 +38,10 @@ import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.io.CharsetType;
 import com.feilong.core.io.UncheckedIOException;
 import com.feilong.core.net.HttpMethodType;
+import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.tools.jsonlib.JsonUtil;
-import com.feilong.core.util.StringUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.entity.HttpHeaders;
 import com.feilong.servlet.http.entity.RequestAttributes;
@@ -237,26 +237,13 @@ public final class RequestUtil{
      *            the request
      * @return the parameter single value map
      * @see #getParameterMap(HttpServletRequest)
+     * @see ParamUtil#toSingleValueMap(Map)
      * @since 1.2.0
      */
     public static Map<String, String> getParameterSingleValueMap(HttpServletRequest request){
-
-        Map<String, String> returnMap = new TreeMap<String, String>();
-
         //拿到结果， 将多值转成单值， 当然也可以 循环 getParameterNames来处理
-        Map<String, String[]> parameterMap = getParameterMap(request);
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()){
-            String key = entry.getKey();
-            String[] values = entry.getValue();
-
-            String value = "";
-            if (Validator.isNotNullOrEmpty(values)){
-                value = values[0];
-            }
-
-            returnMap.put(key, value);
-        }
-        return returnMap;
+        Map<String, String[]> arrayValueMap = getParameterMap(request);
+        return ParamUtil.toSingleValueMap(arrayValueMap);
     }
 
     /**
@@ -266,11 +253,9 @@ public final class RequestUtil{
      *            the request
      * @return the query string
      * @see javax.servlet.http.HttpServletRequest#getMethod()
-     * @see URIUtil#combineQueryString(Map, String)
+     * @see ParamUtil#combineQueryString(Map, String)
      */
     public static String getQueryStringLog(HttpServletRequest request){
-        String returnValue = "";
-
         // Returns the name of the HTTP method with which this request was made,
         // for example, GET, POST, or PUT.
         // Same as the value of the CGI variable REQUEST_METHOD.
@@ -279,16 +264,15 @@ public final class RequestUtil{
         if (HttpMethodType.POST.getMethod().equalsIgnoreCase(method)){
             Map<String, String[]> map = getParameterMap(request);
             if (Validator.isNotNullOrEmpty(map)){
-                returnValue = URIUtil.combineQueryString(map, null);
+                return ParamUtil.combineQueryString(map, null);
             }
-        }else{
-            // Returns the query string that is contained in the request URL after the path.
-            // This method returns null if the URL does not have a query string.
-            // Same as the value of the CGI variable QUERY_STRING.
-            // 它只对get方法得到的数据有效。
-            returnValue = request.getQueryString();
         }
-        return returnValue;
+        // Returns the query string that is contained in the request URL after the path.
+        // This method returns null if the URL does not have a query string.
+        // Same as the value of the CGI variable QUERY_STRING.
+        // 它只对get方法得到的数据有效。
+        return request.getQueryString();
+
     }
 
     // ********************************************************************************************
@@ -731,10 +715,7 @@ public final class RequestUtil{
      */
     public static String getRequestURL(HttpServletRequest request){
         String forwardRequestUri = (String) request.getAttribute(RequestAttributes.FORWARD_REQUEST_URI);
-        if (Validator.isNotNullOrEmpty(forwardRequestUri)){
-            return forwardRequestUri;
-        }
-        return request.getRequestURL().toString();
+        return Validator.isNotNullOrEmpty(forwardRequestUri) ? forwardRequestUri : request.getRequestURL().toString();
     }
 
     /**
@@ -746,10 +727,7 @@ public final class RequestUtil{
      */
     public static String getOriginatingServletPath(HttpServletRequest request){
         String servletPath = (String) request.getAttribute(RequestAttributes.FORWARD_SERVLET_PATH);
-        if (servletPath == null){
-            servletPath = request.getServletPath();
-        }
-        return servletPath;
+        return Validator.isNotNullOrEmpty(servletPath) ? servletPath : request.getServletPath();
     }
 
     /**
@@ -791,12 +769,12 @@ public final class RequestUtil{
      */
     public static String getServerRootWithContextPath(HttpServletRequest request){
 
-        StringBuilder sbURL = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         String scheme = request.getScheme();
 
-        sbURL.append(scheme);
-        sbURL.append("://");
-        sbURL.append(request.getServerName());
+        sb.append(scheme);
+        sb.append("://");
+        sb.append(request.getServerName());
 
         int port = request.getServerPort();
         if (port < 0){
@@ -804,12 +782,12 @@ public final class RequestUtil{
         }
 
         if ((scheme.equals(URIComponents.SCHEME_HTTP) && (port != 80)) || (scheme.equals(URIComponents.SCHEME_HTTPS) && (port != 443))){
-            sbURL.append(':');
-            sbURL.append(port);
+            sb.append(':');
+            sb.append(port);
         }
 
-        sbURL.append(request.getContextPath());
-        return sbURL.toString();
+        sb.append(request.getContextPath());
+        return sb.toString();
     }
 
     // [end]
@@ -1097,74 +1075,5 @@ public final class RequestUtil{
      */
     public static String getParameter(HttpServletRequest request,String paramName){
         return request.getParameter(paramName);
-    }
-
-    /**
-     * 参数值去除井号,一般用于sendDirect 跳转中带有#标签,参数值取不准确的问题.
-     * 
-     * @param request
-     *            the request
-     * @param paramName
-     *            the param name
-     * @return 参数值去除井号,一般用于sendDirect 跳转中带有#标签,参数值取不准确的问题
-     * @deprecated 将来会重构
-     */
-    @Deprecated
-    public static String getParameterWithoutSharp(HttpServletRequest request,String paramName){
-        String returnValue = getParameter(request, paramName);
-        if (Validator.isNotNullOrEmpty(returnValue)){
-            if (StringUtil.isContain(returnValue, URIComponents.FRAGMENT)){
-                returnValue = StringUtil.substring(returnValue, null, URIComponents.FRAGMENT);
-            }
-        }
-        return returnValue;
-    }
-
-    /**
-     * 原样获得参数值.
-     * 
-     * <p>
-     * <span style="color:red">注:url参数是什么,取到的就是什么,不经过处理</span>
-     * </p>
-     * 
-     * <p>
-     * 注:({@link javax.servlet.ServletRequest#getParameter(String)}函数时，会自动进行一次URI的解码过程，调用时内置的解码过程会导致乱码出现)
-     * </p>
-     * 
-     * @param request
-     *            请求
-     * @param paramName
-     *            参数名称
-     * @return 原样获得参数值
-     * @deprecated 有使用场景吗?
-     */
-    @Deprecated
-    public static String getParameterAsItIsDecode(HttpServletRequest request,String paramName){
-        String returnValue = null;
-        String queryString = request.getQueryString();
-        if (Validator.isNotNullOrEmpty(queryString)){
-            Map<String, String[]> map = URIUtil.parseQueryToArrayMap(queryString, null);
-            return map.get(paramName)[0];
-        }
-        return returnValue;
-    }
-
-    /**
-     * 取到参数值,没有返回null,有去除空格返回.
-     * 
-     * @param request
-     *            当前请求
-     * @param paramName
-     *            the param name
-     * @return 取到参数值,没有返回null,有去除空格返回
-     * @deprecated 不推荐使用
-     */
-    @Deprecated
-    public static String getParameterWithTrim(HttpServletRequest request,String paramName){
-        String returnValue = getParameter(request, paramName);
-        if (Validator.isNotNullOrEmpty(returnValue)){
-            return returnValue.trim();
-        }
-        return returnValue;
     }
 }
