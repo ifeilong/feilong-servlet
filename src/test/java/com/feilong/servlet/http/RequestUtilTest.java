@@ -19,9 +19,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.util.StringUtil;
@@ -34,8 +31,6 @@ import com.feilong.core.util.Validator;
  * @since 1.3.1
  */
 public class RequestUtilTest{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtilTest.class);
 
     /**
      * 原样获得参数值.
@@ -60,7 +55,7 @@ public class RequestUtilTest{
         String returnValue = null;
         String queryString = request.getQueryString();
         if (Validator.isNotNullOrEmpty(queryString)){
-            Map<String, String> map = ParamUtil.parseQueryStringToSingleValueMap(queryString, null);
+            Map<String, String> map = ParamUtil.toSingleValueMap(queryString, null);
             return map.get(paramName);
         }
         return returnValue;

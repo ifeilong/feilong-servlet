@@ -253,7 +253,7 @@ public final class RequestUtil{
      *            the request
      * @return the query string
      * @see javax.servlet.http.HttpServletRequest#getMethod()
-     * @see ParamUtil#parseArrayValueMapToQueryString(Map, String)
+     * @see ParamUtil#toSafeQueryString(Map, String)
      */
     public static String getQueryStringLog(HttpServletRequest request){
         // Returns the name of the HTTP method with which this request was made,
@@ -264,7 +264,7 @@ public final class RequestUtil{
         if (HttpMethodType.POST.getMethod().equalsIgnoreCase(method)){
             Map<String, String[]> map = getParameterMap(request);
             if (Validator.isNotNullOrEmpty(map)){
-                return ParamUtil.parseArrayValueMapToQueryString(map, null);
+                return ParamUtil.toSafeQueryString(map, null);
             }
         }
         // Returns the query string that is contained in the request URL after the path.
