@@ -29,12 +29,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.date.DateExtensionUtil;
-import com.feilong.core.io.CharsetType;
 import com.feilong.core.io.FileUtil;
 import com.feilong.core.io.IOWriteUtil;
 import com.feilong.core.io.MimeType;
 import com.feilong.core.io.MimeTypeUtil;
 import com.feilong.core.io.UncheckedIOException;
+import com.feilong.core.lang.CharsetType;
 import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.util.Validator;

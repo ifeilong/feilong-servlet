@@ -27,8 +27,8 @@ import com.feilong.core.util.Validator;
 /**
  *
  * @author feilong
- * @version 1.3.1 2015年8月1日 下午8:32:08
- * @since 1.3.1
+ * @version 1.4.0 2015年8月1日 下午8:32:08
+ * @since 1.4.0
  */
 public class RequestUtilTest{
 
