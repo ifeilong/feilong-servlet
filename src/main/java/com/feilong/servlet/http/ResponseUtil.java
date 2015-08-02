@@ -230,7 +230,7 @@ public final class ResponseUtil{
             //ClientAbortException:  java.net.SocketException: Connection reset by peer: socket write error
             final String exceptionName = e.getClass().getName();
 
-            if (StringUtil.isContain(exceptionName, "ClientAbortException") || StringUtil.isContain(e.getMessage(), "ClientAbortException")){
+            if (StringUtil.contains(exceptionName, "ClientAbortException") || StringUtil.contains(e.getMessage(), "ClientAbortException")){
                 LOGGER.warn(
                                 "[ClientAbortException],maybe user use Thunder soft or abort client soft download,exceptionName:[{}],exception message:[{}] ,request User-Agent:[{}]",
                                 exceptionName,

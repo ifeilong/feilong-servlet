@@ -94,7 +94,7 @@ public class RequestUtilTest{
     public static String getParameterWithoutSharp(HttpServletRequest request,String paramName){
         String returnValue = RequestUtil.getParameter(request, paramName);
         if (Validator.isNotNullOrEmpty(returnValue)){
-            if (StringUtil.isContain(returnValue, URIComponents.FRAGMENT)){
+            if (StringUtil.contains(returnValue, URIComponents.FRAGMENT)){
                 returnValue = StringUtil.substring(returnValue, null, URIComponents.FRAGMENT);
             }
         }
