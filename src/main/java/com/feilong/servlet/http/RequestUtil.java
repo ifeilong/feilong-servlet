@@ -752,7 +752,7 @@ public final class RequestUtil{
             return requestURL;
         }
         // XXX 处理乱码
-        return requestURL + URIComponents.QUESTIONMARK + URIUtil.decodeLuanMaISO8859(queryString, charsetType);
+        return requestURL + URIComponents.QUESTIONMARK + URIUtil.decodeISO88591String(queryString, charsetType);
     }
 
     /**
