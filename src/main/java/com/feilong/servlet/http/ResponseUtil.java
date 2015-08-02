@@ -35,8 +35,8 @@ import com.feilong.core.io.IOWriteUtil;
 import com.feilong.core.io.MimeType;
 import com.feilong.core.io.MimeTypeUtil;
 import com.feilong.core.io.UncheckedIOException;
+import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.URIUtil;
-import com.feilong.core.util.StringUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.entity.HttpHeaders;
 

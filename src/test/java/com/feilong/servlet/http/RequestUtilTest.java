@@ -19,9 +19,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
-import com.feilong.core.util.StringUtil;
 import com.feilong.core.util.Validator;
 
 /**
