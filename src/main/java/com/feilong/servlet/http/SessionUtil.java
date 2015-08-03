@@ -15,6 +15,7 @@
  */
 package com.feilong.servlet.http;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import com.feilong.core.date.DatePattern;
 import com.feilong.core.date.DateUtil;
 import com.feilong.core.tools.slf4j.Slf4jUtil;
 import com.feilong.core.util.CollectionsUtil;
+import com.feilong.core.util.Validator;
 
 /**
  * {@link javax.servlet.http.HttpSession} 工具类.
@@ -70,48 +72,49 @@ public final class SessionUtil{
     public static Map<String, Object> getSessionInfoMapForLog(HttpSession session){
         Map<String, Object> map = new LinkedHashMap<String, Object>();
 
-        if (null != session){
-
-            Date now = new Date();
-
-            // 返回SESSION创建时JSP引擎为它设的惟一ID号 
-            map.put("session.getId()", session.getId());
-
-            //返回SESSION创建时间
-            long creationTime = session.getCreationTime();
-            Date creationTimeDate = new Date(creationTime);
-            map.put(
-                            "session.getCreationTime()",
-                            Slf4jUtil.formatMessage(
-                                            "[{}],format:[{}],intervalToNow:[{}]",
-                                            creationTime,
-                                            DateUtil.date2String(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
-                                            DateExtensionUtil.getIntervalForView(creationTimeDate, now)));
-
-            //返回此SESSION里客户端最近一次请求时间 
-            long lastAccessedTime = session.getLastAccessedTime();
-            Date lastAccessedTimeDate = new Date(lastAccessedTime);
-            map.put(
-                            "session.getLastAccessedTime()",
-                            Slf4jUtil.formatMessage(
-                                            "[{}],format:[{}],intervalToNow:[{}]",
-                                            lastAccessedTime,
-                                            DateUtil.date2String(lastAccessedTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
-                                            DateExtensionUtil.getIntervalForView(lastAccessedTimeDate, now)));
-
-            //返回两次请求间隔多长时间此SESSION被取消(ms) 
-            int maxInactiveInterval = session.getMaxInactiveInterval();
-            map.put(
-                            "session.getMaxInactiveInterval()",
-                            maxInactiveInterval + "s,format:" + DateExtensionUtil.getIntervalForView(maxInactiveInterval * 1000));
-
-            // 返回服务器创建的一个SESSION,客户端是否已经加入 
-            map.put("session.isNew()", session.isNew());
-
-            @SuppressWarnings({ "unchecked" })
-            Enumeration<String> attributeNames = session.getAttributeNames();
-            map.put("session.getAttributeNames()", CollectionsUtil.toList(attributeNames));
+        if (Validator.isNullOrEmpty(session)){
+            return Collections.emptyMap();
         }
+
+        Date now = new Date();
+
+        // 返回SESSION创建时JSP引擎为它设的惟一ID号 
+        map.put("session.getId()", session.getId());
+
+        //返回SESSION创建时间
+        long creationTime = session.getCreationTime();
+        Date creationTimeDate = new Date(creationTime);
+        map.put(
+                        "session.getCreationTime()",
+                        Slf4jUtil.formatMessage(
+                                        "[{}],format:[{}],intervalToNow:[{}]",
+                                        creationTime,
+                                        DateUtil.date2String(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
+                                        DateExtensionUtil.getIntervalForView(creationTimeDate, now)));
+
+        //返回此SESSION里客户端最近一次请求时间 
+        long lastAccessedTime = session.getLastAccessedTime();
+        Date lastAccessedTimeDate = new Date(lastAccessedTime);
+        map.put(
+                        "session.getLastAccessedTime()",
+                        Slf4jUtil.formatMessage(
+                                        "[{}],format:[{}],intervalToNow:[{}]",
+                                        lastAccessedTime,
+                                        DateUtil.date2String(lastAccessedTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
+                                        DateExtensionUtil.getIntervalForView(lastAccessedTimeDate, now)));
+
+        //返回两次请求间隔多长时间此SESSION被取消(ms) 
+        int maxInactiveInterval = session.getMaxInactiveInterval();
+        map.put(
+                        "session.getMaxInactiveInterval()",
+                        maxInactiveInterval + "s,format:" + DateExtensionUtil.getIntervalForView(maxInactiveInterval * 1000));
+
+        // 返回服务器创建的一个SESSION,客户端是否已经加入 
+        map.put("session.isNew()", session.isNew());
+
+        @SuppressWarnings({ "unchecked" })
+        Enumeration<String> attributeNames = session.getAttributeNames();
+        map.put("session.getAttributeNames()", CollectionsUtil.toList(attributeNames));
 
         return map;
     }
@@ -147,23 +150,23 @@ public final class SessionUtil{
     public static HttpSession replaceSession(HttpServletRequest request){
         // 当session存在时返回该session，否则不会新建session，返回null
         HttpSession session = request.getSession(false);
-        if (null != session){
-            // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
-            session = request.getSession();
-            Map<String, Object> map = getAttributeMap(session);
-            LOGGER.debug("old session: {}", session.getId());
 
-            session.invalidate();
+        if (null == session){// 是null 新建一个
+            return request.getSession();
+        }
 
-            session = request.getSession();
-            LOGGER.debug("new session: {}", session.getId());
+        // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
+        session = request.getSession();
+        Map<String, Object> map = getAttributeMap(session);
+        LOGGER.debug("old session: {}", session.getId());
 
-            for (String key : map.keySet()){
-                session.setAttribute(key, map.get(key));
-            }
-        }else{
-            // 是null 新建一个
-            session = request.getSession();
+        session.invalidate();
+
+        session = request.getSession();
+        LOGGER.debug("new session: {}", session.getId());
+
+        for (String key : map.keySet()){
+            session.setAttribute(key, map.get(key));
         }
         return session;
     }

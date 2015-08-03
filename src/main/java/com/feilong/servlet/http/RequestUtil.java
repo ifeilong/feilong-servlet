@@ -386,18 +386,18 @@ public final class RequestUtil{
 
         // _headerMap
         if (requestLogSwitch.getShowHeaders()){
-            map.put("_headerMap", getHeaderMap(request));
+            map.put("_headerInfoMap", getHeaderMap(request));
         }
 
         // _cookieMap
         if (requestLogSwitch.getShowCookies()){
-            map.put("_cookieMap", CookieUtil.getCookieMap(request));
+            map.put("_cookieInfoMap", CookieUtil.getCookieMap(request));
         }
 
         // aboutURLMap
         if (requestLogSwitch.getShowURLs()){
             Map<String, String> aboutURLMap = getAboutURLMapForLog(request);
-            map.put("about URL Map", aboutURLMap);
+            map.put("about URL Info Map", aboutURLMap);
         }
 
         // aboutElseMap
@@ -481,7 +481,7 @@ public final class RequestUtil{
             aboutIPMap.put("request.getServerName()", request.getServerName());
 
             aboutIPMap.put("getClientIp", getClientIp(request));
-            map.put("about IP Map", aboutIPMap);
+            map.put("about IP Info Map", aboutIPMap);
         }
 
         // aboutPortMap
@@ -497,20 +497,20 @@ public final class RequestUtil{
             //Returns the port number to which the request was sent. It is the value of the part after ":" in the Host header value, if any, or the server port where the client connection was accepted on.
             aboutPortMap.put("request.getServerPort()", "" + request.getServerPort());
 
-            map.put("about Port Map", aboutPortMap);
+            map.put("about Port Info Map", aboutPortMap);
         }
 
-        // _errorMap
+        // _errorInfos
         if (requestLogSwitch.getShowErrors()){
-            map.put("_errorMap", getErrorMap(request));
+            map.put("_errorInfos", getErrorMap(request));
         }
-        // _forwardMap
+        // _forwardInfos
         if (requestLogSwitch.getShowForwardInfos()){
-            map.put("_forwardMap", getForwardMap(request));
+            map.put("_forwardInfos", getForwardMap(request));
         }
-        // _includeMap
+        // _includeInfos
         if (requestLogSwitch.getShowIncludeInfos()){
-            map.put("_includeMap", getIncludeMap(request));
+            map.put("_includeInfos", getIncludeMap(request));
         }
 
         // 避免json渲染出错，只放 key
