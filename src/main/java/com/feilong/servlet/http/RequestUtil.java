@@ -42,6 +42,7 @@ import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.tools.jsonlib.JsonUtil;
+import com.feilong.core.util.MapUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.entity.HttpHeaders;
 import com.feilong.servlet.http.entity.RequestAttributes;
@@ -167,7 +168,6 @@ public final class RequestUtil{
         //感觉要比下面好些
         //Map<String, ?> map = getParameterMap(request);
         //return map.containsKey(param);
-
         return false;
     }
 
@@ -285,18 +285,14 @@ public final class RequestUtil{
      *         如果 request没有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,返回null
      */
     public static Map<String, String> getErrorMap(HttpServletRequest request){
-        String errorCode = getAttribute(request, RequestAttributes.ERROR_STATUS_CODE);
-        if (Validator.isNotNullOrEmpty(errorCode)){
-            Map<String, String> map = new LinkedHashMap<String, String>();
-            map.put(RequestAttributes.ERROR_STATUS_CODE, errorCode);
-            map.put(RequestAttributes.ERROR_REQUEST_URI, (String) getAttribute(request, RequestAttributes.ERROR_REQUEST_URI));
-            map.put(RequestAttributes.ERROR_EXCEPTION, (String) getAttribute(request, RequestAttributes.ERROR_EXCEPTION));
-            map.put(RequestAttributes.ERROR_EXCEPTION_TYPE, (String) getAttribute(request, RequestAttributes.ERROR_EXCEPTION_TYPE));
-            map.put(RequestAttributes.ERROR_MESSAGE, (String) getAttribute(request, RequestAttributes.ERROR_MESSAGE));
-            map.put(RequestAttributes.ERROR_SERVLET_NAME, (String) getAttribute(request, RequestAttributes.ERROR_SERVLET_NAME));
-            return map;
-        }
-        return null;
+        Map<String, String> map = new LinkedHashMap<String, String>();
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_STATUS_CODE);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_REQUEST_URI);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_EXCEPTION);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_EXCEPTION_TYPE);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_MESSAGE);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_SERVLET_NAME);
+        return map;
     }
 
     /**
@@ -309,11 +305,11 @@ public final class RequestUtil{
      */
     public static Map<String, String> getIncludeMap(HttpServletRequest request){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put(RequestAttributes.INCLUDE_CONTEXT_PATH, (String) getAttribute(request, RequestAttributes.INCLUDE_CONTEXT_PATH));
-        map.put(RequestAttributes.INCLUDE_PATH_INFO, (String) getAttribute(request, RequestAttributes.INCLUDE_PATH_INFO));
-        map.put(RequestAttributes.INCLUDE_QUERY_STRING, (String) getAttribute(request, RequestAttributes.INCLUDE_QUERY_STRING));
-        map.put(RequestAttributes.INCLUDE_REQUEST_URI, (String) getAttribute(request, RequestAttributes.INCLUDE_REQUEST_URI));
-        map.put(RequestAttributes.INCLUDE_SERVLET_PATH, (String) getAttribute(request, RequestAttributes.INCLUDE_SERVLET_PATH));
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_CONTEXT_PATH);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_PATH_INFO);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_QUERY_STRING);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_REQUEST_URI);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_SERVLET_PATH);
         return map;
     }
 
@@ -327,11 +323,11 @@ public final class RequestUtil{
      */
     public static Map<String, String> getForwardMap(HttpServletRequest request){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        map.put(RequestAttributes.FORWARD_CONTEXT_PATH, (String) getAttribute(request, RequestAttributes.FORWARD_CONTEXT_PATH));
-        map.put(RequestAttributes.FORWARD_REQUEST_URI, (String) getAttribute(request, RequestAttributes.FORWARD_REQUEST_URI));
-        map.put(RequestAttributes.FORWARD_SERVLET_PATH, (String) getAttribute(request, RequestAttributes.FORWARD_SERVLET_PATH));
-        map.put(RequestAttributes.FORWARD_PATH_INFO, (String) getAttribute(request, RequestAttributes.FORWARD_PATH_INFO));
-        map.put(RequestAttributes.FORWARD_QUERY_STRING, (String) getAttribute(request, RequestAttributes.FORWARD_QUERY_STRING));
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_CONTEXT_PATH);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_REQUEST_URI);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_SERVLET_PATH);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_PATH_INFO);
+        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_QUERY_STRING);
         return map;
     }
 
@@ -1075,5 +1071,20 @@ public final class RequestUtil{
      */
     public static String getParameter(HttpServletRequest request,String paramName){
         return request.getParameter(paramName);
+    }
+
+    /**
+     * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当{@code null != map && null != value} 才将key/value put到map中).
+     *
+     * @param map
+     *            the map
+     * @param request
+     *            the request
+     * @param attributeName
+     *            the attribute name
+     * @since 1.4.0
+     */
+    private static void putAttributeNameAndValueIfValueNotNull(Map<String, String> map,HttpServletRequest request,String attributeName){
+        MapUtil.putIfValueNotNull(map, attributeName, (String) getAttribute(request, attributeName));
     }
 }
