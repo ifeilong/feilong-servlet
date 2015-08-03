@@ -17,10 +17,14 @@
 package com.feilong.servlet.http.entity;
 
 /**
- * Constants enumerating the HTTP headers. All headers defined in RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), and RFC2518
- * (WebDAV) are listed.
+ * Constants enumerating the HTTP headers.
+ * 
+ * <p>
+ * All headers defined in RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), and RFC2518 (WebDAV) are listed.
+ * </p>
  *
  * @see "org.apache.http.HttpHeaders"
+ * @see "org.springframework.http.HttpHeaders"
  * @since 1.0.8
  * @since httpcore 4.1
  */
