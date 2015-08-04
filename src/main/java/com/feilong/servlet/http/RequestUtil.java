@@ -18,7 +18,6 @@ package com.feilong.servlet.http;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -37,16 +36,15 @@ import org.slf4j.LoggerFactory;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.io.UncheckedIOException;
 import com.feilong.core.lang.CharsetType;
-import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.tools.jsonlib.JsonUtil;
-import com.feilong.core.util.MapUtil;
 import com.feilong.core.util.Validator;
+import com.feilong.servlet.http.builder.RequestLogBuilder;
+import com.feilong.servlet.http.builder.RequestLogSwitch;
 import com.feilong.servlet.http.entity.HttpHeaders;
 import com.feilong.servlet.http.entity.RequestAttributes;
-import com.feilong.servlet.http.entity.RequestLogSwitch;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest}工具类.
@@ -149,8 +147,9 @@ public final class RequestUtil{
      * @param param
      *            参数名称
      * @return 包含该参数返回true,不包含返回false
+     * @since 1.4.0
      */
-    public static boolean isContainsParam(HttpServletRequest request,String param){
+    public static boolean containsParam(HttpServletRequest request,String param){
         if (Validator.isNullOrEmpty(param)){
             throw new NullPointerException("param can't be null/empty!");
         }
@@ -172,20 +171,7 @@ public final class RequestUtil{
     }
 
     /**
-     * 请求路径中是否包含某个参数名称 (注意:这是判断是否包含参数,而不是判断参数值是否为空).
-     *
-     * @param request
-     *            请求
-     * @param param
-     *            参数名称
-     * @return 不包含该参数返回true
-     */
-    public static boolean isNotContainsParam(HttpServletRequest request,String param){
-        return !isContainsParam(request, param);
-    }
-
-    /**
-     * 获得参数 map(结果转成了 TreeMap).<br>
+     * 获得参数 map(结果转成了 TreeMap).
      * 
      * <p>
      * 此方式会将tomcat返回的map 转成TreeMap 处理返回，便于log;也可以<span style="color:red">对这个map进行操作</span>
@@ -247,91 +233,6 @@ public final class RequestUtil{
     }
 
     /**
-     * 获取queryString （支持 post/get）.
-     * 
-     * @param request
-     *            the request
-     * @return the query string
-     * @see javax.servlet.http.HttpServletRequest#getMethod()
-     * @see ParamUtil#toSafeQueryString(Map, String)
-     */
-    public static String getQueryStringLog(HttpServletRequest request){
-        // Returns the name of the HTTP method with which this request was made,
-        // for example, GET, POST, or PUT.
-        // Same as the value of the CGI variable REQUEST_METHOD.
-        String method = request.getMethod();
-
-        if (HttpMethodType.POST.getMethod().equalsIgnoreCase(method)){
-            Map<String, String[]> map = getParameterMap(request);
-            if (Validator.isNotNullOrEmpty(map)){
-                return ParamUtil.toSafeQueryString(map, null);
-            }
-        }
-        // Returns the query string that is contained in the request URL after the path.
-        // This method returns null if the URL does not have a query string.
-        // Same as the value of the CGI variable QUERY_STRING.
-        // 它只对get方法得到的数据有效。
-        return request.getQueryString();
-
-    }
-
-    // ********************************************************************************************
-    /**
-     * 获得request error 相关参数 map.
-     * 
-     * @param request
-     *            HttpServletRequest
-     * @return 如果request 有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,则返回error 相关属性 封装到map,<br>
-     *         如果 request没有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,返回null
-     */
-    public static Map<String, String> getErrorMap(HttpServletRequest request){
-        Map<String, String> map = new LinkedHashMap<String, String>();
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_STATUS_CODE);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_REQUEST_URI);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_EXCEPTION);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_EXCEPTION_TYPE);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_MESSAGE);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_SERVLET_NAME);
-        return map;
-    }
-
-    /**
-     * 获得 include map.
-     *
-     * @param request
-     *            the request
-     * @return the include map
-     * @since 1.2.2
-     */
-    public static Map<String, String> getIncludeMap(HttpServletRequest request){
-        Map<String, String> map = new LinkedHashMap<String, String>();
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_CONTEXT_PATH);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_PATH_INFO);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_QUERY_STRING);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_REQUEST_URI);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_SERVLET_PATH);
-        return map;
-    }
-
-    /**
-     * 获得 forward map.
-     *
-     * @param request
-     *            the request
-     * @return the forward map
-     * @since 1.2.2
-     */
-    public static Map<String, String> getForwardMap(HttpServletRequest request){
-        Map<String, String> map = new LinkedHashMap<String, String>();
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_CONTEXT_PATH);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_REQUEST_URI);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_SERVLET_PATH);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_PATH_INFO);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_QUERY_STRING);
-        return map;
-    }
-
-    /**
      * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
      * 
      * <p>
@@ -344,8 +245,7 @@ public final class RequestUtil{
      * @see RequestLogSwitch
      */
     public static Map<String, Object> getRequestInfoMapForLog(HttpServletRequest request){
-        RequestLogSwitch requestLogSwitch = new RequestLogSwitch();
-        return getRequestInfoMapForLog(request, requestLogSwitch);
+        return getRequestInfoMapForLog(request, RequestLogSwitch.NORMAL);
     }
 
     /**
@@ -356,307 +256,14 @@ public final class RequestUtil{
      * @param requestLogSwitch
      *            the request log switch
      * @return the request string for log
-     * @see #getAboutURLMapForLog(HttpServletRequest)
+     * @see RequestLogBuilder#RequestLogBuilder(HttpServletRequest, RequestLogSwitch)
      */
     public static Map<String, Object> getRequestInfoMapForLog(HttpServletRequest request,RequestLogSwitch requestLogSwitch){
-        if (null == requestLogSwitch){
-            requestLogSwitch = new RequestLogSwitch();
-        }
-
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-
-        // requestFullURL
-        if (requestLogSwitch.getShowFullURL()){
-            // XXX 编码参数转成可传递
-            map.put("requestFullURL:", getRequestFullURL(request, CharsetType.UTF8));
-        }
-        // Method
-        if (requestLogSwitch.getShowMethod()){
-            map.put("request.getMethod:", request.getMethod());
-        }
-
-        // _parameterMap
-        if (requestLogSwitch.getShowParams()){
-            // 在3.0 是数组Map<String, String[]> getParameterMap
-            // The keys in the parameter map are of type String.
-            // The values in the parameter map are of type String array.
-            Map<String, ?> parameterMap = getParameterMap(request);
-            map.put("_parameterMap", parameterMap);
-        }
-
-        // _headerMap
-        if (requestLogSwitch.getShowHeaders()){
-            map.put("_headerInfoMap", getHeaderMap(request));
-        }
-
-        // _cookieMap
-        if (requestLogSwitch.getShowCookies()){
-            map.put("_cookieInfoMap", CookieUtil.getCookieMap(request));
-        }
-
-        // aboutURLMap
-        if (requestLogSwitch.getShowURLs()){
-            Map<String, String> aboutURLMap = getAboutURLMapForLog(request);
-            map.put("about URL Info Map", aboutURLMap);
-        }
-
-        // aboutElseMap
-        if (requestLogSwitch.getShowElses()){
-            Map<String, Object> aboutElseMap = new LinkedHashMap<String, Object>();
-
-            //Returns the name of the scheme used to make this request, for example, http, https, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
-            aboutElseMap.put("request.getScheme()", request.getScheme());
-
-            //Returns the name and version of the protocol the request uses in the form protocol/majorVersion.minorVersion, for example, HTTP/1.1. For HTTP servlets, the value returned is the same as the value of the CGI variable SERVER_PROTOCOL.
-            aboutElseMap.put("request.getProtocol()", request.getProtocol());
-
-            //Returns the name of the authentication scheme used to protect the servlet. 
-            //All servlet containers support basic, form and client certificate authentication, and may additionally support digest authentication. If the servlet is not authenticated null is returned. 
-            //Same as the value of the CGI variable AUTH_TYPE.
-            aboutElseMap.put("request.getAuthType()", request.getAuthType());
-
-            //Returns the name of the character encoding used in the body of this request. 
-            //This method returns null if the request does not specify a character encoding
-            aboutElseMap.put("request.getCharacterEncoding()", request.getCharacterEncoding());
-
-            //Returns the MIME type of the body of the request, or null if the type is not known. 
-            //For HTTP servlets, same as the value of the CGI variable CONTENT_TYPE.
-            aboutElseMap.put("request.getContentType()", "" + request.getContentType());
-
-            //Returns the length, in bytes, of the request body and made available by the input stream, 
-            //or -1 if the length is not known. 
-            //For HTTP servlets, same as the value of the CGI variable CONTENT_LENGTH.
-            aboutElseMap.put("request.getContentLength()", "" + request.getContentLength());
-
-            //Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. If the client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
-            aboutElseMap.put("request.getLocale()", "" + request.getLocale());
-
-            //Returns the host name of the Internet Protocol (IP) interface on which the request was received.
-            //2.4
-            aboutElseMap.put("request.getLocalName()", request.getLocalName());
-
-            //Returns the login of the user making this request, if the user has been authenticated, or null if the user has not been authenticated. Whether the user name is sent with each subsequent request depends on the browser and type of authentication. Same as the value of the CGI variable REMOTE_USER.
-            aboutElseMap.put("request.getRemoteUser()", request.getRemoteUser());
-
-            //Returns the session ID specified by the client. This may not be the same as the ID of the current valid session for this request. If the client did not specify a session ID, this method returns null.
-            aboutElseMap.put("request.getRequestedSessionId()", request.getRequestedSessionId());
-
-            //Checks whether the requested session ID came in as a cookie.
-            aboutElseMap.put("request.isRequestedSessionIdFromCookie()", request.isRequestedSessionIdFromCookie());
-
-            //The method isRequestedSessionIdFromUrl() from the type HttpServletRequest is deprecated
-            aboutElseMap.put("request.isRequestedSessionIdFromUrl()", request.isRequestedSessionIdFromUrl());
-
-            //Checks whether the requested session ID came in as part of the request URL.
-            aboutElseMap.put("request.isRequestedSessionIdFromURL()", request.isRequestedSessionIdFromURL());
-
-            //Checks whether the requested session ID is still valid. If the client did not specify any session ID, this method returns false. 
-            aboutElseMap.put("request.isRequestedSessionIdValid()", request.isRequestedSessionIdValid());
-
-            //Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
-            aboutElseMap.put("request.isSecure()", request.isSecure());
-
-            //Returns a java.security.Principal object containing the name of the current authenticated user. If the user has not been authenticated, the method returns null.
-            aboutElseMap.put("request.getUserPrincipal()", request.getUserPrincipal());
-
-            //          aboutElseMap.put("request.isUserInRole(role)", request.isUserInRole(role));
-
-            map.put("about Else Map", aboutElseMap);
-        }
-
-        // aboutIPMap
-        if (requestLogSwitch.getShowIPs()){
-            Map<String, String> aboutIPMap = new TreeMap<String, String>();
-
-            //Returns the Internet Protocol (IP) address of the interface on which the request was received.
-            aboutIPMap.put("request.getLocalAddr()", request.getLocalAddr());
-
-            //Returns the fully qualified name of the client or the last proxy that sent the request. If the engine cannot or chooses not to resolve the hostname (to improve performance), this method returns the dotted-string form of the IP address. For HTTP servlets, same as the value of the CGI variable REMOTE_HOST.
-            aboutIPMap.put("request.getRemoteAddr()", request.getRemoteAddr());
-
-            //Returns the fully qualified name of the client or the last proxy that sent the request. If the engine cannot or chooses not to resolve the hostname (to improve performance), this method returns the dotted-string form of the IP address. For HTTP servlets, same as the value of the CGI variable REMOTE_HOST.
-            aboutIPMap.put("request.getRemoteHost()", request.getRemoteHost());
-
-            //Returns the host name of the server to which the request was sent. It is the value of the part before ":" in the Host header value, if any, or the resolved server name, or the server IP address.
-            aboutIPMap.put("request.getServerName()", request.getServerName());
-
-            aboutIPMap.put("getClientIp", getClientIp(request));
-            map.put("about IP Info Map", aboutIPMap);
-        }
-
-        // aboutPortMap
-        if (requestLogSwitch.getShowPorts()){
-            Map<String, String> aboutPortMap = new TreeMap<String, String>();
-
-            //Returns the Internet Protocol (IP) port number of the interface on which the request was received.
-            aboutPortMap.put("request.getLocalPort()", "" + request.getLocalPort());
-
-            //Returns the Internet Protocol (IP) source port of the client or last proxy that sent the request.
-            aboutPortMap.put("request.getRemotePort()", "" + request.getRemotePort());
-
-            //Returns the port number to which the request was sent. It is the value of the part after ":" in the Host header value, if any, or the server port where the client connection was accepted on.
-            aboutPortMap.put("request.getServerPort()", "" + request.getServerPort());
-
-            map.put("about Port Info Map", aboutPortMap);
-        }
-
-        // _errorInfos
-        if (requestLogSwitch.getShowErrors()){
-            map.put("_errorInfos", getErrorMap(request));
-        }
-        // _forwardInfos
-        if (requestLogSwitch.getShowForwardInfos()){
-            map.put("_forwardInfos", getForwardMap(request));
-        }
-        // _includeInfos
-        if (requestLogSwitch.getShowIncludeInfos()){
-            map.put("_includeInfos", getIncludeMap(request));
-        }
-
-        // 避免json渲染出错，只放 key
-        // attribute 不属于 log 范围之内, 如果有需要 自行调用 getAttributeMap(request)
-        // map.put("_attributeKeys", getAttributeMap(request).keySet());
-
-        return map;
-    }
-
-    /**
-     * 获得 about url map.
-     * 
-     * <h3>关于从request中获得相关路径和url：</h3>
-     * 
-     * <blockquote>
-     * 
-     * <ol>
-     * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符（windows系统是"\"，linux系统是"/"），而getPathInfo()以"/"开头。</li>
-     * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值，其他时候都返回null。</li>
-     * <li>在servlet的url-pattern被设置为*.xx之类的pattern时，getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
-     * </ol>
-     * 
-     * <table border="1" cellspacing="0" cellpadding="4">
-     * <tr style="background-color:#ccccff">
-     * <th align="left">字段</th>
-     * <th align="left">说明</th>
-     * </tr>
-     * <tr valign="top">
-     * <td>request.getContextPath()</td>
-     * <td>request.getContextPath()</td>
-     * </tr>
-     * <tr valign="top" style="background-color:#eeeeff">
-     * <td>request.getPathInfo()</td>
-     * <td>Returns any extra path information associated with the URL the client sent when it made this request. <br>
-     * Servlet访问路径之后，QueryString之前的中间部分</td>
-     * </tr>
-     * <tr valign="top">
-     * <td>request.getServletPath()</td>
-     * <td>web.xml中定义的Servlet访问路径</td>
-     * </tr>
-     * <tr valign="top" style="background-color:#eeeeff">
-     * <td>request.getPathTranslated()</td>
-     * <td>等于getServletContext().getRealPath("/") + getPathInfo()</td>
-     * </tr>
-     * <tr valign="top">
-     * <td>request.getRequestURI()</td>
-     * <td>等于getContextPath() + getServletPath() + getPathInfo()</td>
-     * </tr>
-     * <tr valign="top">
-     * <td>request.getRequestURL()</td>
-     * <td>等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()</td>
-     * </tr>
-     * <tr valign="top" style="background-color:#eeeeff">
-     * <td>request.getQueryString()</td>
-     * <td>&之后GET方法的参数部分<br>
-     * Returns the query string that is contained in the request URL after the path. <br>
-     * This method returns null if the URL does not have a query string. <br>
-     * Same as the value of the CGI variable QUERY_STRING.</td>
-     * </tr>
-     * </table>
-     * </blockquote>
-     *
-     * @param request
-     *            the request
-     * @return the about url map
-     * @since 1.0.9
-     */
-    private static Map<String, String> getAboutURLMapForLog(HttpServletRequest request){
-        // 1.getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符（windows系统是"\"，linux系统是"/"），而getPathInfo()以"/"开头。
-        // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值，其他时候都返回null。
-        // 3.在servlet的url-pattern被设置为*.xx之类的pattern时，getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。
-
-        Map<String, String> aboutURLMap = new LinkedHashMap<String, String>();
-
-        aboutURLMap.put("request.getContextPath()", request.getContextPath());
-
-        // Returns any extra path information associated with the URL the client sent when it made this request.
-        // Servlet访问路径之后，QueryString之前的中间部分
-        aboutURLMap.put("request.getPathInfo()", request.getPathInfo());
-
-        // web.xml中定义的Servlet访问路径
-        aboutURLMap.put("request.getServletPath()", request.getServletPath());
-
-        // 等于getServletContext().getRealPath("/") + getPathInfo()
-        aboutURLMap.put("request.getPathTranslated()", request.getPathTranslated());
-
-        // ***********************************************************************
-        aboutURLMap.put("getQueryStringLog", getQueryStringLog(request));
-
-        // &之后GET方法的参数部分
-        //Returns the query string that is contained in the request URL after the path. 
-        //This method returns null if the URL does not have a query string. 
-        //Same as the value of the CGI variable QUERY_STRING. 
-        aboutURLMap.put("request.getQueryString()", request.getQueryString());
-
-        // ***********************************************************************
-        // 等于getContextPath() + getServletPath() + getPathInfo()
-        aboutURLMap.put("request.getRequestURI()", request.getRequestURI());
-
-        // 等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()
-        aboutURLMap.put("request.getRequestURL()", "" + request.getRequestURL());
-
-        return aboutURLMap;
-    }
-
-    /**
-     * 遍历显示request的header 用于debug.<br>
-     * 将 request header name 和value 封装到map.
-     * 
-     * @param request
-     *            the request
-     * @return the header map
-     */
-    public static Map<String, String> getHeaderMap(HttpServletRequest request){
-        Map<String, String> map = new TreeMap<String, String>();
-        @SuppressWarnings("unchecked")
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
-            String name = headerNames.nextElement();
-            String value = request.getHeader(name);
-            map.put(name, value);
-        }
-        return map;
+        return new RequestLogBuilder(request, requestLogSwitch).build();
     }
 
     // ******************************* url参数相关 getAttribute*****************************************************.
     // [start] url参数相关
-    /**
-     * 取到request里面的属性值,<span style="color:green">自动转换类型</span>.
-     *
-     * @param <T>
-     *            the generic type
-     * @param request
-     *            请求
-     * @param name
-     *            属性名称
-     * @param klass
-     *            the klass
-     * @return the attribute
-     * @see com.feilong.core.bean.ConvertUtil#convert(Object, Class)
-     * @since 1.3.0
-     */
-    public static <T> T getAttribute(HttpServletRequest request,String name,Class<T> klass){
-        Object value = request.getAttribute(name);
-        return ConvertUtil.convert(value, klass);
-    }
 
     /**
      * 获得 attribute.
@@ -673,6 +280,26 @@ public final class RequestUtil{
     @SuppressWarnings("unchecked")
     public static <T> T getAttribute(HttpServletRequest request,String name){
         return (T) request.getAttribute(name);
+    }
+
+    /**
+     * 取到request里面的属性值,<span style="color:green">自动转换类型</span>.
+     *
+     * @param <T>
+     *            the generic type
+     * @param request
+     *            请求
+     * @param name
+     *            属性名称
+     * @param klass
+     *            the klass
+     * @return the attribute
+     * @see com.feilong.core.bean.ConvertUtil#convert(Object, Class)
+     * @since 1.3.0
+     */
+    public static <T> T getAttribute(HttpServletRequest request,String name,Class<T> klass){
+        Object value = getAttribute(request, name);
+        return ConvertUtil.convert(value, klass);
     }
 
     /**
@@ -747,7 +374,6 @@ public final class RequestUtil{
         if (Validator.isNullOrEmpty(queryString)){
             return requestURL;
         }
-        // XXX 处理乱码
         return requestURL + URIComponents.QUESTIONMARK + URIUtil.decodeISO88591String(queryString, charsetType);
     }
 
@@ -1071,20 +697,5 @@ public final class RequestUtil{
      */
     public static String getParameter(HttpServletRequest request,String paramName){
         return request.getParameter(paramName);
-    }
-
-    /**
-     * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当{@code null != map && null != value} 才将key/value put到map中).
-     *
-     * @param map
-     *            the map
-     * @param request
-     *            the request
-     * @param attributeName
-     *            the attribute name
-     * @since 1.4.0
-     */
-    private static void putAttributeNameAndValueIfValueNotNull(Map<String, String> map,HttpServletRequest request,String attributeName){
-        MapUtil.putIfValueNotNull(map, attributeName, (String) getAttribute(request, attributeName));
     }
 }
