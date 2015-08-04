@@ -227,7 +227,6 @@ public final class RequestUtil{
      * @since 1.2.0
      */
     public static Map<String, String> getParameterSingleValueMap(HttpServletRequest request){
-        //拿到结果， 将多值转成单值， 当然也可以 循环 getParameterNames来处理
         Map<String, String[]> arrayValueMap = getParameterMap(request);
         return ParamUtil.toSingleValueMap(arrayValueMap);
     }

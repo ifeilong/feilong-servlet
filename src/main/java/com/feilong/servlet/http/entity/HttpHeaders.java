@@ -116,7 +116,26 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 2518 (WevDAV) Section 9.3 */
     public static final String DESTINATION                 = "Destination";
 
-    /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.19 */
+    /**
+     * <code>{@value}</code>
+     * 
+     * <p>
+     * RFC 2616 (HTTP/1.1) Section 14.19
+     * </p>
+     * 
+     * <p>
+     * Etag 是 http 1.1 规范引入的一个新的 http 实体头， Etag 在规范中仅仅只 etag 可以用来对同一个资源的其它实体头进行对比，没有做进一步的解释，<br>
+     * 其实我们可以把 Etag 理解为一个服务器在某个资源上面做的一个记号，至于这个记号用来做什么要看服务器如何去解析它，因此我们在设计我们自己的应用的时候，可以借助 Etag 来实现客户端缓存和服务器之间的缓存协商控制。
+     * </p>
+     * 
+     * <p>
+     * 当浏览器第一次请求一个资源的时候，服务器在响应头里面加入 Etag 的标识， Etag 的值既是当前响应内容经过计算以后的值（ http 规范没有对 etag 值的计算方式做规定，可以是 md5 或者其它方式）当第二次浏览器发送请求的时候，浏览器便会用原先请求中
+     * Etag 响应头的值作为 if-None-Match 请求头的值，这样服务器接受到此次请求以后，根据 if-None-Match 的取值和当前的内容进行对比，如果相同则返回一个 304 not modified 响应码，这样浏览器收到 304 后就会用客户端本地
+     * cache 来完成对本次请求的响应。
+     * </p>
+     * 
+     * @see "org.springframework.web.filter.ShallowEtagHeaderFilter"
+     * */
     public static final String ETAG                        = "ETag";
 
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.20 */
@@ -137,7 +156,19 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.24 */
     public static final String IF_MATCH                    = "If-Match";
 
-    /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.9, RFC 2616 (HTTP/1.1) Section 14.25 */
+    /**
+     * <code>{@value}</code>
+     * 
+     * <p>
+     * RFC 1945 (HTTP/1.0) Section 10.9, RFC 2616 (HTTP/1.1) Section 14.25.
+     * </p>
+     * 
+     * <p>
+     * 当用户第一次浏览一个网站的时候，服务器会在响应头中增加 Last-modified 这个 http 响应头， Last-modified 的格式如：Last-modified: Fri, 16 Mar 201 04:00:25 GMT<br>
+     * 当用户第二次再请求同样的 url 的时候，浏览器会将last-modified 的值附加到 if-modified-since 这个 http 请求头中，服务器端接收到请求后，首先 check 一下 if-modified-since 头信息中的时间是否与当前
+     * url 对应的资源的最后修改时间一致，如果一致，则服务器返回 http 304 状态码，这样当浏览器收到 http 304 状态码了以后，就会利用本地缓存的内容来完成对本次用户操作的响应。
+     * </p>
+     * */
     public static final String IF_MODIFIED_SINCE           = "If-Modified-Since";
 
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.26 */
