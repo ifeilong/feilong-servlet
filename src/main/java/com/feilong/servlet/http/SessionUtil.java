@@ -28,11 +28,11 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.date.DateExtensionUtil;
 import com.feilong.core.date.DatePattern;
 import com.feilong.core.date.DateUtil;
 import com.feilong.core.tools.slf4j.Slf4jUtil;
-import com.feilong.core.util.CollectionsUtil;
 import com.feilong.core.util.Validator;
 
 /**
@@ -114,7 +114,7 @@ public final class SessionUtil{
 
         @SuppressWarnings({ "unchecked" })
         Enumeration<String> attributeNames = session.getAttributeNames();
-        map.put("session.getAttributeNames()", CollectionsUtil.toList(attributeNames));
+        map.put("session.getAttributeNames()", ConvertUtil.toList(attributeNames));
 
         return map;
     }

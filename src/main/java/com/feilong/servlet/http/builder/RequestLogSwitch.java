@@ -21,8 +21,8 @@ import java.io.Serializable;
  * request log显示开关.
  * 
  * <p>
- * These classes are intended to be used as <code>Singletons</code>.
- * There is no need to instantiate a new style each time. A program will generally use one of the predefined constants on this class.
+ * These classes are intended to be used as <code>Singletons</code>. There is no need to instantiate a new style each time. A program will
+ * generally use one of the predefined constants on this class.
  * </p>
  * 
  * <h3>默认显示:</h3>
@@ -178,7 +178,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showParams
      *            the showParams to set
      */
-    public void setShowParams(boolean showParams){
+    protected void setShowParams(boolean showParams){
         this.showParams = showParams;
     }
 
@@ -197,7 +197,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showCookies
      *            the showCookies to set
      */
-    public void setShowCookies(boolean showCookies){
+    protected void setShowCookies(boolean showCookies){
         this.showCookies = showCookies;
     }
 
@@ -216,7 +216,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showIPs
      *            the showIPs to set
      */
-    public void setShowIPs(boolean showIPs){
+    protected void setShowIPs(boolean showIPs){
         this.showIPs = showIPs;
     }
 
@@ -235,7 +235,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showURLs
      *            the showURLs to set
      */
-    public void setShowURLs(boolean showURLs){
+    protected void setShowURLs(boolean showURLs){
         this.showURLs = showURLs;
     }
 
@@ -254,7 +254,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showPorts
      *            the showPorts to set
      */
-    public void setShowPorts(boolean showPorts){
+    protected void setShowPorts(boolean showPorts){
         this.showPorts = showPorts;
     }
 
@@ -273,7 +273,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showElses
      *            the showElses to set
      */
-    public void setShowElses(boolean showElses){
+    protected void setShowElses(boolean showElses){
         this.showElses = showElses;
     }
 
@@ -292,7 +292,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showHeaders
      *            the showHeaders to set
      */
-    public void setShowHeaders(boolean showHeaders){
+    protected void setShowHeaders(boolean showHeaders){
         this.showHeaders = showHeaders;
     }
 
@@ -311,7 +311,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showErrors
      *            the showErrors to set
      */
-    public void setShowErrors(boolean showErrors){
+    protected void setShowErrors(boolean showErrors){
         this.showErrors = showErrors;
     }
 
@@ -330,7 +330,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showFullURL
      *            the showFullURL to set
      */
-    public void setShowFullURL(boolean showFullURL){
+    protected void setShowFullURL(boolean showFullURL){
         this.showFullURL = showFullURL;
     }
 
@@ -349,7 +349,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showMethod
      *            the showMethod to set
      */
-    public void setShowMethod(boolean showMethod){
+    protected void setShowMethod(boolean showMethod){
         this.showMethod = showMethod;
     }
 
@@ -368,7 +368,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showForwardInfos
      *            the showForwardInfos to set
      */
-    public void setShowForwardInfos(boolean showForwardInfos){
+    protected void setShowForwardInfos(boolean showForwardInfos){
         this.showForwardInfos = showForwardInfos;
     }
 
@@ -387,7 +387,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showIncludeInfos
      *            the showIncludeInfos to set
      */
-    public void setShowIncludeInfos(boolean showIncludeInfos){
+    protected void setShowIncludeInfos(boolean showIncludeInfos){
         this.showIncludeInfos = showIncludeInfos;
     }
 
@@ -406,7 +406,7 @@ public abstract class RequestLogSwitch implements Serializable{
      * @param showIdentity
      *            the showIdentity to set
      */
-    public void setShowIdentity(boolean showIdentity){
+    protected void setShowIdentity(boolean showIdentity){
         this.showIdentity = showIdentity;
     }
 
