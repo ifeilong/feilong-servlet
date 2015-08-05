@@ -208,8 +208,7 @@ public final class RequestUtil{
         Map<String, String[]> map = request.getParameterMap();
 
         // 转成TreeMap ,这样log出现的key 是有顺序的
-        Map<String, String[]> returnMap = new TreeMap<String, String[]>(map);
-        return returnMap;
+        return new TreeMap<String, String[]>(map);
     }
 
     /**
