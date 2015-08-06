@@ -76,7 +76,7 @@ public class CookieEntity implements Serializable{
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -5580364261848277853L;
 
-    //	   The value of the cookie itself.
+    //     The value of the cookie itself.
     /** name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号. */
     private String            name;                                    //NAME= ... "$Name" style is reserved
 

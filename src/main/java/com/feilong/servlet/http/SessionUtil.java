@@ -15,6 +15,7 @@
  */
 package com.feilong.servlet.http;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -103,11 +104,17 @@ public final class SessionUtil{
                                         DateUtil.date2String(lastAccessedTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
                                         DateExtensionUtil.getIntervalForView(lastAccessedTimeDate, now)));
 
-        //返回两次请求间隔多长时间此SESSION被取消(ms) 
+        //返回两次请求间隔多长时间此SESSION被取消(in seconds) 
+        //Returns the maximum time interval, in seconds, 
+        //that the servlet container will keep this session open between client accesses. 
+        //After this interval, the servlet container will invalidate the session. 
+        //The maximum time interval can be set with the setMaxInactiveInterval method.
+
+        //A negative time indicates the session should never timeout.
         int maxInactiveInterval = session.getMaxInactiveInterval();
         map.put(
                         "session.getMaxInactiveInterval()",
-                        maxInactiveInterval + "s,format:" + DateExtensionUtil.getIntervalForView(maxInactiveInterval * 1000));
+                        maxInactiveInterval + "s,format:" + DateExtensionUtil.getIntervalForView(1000L * maxInactiveInterval));
 
         // 返回服务器创建的一个SESSION,客户端是否已经加入 
         map.put("session.isNew()", session.isNew());
@@ -126,14 +133,14 @@ public final class SessionUtil{
      *            the session
      * @return the attribute map
      */
-    public static Map<String, Object> getAttributeMap(HttpSession session){
-        Map<String, Object> map = new HashMap<String, Object>();
+    public static Map<String, Serializable> getAttributeMap(HttpSession session){
+        Map<String, Serializable> map = new HashMap<String, Serializable>();
 
         @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
-            Object attributeValue = session.getAttribute(name);
+            Serializable attributeValue = (Serializable) session.getAttribute(name);
             map.put(name, attributeValue);
         }
         return map;
@@ -157,7 +164,7 @@ public final class SessionUtil{
 
         // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
         session = request.getSession();
-        Map<String, Object> map = getAttributeMap(session);
+        Map<String, Serializable> map = getAttributeMap(session);
         LOGGER.debug("old session: {}", session.getId());
 
         session.invalidate();

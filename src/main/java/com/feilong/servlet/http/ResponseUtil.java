@@ -206,11 +206,6 @@ public final class ResponseUtil{
         try{
             OutputStream outputStream = response.getOutputStream();
 
-            //这种 如果文件一大，很容易内存溢出
-            //inputStream.read(buffer);
-            //outputStream = new BufferedOutputStream(response.getOutputStream());
-            //outputStream.write(buffer);
-
             IOWriteUtil.write(inputStream, outputStream);
             if (LOGGER.isInfoEnabled()){
                 Date endDate = new Date();
@@ -271,28 +266,9 @@ public final class ResponseUtil{
         response.reset();
 
         // ===================== Default MIME Type Mappings =================== -->
-        //See tomcat web.xml
-        //When serving static resources, Tomcat will automatically generate a "Content-Type" header based on the resource's filename extension, based on these mappings.  
-        //Additional mappings can be added here (to apply to all web applications), or in your own application's web.xml deployment descriptor.                                               -->
-
-        if (Validator.isNullOrEmpty(contentType)){
-            contentType = MimeTypeUtil.getContentTypeByFileName(saveFileName);
-
-            if (Validator.isNullOrEmpty(contentType)){
-                //contentType = "application/force-download";//,php强制下载application/force-download,将发送HTTP 标头您的浏览器并告诉它下载，而不是在浏览器中运行的文件
-                //application/x-download
-
-                //.*（ 二进制流，不知道下载文件类型）	application/octet-stream
-                contentType = MimeType.BIN.getMime();
-                //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
-                //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).
-            }
-        }
 
         //浏览器接收到文件后，会进入插件系统进行查找，查找出哪种插件可以识别读取接收到的文件。如果浏览器不清楚调用哪种插件系统，它可能会告诉用户缺少某插件，
-        if (Validator.isNotNullOrEmpty(contentType)){
-            response.setContentType(contentType);
-        }
+        response.setContentType(resolverContentType(saveFileName, contentType));
 
         //缺省情况下:服务端要输出到客户端的内容,不直接写到客户端,而是先写到一个输出缓冲区中.只有在下面三中情况下，才会把该缓冲区的内容输出到客户端上： 
         //缓冲区的优点是：我们暂时不输出，直到确定某一情况时，才将写入缓冲区的数据输出到浏览器，否则就将缓冲区的数据取消。
@@ -302,27 +278,76 @@ public final class ResponseUtil{
         //This method buffers the input internally, so there is no need to use a BufferedInputStream
 
         //****************************************************************************************************
-
-        //Content-Disposition takes one of two values, `inline' and  `attachment'.  
-        //'Inline' indicates that the entity should be immediately displayed to the user, 
-        //whereas `attachment' means that the user should take additional action to view the entity.
-        //The `filename' parameter can be used to suggest a filename for storing the bodypart, if the user wishes to store it in an external file.
-        if (Validator.isNullOrEmpty(contentDisposition)){
-            //默认 附件形式
-            contentDisposition = "attachment; filename=" + URIUtil.encode(saveFileName, CharsetType.UTF8);
-
-        }
         //TODO 看看能否调用 httpcomponents的 httpcore  org.apache.http.HttpHeaders
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, contentDisposition);
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, resolverContentDisposition(saveFileName, contentDisposition));
 
         response.setContentLength(contentLength.intValue());
     }
 
     /**
+     * Resolver content disposition.
+     *
+     * @param saveFileName
+     *            the save file name
+     * @param contentDisposition
+     *            the content disposition
+     * @return the string
+     * @since 1.4.0
+     */
+    private static String resolverContentDisposition(String saveFileName,String contentDisposition){
+        if (Validator.isNotNullOrEmpty(contentDisposition)){
+            return contentDisposition;
+        }
+
+        //Content-Disposition takes one of two values, `inline' and  `attachment'.  
+        //'Inline' indicates that the entity should be immediately displayed to the user, 
+        //whereas `attachment' means that the user should take additional action to view the entity.
+        //The `filename' parameter can be used to suggest a filename for storing the bodypart, if the user wishes to store it in an external file.
+        //默认 附件形式
+        return "attachment; filename=" + URIUtil.encode(saveFileName, CharsetType.UTF8);
+    }
+
+    /**
+     * Resolver content type.
+     *
+     * @param saveFileName
+     *            the save file name
+     * @param inputContentType
+     *            the content type
+     * @return the string
+     * @since 1.4.0
+     */
+    private static String resolverContentType(String saveFileName,String inputContentType){
+        //See tomcat web.xml
+        //When serving static resources, Tomcat will automatically generate a "Content-Type" header based on the resource's filename extension, based on these mappings.  
+        //Additional mappings can be added here (to apply to all web applications), or in your own application's web.xml deployment descriptor.                                               -->
+
+        if (Validator.isNotNullOrEmpty(inputContentType)){
+            return inputContentType;
+        }
+
+        String contentTypeByFileName = MimeTypeUtil.getContentTypeByFileName(saveFileName);
+
+        if (Validator.isNotNullOrEmpty(contentTypeByFileName)){
+            return contentTypeByFileName;
+        }
+
+        //contentType = "application/force-download";//,php强制下载application/force-download,将发送HTTP 标头您的浏览器并告诉它下载，而不是在浏览器中运行的文件
+        //application/x-download
+
+        //.*（ 二进制流，不知道下载文件类型）   application/octet-stream
+        return MimeType.BIN.getMime();
+        //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
+        //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).
+    }
+
+    /**
      * 设置不缓存并跳转.
+     * 
      * <p>
      * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
      * </p>
+     * 
      * <p>
      * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span> <br>
      * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
@@ -390,7 +415,7 @@ public final class ResponseUtil{
         response.setDateHeader(HttpHeaders.EXPIRES, -1);
     }
 
-    //	 [start] PrintWriter
+    //   [start] PrintWriter
 
     /**
      * 以json的方式输出.
@@ -458,15 +483,15 @@ public final class ResponseUtil{
      * @since 1.0.9
      */
     public static void write(HttpServletResponse response,Object content,String contentType,String characterEncoding){
-        try{
-            //编码 需要在 getWriter之前设置
-            if (Validator.isNotNullOrEmpty(contentType)){
-                response.setContentType(contentType);
-            }
-            if (Validator.isNotNullOrEmpty(characterEncoding)){
-                response.setCharacterEncoding(characterEncoding);
-            }
+        //编码 需要在 getWriter之前设置
+        if (Validator.isNotNullOrEmpty(contentType)){
+            response.setContentType(contentType);
+        }
+        if (Validator.isNotNullOrEmpty(characterEncoding)){
+            response.setCharacterEncoding(characterEncoding);
+        }
 
+        try{
             PrintWriter printWriter = response.getWriter();
             printWriter.print(content);
             printWriter.flush();

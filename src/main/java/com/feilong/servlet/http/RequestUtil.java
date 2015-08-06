@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.bean.ConvertUtil;
-import com.feilong.core.io.UncheckedIOException;
 import com.feilong.core.lang.CharsetType;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
@@ -414,10 +413,12 @@ public final class RequestUtil{
 
     /**
      * 用于将请求转发到 {@link RequestDispatcher} 对象封装的资源，Servlet程序在调用该方法进行转发之前可以对请求进行前期预处理。
+     * 
      * <p>
      * Forwards a request from a servlet to another resource (servlet, JSP file, or HTML file) on the server.<br>
      * This method allows one servlet to do preliminary processing of a request and another resource to generate the response.
      * </p>
+     * 
      * <p>
      * For a <code>RequestDispatcher</code> obtained via <code>getRequestDispatcher()</code>, the <code>ServletRequest</code> object has its
      * path elements and parameters adjusted to match the path of the target resource.
@@ -437,13 +438,9 @@ public final class RequestUtil{
      * @param path
      *            the path
      * @param request
-     *            a {@link ServletRequest} object
-     *            that represents the request the client
-     *            makes of the servlet
+     *            a {@link ServletRequest} object that represents the request the client makes of the servlet
      * @param response
-     *            a {@link ServletResponse} object
-     *            that represents the response the servlet
-     *            returns to the client
+     *            a {@link ServletResponse} object,that represents the response the servlet returns to the client
      * @since 1.2.2
      */
     public static void forward(String path,HttpServletRequest request,HttpServletResponse response){
@@ -452,10 +449,10 @@ public final class RequestUtil{
             requestDispatcher.forward(request, response);
         }catch (ServletException e){
             LOGGER.error("", e);
-            throw new RuntimeException(e);
+            throw new RequestException(e);
         }catch (IOException e){
             LOGGER.error("", e);
-            throw new UncheckedIOException(e);
+            throw new RequestException(e);
         }
     }
 
@@ -481,11 +478,9 @@ public final class RequestUtil{
      * @param path
      *            the path
      * @param request
-     *            a {@link ServletRequest} object
-     *            that contains the client's request
+     *            a {@link ServletRequest} object,that contains the client's request
      * @param response
-     *            a {@link ServletResponse} object
-     *            that contains the servlet's response
+     *            a {@link ServletResponse} object,that contains the servlet's response
      * @see javax.servlet.RequestDispatcher#include(ServletRequest, ServletResponse)
      * @see "org.springframework.web.servlet.ResourceServlet"
      * @since 1.2.2
@@ -496,10 +491,10 @@ public final class RequestUtil{
             requestDispatcher.include(request, response);
         }catch (ServletException e){
             LOGGER.error("", e);
-            throw new RuntimeException(e);
+            throw new RequestException(e);
         }catch (IOException e){
             LOGGER.error("", e);
-            throw new UncheckedIOException(e);
+            throw new RequestException(e);
         }
     }
 

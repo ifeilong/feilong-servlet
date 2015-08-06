@@ -83,18 +83,25 @@ public final class CookieUtil{
      */
     public static Cookie getCookie(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
+
+        Cookie returnCookie = null;
         if (Validator.isNotNullOrEmpty(cookies)){
             for (Cookie cookie : cookies){
                 if (cookie.getName().equals(cookieName)){
-                    if (LOGGER.isDebugEnabled()){
-                        LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie));
-                    }
-                    return cookie;
+                    returnCookie = cookie;
+                    break;
                 }
             }
         }
-        LOGGER.warn("can't find the cookie:[{}]", cookieName);
-        return null;
+
+        if (null == returnCookie){
+            LOGGER.warn("can't find the cookie:[{}]", cookieName);
+        }else{
+            if (LOGGER.isDebugEnabled()){
+                LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(returnCookie));
+            }
+        }
+        return returnCookie;
     }
 
     /**
