@@ -93,7 +93,11 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             // 在3.0 是数组Map<String, String[]> getParameterMap
             // The keys in the parameter map are of type String.
             // The values in the parameter map are of type String array.
-            map.put("_parameterMap", RequestUtil.getParameterMap(request));
+            Map<String, String[]> parameterMap = RequestUtil.getParameterMap(request);
+
+            if (Validator.isNotNullOrEmpty(parameterMap)){
+                map.put("_parameterMap", parameterMap);
+            }
         }
 
         //RequestIdentity
@@ -112,7 +116,10 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _cookieMap
         if (opRequestLogSwitch.getShowCookies()){
-            map.put("_cookieInfoMap", CookieUtil.getCookieMap(request));
+            Map<String, String> cookieMap = CookieUtil.getCookieMap(request);
+            if (Validator.isNotNullOrEmpty(cookieMap)){
+                map.put("_cookieInfoMap", cookieMap);
+            }
         }
 
         // aboutURLMap
@@ -223,15 +230,24 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _errorInfos
         if (opRequestLogSwitch.getShowErrors()){
-            map.put("_errorInfos", getErrorMap());
+            Map<String, String> errorMap = getErrorMap();
+            if (Validator.isNotNullOrEmpty(errorMap)){
+                map.put("_errorInfos", errorMap);
+            }
         }
         // _forwardInfos
         if (opRequestLogSwitch.getShowForwardInfos()){
-            map.put("_forwardInfos", getForwardMap());
+            Map<String, String> forwardMap = getForwardMap();
+            if (Validator.isNotNullOrEmpty(forwardMap)){
+                map.put("_forwardInfos", forwardMap);
+            }
         }
         // _includeInfos
         if (opRequestLogSwitch.getShowIncludeInfos()){
-            map.put("_includeInfos", getIncludeMap());
+            Map<String, String> includeMap = getIncludeMap();
+            if (Validator.isNotNullOrEmpty(includeMap)){
+                map.put("_includeInfos", includeMap);
+            }
         }
 
         // 避免json渲染出错，只放 key
