@@ -53,7 +53,7 @@ Reduce development, Release ideas
 			<dependency>
 				<groupId>com.feilong.platform</groupId>
 				<artifactId>feilong-servlet</artifactId>
-				<version>1.3.0</version>
+				<version>1.4.0</version>
 			</dependency>
 			....
 		</dependencies>
@@ -74,5 +74,5 @@ commons |`feilong-servlet` | 封装了j2ee常用类,是feilong-platform web相�
 
 如果您对feilong platform 有任何建议，可以使用下面的联系方式：
 
-* 新浪微博:http://weibo.com/venusdrogon 
+* 新浪微博:http://weibo.com/venusdrogon
 * iteye博客:http://feitianbenyue.iteye.com/
