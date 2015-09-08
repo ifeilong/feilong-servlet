@@ -15,6 +15,7 @@
  */
 package com.feilong.servlet;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,16 +67,21 @@ public final class ServletContextUtil{
     }
 
     /**
-     * 遍历显示servletContext的attribute,将 name /attributeValue 存入到map.
+     * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getAttributeNames()},将 name/attributeValue 存入到map.
      * 
      * @param servletContext
      *            the servlet context
-     * @return the attribute map
+     * @return if isNotNullOrEmpty(attributeNames),will return {@link java.util.Collections#emptyMap()}
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
-        Map<String, Object> map = new HashMap<String, Object>();
         @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
+
+        if (Validator.isNullOrEmpty(attributeNames)){
+            return Collections.emptyMap();
+        }
+
+        Map<String, Object> map = new TreeMap<String, Object>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
             Object attributeValue = servletContext.getAttribute(name);
@@ -106,22 +112,26 @@ public final class ServletContextUtil{
     }
 
     /**
-     * 遍历显示servletContext的 InitParameterNames,将 name /attributeValue 存入到map.
+     * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getInitParameterNames()},将 name /attributeValue 存入到map返回.
      * 
      * @param servletContext
      *            the servlet context
-     * @return the inits the parameter map
+     * @return if isNotNullOrEmpty(initParameterNames),will return {@link java.util.Collections#emptyMap()}
+     * @see javax.servlet.ServletContext#getInitParameterNames()
      */
     public static Map<String, String> getInitParameterMap(ServletContext servletContext){
-        Map<String, String> map = new TreeMap<String, String>();
         @SuppressWarnings("unchecked")
         Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
-        if (Validator.isNotNullOrEmpty(initParameterNames)){
-            while (initParameterNames.hasMoreElements()){
-                String name = initParameterNames.nextElement();
-                String value = servletContext.getInitParameter(name);
-                map.put(name, value);
-            }
+
+        if (Validator.isNullOrEmpty(initParameterNames)){
+            return Collections.emptyMap();
+        }
+
+        Map<String, String> map = new TreeMap<String, String>();
+        while (initParameterNames.hasMoreElements()){
+            String name = initParameterNames.nextElement();
+            String value = servletContext.getInitParameter(name);
+            map.put(name, value);
         }
         return map;
     }

@@ -37,7 +37,27 @@ import com.feilong.core.tools.slf4j.Slf4jUtil;
 import com.feilong.core.util.Validator;
 
 /**
- * {@link javax.servlet.http.HttpSession} 工具类.
+ * {@link javax.servlet.http.HttpSession HttpSession} 工具类.
+ * 
+ * <h3>session什么时候被创建?</h3>
+ * 
+ * <blockquote>
+ * <p>
+ * 一个常见的错误是以为session在有客户端访问时就被创建,<br>
+ * 然而事实是直到某server端程序(如Servlet)调用 {@link javax.servlet.http.HttpServletRequest#getSession()} 这样的语句时才会被创建。
+ * </p>
+ * </blockquote>
+ * 
+ * <h3>session何时被删除?</h3>
+ * 
+ * <blockquote>
+ * <ol>
+ * <li>程序调用 {@link javax.servlet.http.HttpSession#invalidate()}</li>
+ * <li>距离上一次收到客户端发送的session id时间间隔超过了session的最大有效时间</li>
+ * <li>服务器进程被停止</li>
+ * </ol>
+ * 再次注意关闭浏览器只会使存储在客户端浏览器内存中的session cookie失效，不会使服务器端的session对象失效
+ * </blockquote>
  * 
  * @author feilong
  * @version 1.0.0 2010-7-6 下午02:10:33

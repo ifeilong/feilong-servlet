@@ -21,13 +21,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.Builder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.feilong.core.lang.CharsetType;
 import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.ParamUtil;
+import com.feilong.core.tools.slf4j.Slf4jUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.CookieUtil;
@@ -44,6 +48,9 @@ import com.feilong.servlet.http.entity.RequestAttributes;
  * @since 1.4.0
  */
 public class RequestLogBuilder implements Builder<Map<String, Object>>{
+
+    /** The Constant log. */
+    private static final Logger      LOGGER = LoggerFactory.getLogger(RequestLogBuilder.class);
 
     /** The request. */
     private final HttpServletRequest request;
@@ -105,7 +112,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             RequestIdentity requestIdentity = new RequestIdentity();
             requestIdentity.setClientIP(RequestUtil.getClientIp(request));
             requestIdentity.setUserAgent(RequestUtil.getHeaderUserAgent(request));
-            requestIdentity.setSessionId(null == request.getSession() ? StringUtils.EMPTY : request.getSession().getId());
+            requestIdentity.setSessionId(getSessionId());
             map.put("requestIdentity", requestIdentity);
         }
 
@@ -255,6 +262,38 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         // map.put("_attributeKeys", getAttributeMap(request).keySet());
 
         return map;
+    }
+
+    /**
+     * 有时候程序会报错.
+     * 
+     * <p>
+     * 有时候操作log的时候,会出现 Cannot create a session after the response has been committed <br>
+     * 很奇怪的错误
+     * </p>
+     * 
+     * <p>
+     * I have learnt that maybe my 8K buffer gets full in some cases (as you said, my contect is dynamic and sometimes could be large). <br>
+     * 
+     * In that case, I have understanded that a full buffer triggers a commit, and when that happens the JSP error page can not do its job
+     * and then "java.lang.IllegalStateException: Cannot create a session after the response has been committed" happens. <br>
+     * 
+     * OK, but is there any other possible reason for the early commit? <br>
+     * My session is created early enough, and in fact the JSP page creates it if necessary, by default.
+     * </p>
+     *
+     * @return the session id,如果有异常, 返回 {@link java.lang.Throwable#getMessage()}
+     * @since 1.4.1
+     */
+    private String getSessionId(){
+        try{
+            HttpSession session = request.getSession(false);
+            return null == session ? StringUtils.EMPTY : session.getId();
+        }catch (IllegalStateException e){//Cannot create a session after the response has been committed 
+            String msg = Slf4jUtil.formatMessage("uri:[{}],paramMap:{}", request.getRequestURI(), request.getParameterMap());
+            LOGGER.error(msg, e);
+            return e.getMessage();
+        }
     }
 
     /**
