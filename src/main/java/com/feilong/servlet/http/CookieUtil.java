@@ -17,6 +17,7 @@ package com.feilong.servlet.http;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -102,15 +103,14 @@ public final class CookieUtil{
      * @param request
      *            HttpServletRequest
      * @param cookieName
-     *            属性名
-     * @return 取到Cookie值
+     *            cookie名字,{@link javax.servlet.http.Cookie#getName()}
+     * @return 如果取不到cookie,返回 <code>null</code>;否则,返回 {@link javax.servlet.http.Cookie#getValue()}
+     * @see #getCookie(HttpServletRequest, String)
+     * @see javax.servlet.http.Cookie#getValue()
      */
     public static String getCookieValue(HttpServletRequest request,String cookieName){
         Cookie cookie = getCookie(request, cookieName);
-        if (null != cookie){
-            return cookie.getValue();
-        }
-        return null;
+        return null == cookie ? null : cookie.getValue();
     }
 
     /**
@@ -121,17 +121,23 @@ public final class CookieUtil{
      * @param cookieName
      *            the cookie name
      * @return the cookie
+     * @see javax.servlet.http.HttpServletRequest#getCookies()
+     * @see javax.servlet.http.Cookie#getName()
      */
     public static Cookie getCookie(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
-        if (Validator.isNotNullOrEmpty(cookies)){
-            for (Cookie cookie : cookies){
-                if (cookie.getName().equals(cookieName)){
-                    if (LOGGER.isDebugEnabled()){
-                        LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie));
-                    }
-                    return cookie;
+
+        if (Validator.isNullOrEmpty(cookies)){
+            LOGGER.info("request's cookies is null or empty!!");
+            return null;
+        }
+
+        for (Cookie cookie : cookies){
+            if (cookie.getName().equals(cookieName)){
+                if (LOGGER.isDebugEnabled()){
+                    LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie));
                 }
+                return cookie;
             }
         }
         LOGGER.info("can't find the cookie:[{}]", cookieName);
@@ -143,17 +149,22 @@ public final class CookieUtil{
      *
      * @param request
      *            the request
-     * @return the cookie map
+     * @return 如果没有 {@link HttpServletRequest#getCookies()},返回 {@link Collections#emptyMap()};<br>
+     *         否则,返回 loop cookies,取到 {@link Cookie#getName()}以及 {@link Cookie#getValue()} 设置成map 返回
+     * @see HttpServletRequest#getCookies()
+     * @see javax.servlet.http.Cookie#getName()
+     * @see javax.servlet.http.Cookie#getValue()
      */
     public static Map<String, String> getCookieMap(HttpServletRequest request){
-        Map<String, String> map = new TreeMap<String, String>();
         Cookie[] cookies = request.getCookies();
-        if (Validator.isNotNullOrEmpty(cookies)){
-            for (Cookie cookie : cookies){
-                String name = cookie.getName();
-                String value = cookie.getValue();
-                map.put(name, value);
-            }
+
+        if (Validator.isNullOrEmpty(cookies)){
+            return Collections.emptyMap();
+        }
+
+        Map<String, String> map = new TreeMap<String, String>();
+        for (Cookie cookie : cookies){
+            map.put(cookie.getName(), cookie.getValue());
         }
         return map;
     }
@@ -165,6 +176,7 @@ public final class CookieUtil{
      *            the cookie name
      * @param response
      *            the response
+     * @see #addCookie(CookieEntity, HttpServletResponse)
      */
     public static void deleteCookie(String cookieName,HttpServletResponse response){
         int expiry = 0;// 设置为0为立即删除该Cookie
@@ -196,16 +208,15 @@ public final class CookieUtil{
         }
 
         String value = cookieEntity.getValue();
+
+        //****************************************************************************
         Cookie cookie = new Cookie(cookieName, value);
 
-        //设置以秒计的cookie的最大存活时间。
-        int maxAge = cookieEntity.getMaxAge();
-        cookie.setMaxAge(maxAge);
+        cookie.setMaxAge(cookieEntity.getMaxAge());//设置以秒计的cookie的最大存活时间。
 
-        //指定一个注释来描述cookie的目的。
         String comment = cookieEntity.getComment();
         if (Validator.isNotNullOrEmpty(comment)){
-            cookie.setComment(comment);
+            cookie.setComment(comment);//指定一个注释来描述cookie的目的。
         }
 
         // 指明cookie应当被声明的域。
@@ -221,12 +232,10 @@ public final class CookieUtil{
         }
 
         // 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
-        boolean secure = cookieEntity.getSecure();
-        cookie.setSecure(secure);
+        cookie.setSecure(cookieEntity.getSecure());
 
         //设置本cookie遵循的cookie的协议的版本
-        int version = cookieEntity.getVersion();
-        cookie.setVersion(version);
+        cookie.setVersion(cookieEntity.getVersion());
 
         boolean httpOnly = cookieEntity.getHttpOnly();
 
@@ -281,12 +290,12 @@ public final class CookieUtil{
     /**
      * Construct cookie string buffer.
      *
+     * @param cookieStringBuffer
+     *            the cookie string buffer
      * @param cookie
      *            the cookie
      * @param httpOnly
      *            the http only
-     * @param cookieStringBuffer
-     *            the cookie string buffer
      * @since 1.2.2
      */
     private static void constructCookieStringBuffer(final StringBuffer cookieStringBuffer,final Cookie cookie,final boolean httpOnly){
