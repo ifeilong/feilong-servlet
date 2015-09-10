@@ -35,6 +35,47 @@ import com.feilong.servlet.http.entity.CookieEntity;
 
 /**
  * {@link javax.servlet.http.Cookie} 工具 类.
+ * 
+ * 
+ * <h3>cookie适用场合:</h3>
+ * 
+ * cookie机制将信息存储于用户硬盘，因此可以作为全局变量，这是它最大的一个优点。
+ * 
+ * <blockquote>
+ * <ol>
+ * <li>保存用户登录状态。<br>
+ * 例如将用户id存储于一个cookie内，这样当用户下次访问该页面时就不需要重新登录了，现在很多论坛和社区都提供这样的功能。<br>
+ * cookie还可以设置过期时间，当超过时间期限后，cookie就会自动消失。<br>
+ * 因此，系统往往可以提示用户保持登录状态的时间： 常见选项有一个月、三个月、一年等。</li>
+ * <li>
+ * 跟踪用户行为。<br>
+ * 例如一个天气预报网站，能够根据用户选择的地区显示当地的天气情况。<br>
+ * 如果每次都需要选择所在地是烦琐的，当利用了cookie后就会显得很人性化了，系统能够记住上一次访问的地区，当下次再打开该页面时，它就会自动显示上次用户所在地区的天气情况。<br>
+ * 因为一切都是在后台完成 ，所以这样的页面就像为某个用户所定制的一样，使用起来非常方便。</li>
+ * <li>定制页面。<br>
+ * 如果网站提供了换肤或更换布局的功能，那么可以使用cookie来记录用户的选项，例如：背景色、分辨率等。<br>
+ * 当用户下次访问时，仍然可以保存上一次访问的界面风格。</li>
+ * <li>创建购物车。<br>
+ * 正如在前面的例子中使用cookie来记录用户需要购买的商品一样，在结账的时候可以统一提交。<br>
+ * 例如淘宝网就使用cookie记录了用户曾经浏览过的商品，方便随时进行比较。</li>
+ * </ol>
+ * 
+ * </blockquote>
+ * 
+ * <h3>cookie的缺点主要集中于安全性和隐私保护:</h3>
+ * 
+ * <blockquote>
+ * <ol>
+ * <li>cookie可能被禁用。<br>
+ * 当用户非常注重个人隐私保护时，他很可能禁用浏览器的cookie功能；</li>
+ * <li>cookie是与浏览器相关的。<br>
+ * 这意味着即使访问的是同一个页面，不同浏览器之间所保存的cookie也是不能互相访问的；</li>
+ * <li>cookie可能被删除。<br>
+ * 因为每个cookie都是硬盘上的一个文件，因此很有可能被用户删除；</li>
+ * <li>cookie安全性不够高。<br>
+ * 所有的cookie都是以纯文本的形式记录于文件中，因此如果要保存用户名密码等信息时，最好事先经过加密处理。</li>
+ * </ol>
+ * </blockquote>
  *
  * @author feilong
  * @version 2010-6-24 上午08:05:32
@@ -83,25 +124,18 @@ public final class CookieUtil{
      */
     public static Cookie getCookie(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
-
-        Cookie returnCookie = null;
         if (Validator.isNotNullOrEmpty(cookies)){
             for (Cookie cookie : cookies){
                 if (cookie.getName().equals(cookieName)){
-                    returnCookie = cookie;
-                    break;
+                    if (LOGGER.isDebugEnabled()){
+                        LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie));
+                    }
+                    return cookie;
                 }
             }
         }
-
-        if (null == returnCookie){
-            LOGGER.warn("can't find the cookie:[{}]", cookieName);
-        }else{
-            if (LOGGER.isDebugEnabled()){
-                LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(returnCookie));
-            }
-        }
-        return returnCookie;
+        LOGGER.info("can't find the cookie:[{}]", cookieName);
+        return null;
     }
 
     /**
@@ -133,15 +167,11 @@ public final class CookieUtil{
      *            the response
      */
     public static void deleteCookie(String cookieName,HttpServletResponse response){
-        // 设置为0为立即删除该Cookie
-        int expiry = 0;
+        int expiry = 0;// 设置为0为立即删除该Cookie
         CookieEntity cookieEntity = new CookieEntity(cookieName, null, expiry);
         addCookie(cookieEntity, response);
 
-        if (LOGGER.isDebugEnabled()){
-            LOGGER.debug("deleteCookie,cookieName:[{}]", cookieName);
-        }
-
+        LOGGER.debug("deleteCookie,cookieName:[{}]", cookieName);
     }
 
     /**
