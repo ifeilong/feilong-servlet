@@ -147,11 +147,13 @@ public final class SessionUtil{
     }
 
     /**
-     * 遍历显示session的attribute,将 name /attributeValue 存入到map.
+     * 遍历session的attribute,将 name /attributeValue 存入到map里.
      * 
      * @param session
      *            the session
      * @return the attribute map
+     * @see javax.servlet.http.HttpSession#getAttributeNames()
+     * @see javax.servlet.http.HttpSession#getAttribute(String)
      */
     public static Map<String, Serializable> getAttributeMap(HttpSession session){
         Map<String, Serializable> map = new HashMap<String, Serializable>();
@@ -169,32 +171,57 @@ public final class SessionUtil{
     /**
      * 替换session,防止利用JSESSIONID 伪造url进行session hack.
      * 
+     * <h3>代码流程:</h3>
+     * 
+     * <blockquote>
+     * <ol>
+     * <li>使用{@code request.getSession(false)},判断原先是否存在session,如果不存在,那么直接开启一个新的session并返回;</li>
+     * <li>如果老session存在,那么取到里面所有的attribute属性map,然后让老session 失效 {@link HttpSession#invalidate()}</li>
+     * <li>而后,开始一个新的session,并将老session 里面的属性设置进去,并返回</li>
+     * </ol>
+     * </blockquote>
+     * 
+     * <p>
+     * 该方法通常在用户登陆逻辑里面调用,要确保登陆前和登陆后的session不相同,(确切的说,登陆后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话，那么这就是一个固定SessionID的漏洞（详见《黑客攻防技术宝典-web实战》
+     * 第七章）
+     * </p>
+     * 
+     * <h3>简单的漏洞攻击:</h3>
+     * 
+     * <blockquote>
+     * <ul>
+     * <li>第一步，需要获取被攻击用户的JSESSIONID，可以通过给被攻击用户一个伪造的JSESSIONID，使其用该JESSIONID登录，获取用户登录后的JESSIONID。（这里作为示范，直接从浏览器中获取）</li>
+     * <li>第二步，等被攻击用户登录，是JESSIONID成为已登录状态。</li>
+     * <li>第三步，伪造请求，访问登录后的资源。在用户登录使该JSESSIONID称为已登录的ID后，攻击者就可以利用这个ID伪造请求访问登录后的资源。</li>
+     * </ul>
+     * </blockquote>
+     * 
      * @param request
      *            request
      * @return the http session
      * @see "org.springframework.security.util.SessionUtils#startNewSessionIfRequired(HttpServletRequest, boolean, SessionRegistry)"
+     * @see <a href="http://blog.csdn.net/jiangbo_hit/article/details/6073710">固定SessionID漏洞</a>
      */
     public static HttpSession replaceSession(HttpServletRequest request){
         // 当session存在时返回该session，否则不会新建session，返回null
-        HttpSession session = request.getSession(false);
+        // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
+        HttpSession oldSession = request.getSession(false);
 
-        if (null == session){// 是null 新建一个
+        if (null == oldSession){// 是null 新建一个并直接返回
             return request.getSession();
         }
 
-        // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
-        session = request.getSession();
-        Map<String, Serializable> map = getAttributeMap(session);
-        LOGGER.debug("old session: {}", session.getId());
+        LOGGER.debug("old session: {}", oldSession.getId());
+        Map<String, Serializable> attributeMap = getAttributeMap(oldSession);
 
-        session.invalidate();
+        oldSession.invalidate();//老的session失效
 
-        session = request.getSession();
-        LOGGER.debug("new session: {}", session.getId());
+        HttpSession newSession = request.getSession();
+        LOGGER.debug("new session: {}", newSession.getId());
 
-        for (String key : map.keySet()){
-            session.setAttribute(key, map.get(key));
+        for (String key : attributeMap.keySet()){
+            newSession.setAttribute(key, attributeMap.get(key));
         }
-        return session;
+        return newSession;
     }
 }
