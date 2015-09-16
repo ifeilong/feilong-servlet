@@ -199,6 +199,7 @@ public final class SessionUtil{
      * @param request
      *            request
      * @return the http session
+     * @see "org.owasp.esapi.reference.DefaultHTTPUtilities#changeSessionIdentifier(HttpServletRequest)"
      * @see "org.springframework.security.util.SessionUtils#startNewSessionIfRequired(HttpServletRequest, boolean, SessionRegistry)"
      * @see <a href="http://blog.csdn.net/jiangbo_hit/article/details/6073710">固定SessionID漏洞</a>
      */
