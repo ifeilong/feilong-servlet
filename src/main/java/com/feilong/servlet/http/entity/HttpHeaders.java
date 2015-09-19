@@ -260,13 +260,25 @@ public final class HttpHeaders{
     public static final String ORIGIN                      = "origin";
 
     /**
-     * <code>{@value}</code><br>
-     * X-Forwarded-For:简称XFF头，它代表客户端，也就是HTTP的请求端真实的IP，只有在通过了HTTP 代理或者负载均衡服务器时才会添加该项。<br>
+     * <code>{@value}</code>.
+     * <p>
+     * X-Forwarded-For:简称XFF头，它代表客户端，也就是HTTP的请求端真实的IP，只有在通过了HTTP代理或者负载均衡服务器时才会添加该项。<br>
      * 它不是RFC中定义的标准请求头信息，在squid缓存代理服务器开发文档中可以找到该项的详细介绍。 <br>
      * 标准格式如下：<br>
      * X-Forwarded-For: client1, proxy1, proxy2.
+     * </p>
      */
     public static final String X_FORWARDED_FOR             = "x-forwarded-for";
+
+    /**
+     * <code>{@value}</code>,如果主站使用cdn的话，
+     * 
+     * @see <a href="http://distinctplace.com/infrastructure/2014/04/23/story-behind-x-forwarded-for-and-x-real-ip-headers/">Story behind
+     *      X-Forwarded-For and X-Real-IP headers</a>
+     * @see <a href="http://lavafree.iteye.com/blog/1559183">nginx做负载CDN加速获取端真实ip</a>
+     * @since 1.4.1
+     */
+    public static final String X_REAL_IP                   = "X-Real-IP";
 
     /** <code>{@value}</code>. */
     public static final String PROXY_CLIENT_IP             = "Proxy-Client-IP";

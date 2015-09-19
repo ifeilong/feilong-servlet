@@ -239,7 +239,7 @@ public final class CookieUtil{
 
         boolean httpOnly = cookieEntity.getHttpOnly();
 
-        //TODO @since Servlet 3.0
+        //XXX @since Servlet 3.0
         //cookie.setHttpOnly();
         if (httpOnly){
             StringBuffer cookieString = generateCookieStringInTomcat(cookie, true);

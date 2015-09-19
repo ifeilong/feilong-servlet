@@ -23,7 +23,6 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
-import com.feilong.core.io.IOReaderUtil;
 import com.feilong.core.util.Validator;
 
 /**
@@ -43,7 +42,7 @@ public final class ServletContextUtil{
     }
 
     /**
-     * servletContext.log servletContext相关信息,一般 启动时 调用
+     * servletContext.log servletContext相关信息,一般启动时调用.
      *
      * @param servletContext
      *            the servlet context
@@ -92,26 +91,6 @@ public final class ServletContextUtil{
     }
 
     /**
-     * 获得 attribute string map for LOGGER.
-     *
-     * @param servletContext
-     *            the servlet context
-     * @return the attribute string map for log
-     */
-    public static Map<String, String> getAttributeStringMapForLog(ServletContext servletContext){
-        Map<String, String> map = new TreeMap<String, String>();
-        @SuppressWarnings("unchecked")
-        Enumeration<String> attributeNames = servletContext.getAttributeNames();
-        while (attributeNames.hasMoreElements()){
-            String name = attributeNames.nextElement();
-            Object attributeValue = servletContext.getAttribute(name);
-
-            map.put(name, "" + attributeValue);
-        }
-        return map;
-    }
-
-    /**
      * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getInitParameterNames()},将 name /attributeValue 存入到map返回.
      * 
      * @param servletContext
@@ -134,38 +113,5 @@ public final class ServletContextUtil{
             map.put(name, value);
         }
         return map;
-    }
-
-    /**
-     * 读取servletContext.getRealPath("/")下面,文件内容
-     *
-     * @param servletContext
-     *            servletContext上下文地址
-     * @param directoryName
-     *            文件夹路径
-     *            <ul>
-     *            <li>如果是根目录,则directoryName传null</li>
-     *            <li>前面没有/ 后面有/ 如:res/html/email/</li>
-     *            </ul>
-     * @param fileName
-     *            文件名称 如:register.html
-     * @return 读取文件内容
-     * @see "org.springframework.web.util.WebUtils#getRealPath(ServletContext, String)"
-     * @deprecated 待重构
-     */
-    @Deprecated
-    public static String getFileContent(ServletContext servletContext,String directoryName,String fileName){
-        if (Validator.isNullOrEmpty(fileName)){
-            throw new IllegalArgumentException("fileName can't be null/empty");
-        }
-
-        String filePathString = servletContext.getRealPath("/");
-        if (Validator.isNullOrEmpty(directoryName)){
-            filePathString = filePathString + fileName;
-        }else{
-            filePathString = filePathString + directoryName + fileName;
-        }
-        // ServletContext servletContext = request.getSession().getServletContext();
-        return IOReaderUtil.getFileContent(filePathString);
     }
 }

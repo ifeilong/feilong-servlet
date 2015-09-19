@@ -18,6 +18,7 @@ package com.feilong.servlet.http;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -143,14 +144,14 @@ public final class RequestUtil{
      *
      * @param request
      *            请求
-     * @param param
+     * @param paramName
      *            参数名称
      * @return 包含该参数返回true,不包含返回false
      * @since 1.4.0
      */
-    public static boolean containsParam(HttpServletRequest request,String param){
-        if (Validator.isNullOrEmpty(param)){
-            throw new NullPointerException("param can't be null/empty!");
+    public static boolean containsParam(HttpServletRequest request,String paramName){
+        if (Validator.isNullOrEmpty(paramName)){
+            throw new NullPointerException("paramName can't be null/empty!");
         }
         @SuppressWarnings("unchecked")
         Enumeration<String> parameterNames = request.getParameterNames();
@@ -158,14 +159,10 @@ public final class RequestUtil{
         while (parameterNames.hasMoreElements()){
             String parameterName = parameterNames.nextElement();
 
-            if (param.equals(parameterName)){
+            if (paramName.equals(parameterName)){
                 return true;
             }
         }
-
-        //感觉要比下面好些
-        //Map<String, ?> map = getParameterMap(request);
-        //return map.containsKey(param);
         return false;
     }
 
@@ -514,53 +511,59 @@ public final class RequestUtil{
     // **************************Header*******************************************
 
     /**
-     * 获得客户端ip地址.
+     * 获得客户端真实ip地址.
      * 
      * @param request
      *            the request
      * @return 获得客户端ip地址
+     * @see "org.apache.catalina.valves.RemoteIpValve"
+     * @see <a href="http://distinctplace.com/infrastructure/2014/04/23/story-behind-x-forwarded-for-and-x-real-ip-headers/">Story behind
+     *      X-Forwarded-For and X-Real-IP headers</a>
+     * @see <a href="http://lavafree.iteye.com/blog/1559183">nginx做负载CDN加速获取端真实ip</a>
      */
     public static String getClientIp(HttpServletRequest request){
         // WL-Proxy-Client-IP=215.4.1.29
         // Proxy-Client-IP=215.4.1.29
         // X-Forwarded-For=215.4.1.29
-        // WL-Proxy-Client-Keysize=
-        // WL-Proxy-Client-Secretkeysize=
-        // X-WebLogic-Request-ClusterInfo=true
-        // X-WebLogic-KeepAliveSecs=30
-        // X-WebLogic-Force-JVMID=-527489098
-        // WL-Proxy-SSL=false
-        String unknown = "unknown";
 
-        Map<String, String> map = new TreeMap<String, String>();
+        Map<String, String> map = new LinkedHashMap<String, String>();
 
-        //TODO X-real-ip 程哥说如果主站使用cdn的话，以前的方法获取到的不正确
+        String ipAddress = "";
 
-        // 是否使用反向代理
-        String ipAddress = request.getHeader(HttpHeaders.X_FORWARDED_FOR);
-        map.put("1.header_xForwardedFor", ipAddress);
-        if (Validator.isNullOrEmpty(ipAddress) || unknown.equalsIgnoreCase(ipAddress)){
-            ipAddress = request.getHeader(HttpHeaders.PROXY_CLIENT_IP);
-            map.put("2.header_proxyClientIP", ipAddress);
-        }
-        if (Validator.isNullOrEmpty(ipAddress) || unknown.equalsIgnoreCase(ipAddress)){
-            ipAddress = request.getHeader(HttpHeaders.WL_PROXY_CLIENT_IP);
-            map.put("3.header_wLProxyClientIP", ipAddress);
-        }
-        if (Validator.isNullOrEmpty(ipAddress) || unknown.equalsIgnoreCase(ipAddress)){
-            ipAddress = request.getRemoteAddr();
-            map.put("4.request.getRemoteAddr()", ipAddress);
-        }
-        // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-        if (ipAddress != null && ipAddress.length() > 15){ // "***.***.***.***".length() = 15
-            map.put("5.all", ipAddress);
-            if (ipAddress.indexOf(",") > 0){
-                ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
-                map.put("6.ipAddress", ipAddress);
+        //ip header可控制的, 以后如果有新增 加在这里(比如 多CDN 可能是cdn_real_ip),而不是通过传参的形式
+        //这样做的好处是,对开发透明
+        String[] ipHeaderNames = {
+                HttpHeaders.X_FORWARDED_FOR,
+                HttpHeaders.X_REAL_IP,
+                HttpHeaders.PROXY_CLIENT_IP,
+                HttpHeaders.WL_PROXY_CLIENT_IP };
+
+        //先在代理里面找一找
+        for (int i = 0; i < ipHeaderNames.length; ++i){
+            String ipHeaderName = ipHeaderNames[i];
+            String ipHeaderValue = request.getHeader(ipHeaderName);//The header name is case insensitive (不区分大小写)
+            map.put(ipHeaderName, ipHeaderValue);
+            if (Validator.isNotNullOrEmpty(ipHeaderValue) && !"unknown".equalsIgnoreCase(ipHeaderValue)){
+                ipAddress = ipHeaderValue;
+                break;
             }
         }
+
+        //如果都没有,那么读取 request.getRemoteAddr()
+        if (Validator.isNullOrEmpty(ipAddress)){
+            ipAddress = request.getRemoteAddr();
+            map.put("request.getRemoteAddr()", ipAddress);
+        }
+
+        // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        if (ipAddress != null && ipAddress.indexOf(",") > 0){
+            //如果通过了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串ip值，取第一个非unknown的有效IP字符串。 
+            ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+            map.put("firstIp", ipAddress);
+        }
+
         if (LOGGER.isDebugEnabled()){
-            LOGGER.debug(JsonUtil.format(map));
+            LOGGER.debug("client real ips:{}", JsonUtil.format(map));
         }
         return ipAddress;
     }
