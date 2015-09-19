@@ -191,12 +191,7 @@ public final class RequestAttributes{
      */
     public static final String REQUEST_SSL_SESSION     = "javax.servlet.request.ssl_session";
 
-    // 暂时还用不到下面的属性
-    // /** The WOR k_ di r_ attr. */
-    // String WORK_DIR_ATTR = "javax.servlet.context.tempdir";
-    //
-    // /** The SUBJEC t_ attr. */
-    // String SUBJECT_ATTR = "javax.security.auth.subject";
+    // 暂时还用不到下面的属性 "javax.servlet.context.tempdir" "javax.security.auth.subject"
 
     /** Don't let anyone instantiate this class. */
     private RequestAttributes(){

@@ -15,6 +15,7 @@
  */
 package com.feilong.servlet.http;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -109,6 +110,46 @@ public final class ResponseUtil{
     }
 
     /**
+     * 下载文件.
+     *
+     * @param pathname
+     *            the pathname
+     * @param request
+     *            用来获取request相关信息 ,仅用来记录log
+     * @param response
+     *            the response
+     * @see #download(File, HttpServletRequest, HttpServletResponse)
+     * @since 1.4.1
+     */
+    public static void download(String pathname,HttpServletRequest request,HttpServletResponse response){
+        File file = new File(pathname);
+        download(file, request, response);
+    }
+
+    /**
+     * 下载文件.
+     *
+     * @param file
+     *            the file
+     * @param request
+     *            用来获取request相关信息 ,仅用来记录log
+     * @param response
+     *            the response
+     * @see com.feilong.core.io.FilenameUtil#getFileName(String)
+     * @see com.feilong.core.io.FileUtil#getFileInputStream(File)
+     * @see #download(String, InputStream, Number, HttpServletRequest, HttpServletResponse)
+     * @since 1.4.1
+     */
+    public static void download(File file,HttpServletRequest request,HttpServletResponse response){
+        String saveFileName = file.getName();
+        // 以流的形式下载文件。
+        InputStream inputStream = FileUtil.getFileInputStream(file);
+        Number contentLength = FileUtil.getFileSize(file);
+
+        download(saveFileName, inputStream, contentLength, request, response);
+    }
+
+    /**
      * 下载(以 contentType=application/force-download) 强制下载.
      *
      * @param saveFileName
@@ -116,9 +157,14 @@ public final class ResponseUtil{
      * @param inputStream
      *            保存数据输入流
      * @param contentLength
-     *            如果是网络流就需要自己来取到大小了
+     *            如果是网络流就需要自己来取到大小了,比如
+     *            <p>
+     *            HttpURLConnection httpconn = (HttpURLConnection)url.openConnection();<br>
+     *            httpconn.getContentLength(); 
+     *            </p>
+     *            {@link InputStream#available()} 不使用于网络情况
      * @param request
-     *            用来 获取request相关信息 记录log
+     *            用来获取request相关信息 ,仅用来记录log
      * @param response
      *            response
      * @see IOWriteUtil#write(InputStream, OutputStream)
@@ -150,7 +196,7 @@ public final class ResponseUtil{
      * @param contentDisposition
      *            the content disposition
      * @param request
-     *            用来 获取request相关信息 记录log
+     *            用来获取request相关信息 ,仅用来记录log
      * @param response
      *            response
      * @see IOWriteUtil#write(InputStream, OutputStream)
@@ -246,9 +292,9 @@ public final class ResponseUtil{
      * @param contentLength
      *            the content length
      * @param contentType
-     *            the content type
+     *            如果传递了改参数,使用传递的值;如果没有传递,即为 <code>null</code>,那么使用默认的值,参见 {@link #resolverContentType(String, String)}
      * @param contentDisposition
-     *            the content disposition
+     *            如果传递了改参数,使用传递的值;如果没有传递,即为 <code>null</code>,那么使用默认的值,参见 {@link #resolverContentDisposition(String, String)}
      * @param response
      *            the response
      */
@@ -258,30 +304,37 @@ public final class ResponseUtil{
                     String contentType,
                     String contentDisposition,
                     HttpServletResponse response){
-        //**********************************************************************************************
-        // 清空response
+
+        //清空response
         //getResponse的getWriter()方法连续两次输出流到页面的时候，第二次的流会包括第一次的流，所以可以使用将response.reset或者resetBuffer的方法。
         //getOutputStream() has already been called for this response问题的解决
         //在jsp向页面输出图片的时候,使用response.getOutputStream()会有这样的提示：java.lang.IllegalStateException:getOutputStream() has already been called for this response,会抛出Exception
         response.reset();
 
-        // ===================== Default MIME Type Mappings =================== -->
+        //*************************************************************************
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, resolverContentDisposition(saveFileName, contentDisposition));
 
+        // ===================== Default MIME Type Mappings =================== -->
         //浏览器接收到文件后，会进入插件系统进行查找，查找出哪种插件可以识别读取接收到的文件。如果浏览器不清楚调用哪种插件系统，它可能会告诉用户缺少某插件，
         response.setContentType(resolverContentType(saveFileName, contentType));
 
-        //缺省情况下:服务端要输出到客户端的内容,不直接写到客户端,而是先写到一个输出缓冲区中.只有在下面三中情况下，才会把该缓冲区的内容输出到客户端上： 
+        if (Validator.isNotNullOrEmpty(contentLength)){
+            response.setContentLength(contentLength.intValue());
+        }
+
+        //************************about buffer***********************************************************
+
+        //缺省情况下:服务端要输出到客户端的内容,不直接写到客户端,而是先写到一个输出缓冲区中.
+        //只有在下面三中情况下，才会把该缓冲区的内容输出到客户端上： 
+        //该JSP网页已完成信息的输出 
+        //输出缓冲区已满 
+        //JSP中调用了out.flush()或response.flushbuffer() 
+
         //缓冲区的优点是：我们暂时不输出，直到确定某一情况时，才将写入缓冲区的数据输出到浏览器，否则就将缓冲区的数据取消。
         //response.setBufferSize(10240);
 
         //see org.apache.commons.io.IOUtils.copyLarge(InputStream, OutputStream) javadoc
         //This method buffers the input internally, so there is no need to use a BufferedInputStream
-
-        //****************************************************************************************************
-        //TODO 看看能否调用 httpcomponents的 httpcore  org.apache.http.HttpHeaders
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, resolverContentDisposition(saveFileName, contentDisposition));
-
-        response.setContentLength(contentLength.intValue());
     }
 
     /**
