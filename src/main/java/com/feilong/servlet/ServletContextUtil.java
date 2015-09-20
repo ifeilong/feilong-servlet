@@ -91,12 +91,13 @@ public final class ServletContextUtil{
     }
 
     /**
-     * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getInitParameterNames()},将 name /attributeValue 存入到map返回.
+     * 遍历显示servletContext的 {@link ServletContext#getInitParameterNames()},将 name /attributeValue 存入到map返回.
      * 
      * @param servletContext
      *            the servlet context
      * @return if isNotNullOrEmpty(initParameterNames),will return {@link java.util.Collections#emptyMap()}
      * @see javax.servlet.ServletContext#getInitParameterNames()
+     * @see "org.springframework.web.context.support#registerEnvironmentBeans(ConfigurableListableBeanFactory, ServletContext)"
      */
     public static Map<String, String> getInitParameterMap(ServletContext servletContext){
         @SuppressWarnings("unchecked")

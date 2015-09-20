@@ -53,9 +53,7 @@ public class ServletContextPathListener implements ServletContextListener{
         String msg = "Set servletContext setAttribute: '" + APPLICATIONATTRIBUTE_BASE + "' = [" + contextPath + "]";
         servletContext.log(msg);
 
-        if (LOGGER.isInfoEnabled()){
-            LOGGER.info(msg);
-        }
+        LOGGER.info(msg);
     }
 
     /*

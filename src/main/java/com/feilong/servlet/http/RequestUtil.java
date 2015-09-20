@@ -40,6 +40,7 @@ import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIComponents;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.tools.jsonlib.JsonUtil;
+import com.feilong.core.util.CollectionsUtil;
 import com.feilong.core.util.Validator;
 import com.feilong.servlet.http.builder.RequestLogBuilder;
 import com.feilong.servlet.http.builder.RequestLogSwitch;
@@ -120,11 +121,10 @@ import com.feilong.servlet.http.entity.RequestAttributes;
  * </blockquote>
  * 
  * @author feilong
- * @version 1.0 2011-11-3 下午02:24:55
+ * @version 1.0.0 2011-11-3 下午02:24:55
  * @version 1.0.4 2014-3-27 14:38
  * @see RequestAttributes
  * @see RequestLogSwitch
- * @since 1.0.0
  */
 public final class RequestUtil{
 
@@ -155,15 +155,7 @@ public final class RequestUtil{
         }
         @SuppressWarnings("unchecked")
         Enumeration<String> parameterNames = request.getParameterNames();
-
-        while (parameterNames.hasMoreElements()){
-            String parameterName = parameterNames.nextElement();
-
-            if (paramName.equals(parameterName)){
-                return true;
-            }
-        }
-        return false;
+        return CollectionsUtil.contains(parameterNames, paramName);
     }
 
     /**
@@ -372,7 +364,7 @@ public final class RequestUtil{
     }
 
     /**
-     * scheme+port+getContextPath.
+     * scheme+serverName+port+getContextPath.
      * 
      * <p>
      * 区分 http 和https.
@@ -381,28 +373,34 @@ public final class RequestUtil{
      * @param request
      *            the request
      * @return 如:http://localhost:8080/feilong/
-     * @see org.apache.catalina.connector.Request#getRequestURL()
+     * @see "org.apache.catalina.connector.Request#getRequestURL()"
+     * @see "org.apache.catalina.realm.RealmBase#hasUserDataPermission(Request, Response, SecurityConstraint[])"
+     * @see javax.servlet.http.HttpUtils#getRequestURL(HttpServletRequest)
      */
     public static String getServerRootWithContextPath(HttpServletRequest request){
 
-        StringBuilder sb = new StringBuilder();
         String scheme = request.getScheme();
-
-        sb.append(scheme);
-        sb.append("://");
-        sb.append(request.getServerName());
+        String serverName = request.getServerName();
 
         int port = request.getServerPort();
         if (port < 0){
             port = 80; // Work around java.net.URL bug
         }
 
+        String contextPath = request.getContextPath();
+
+        //*************************************************************************************
+        StringBuilder sb = new StringBuilder();
+        sb.append(scheme);
+        sb.append("://");
+        sb.append(serverName);
+
         if ((scheme.equals(URIComponents.SCHEME_HTTP) && (port != 80)) || (scheme.equals(URIComponents.SCHEME_HTTPS) && (port != 443))){
             sb.append(':');
             sb.append(port);
         }
 
-        sb.append(request.getContextPath());
+        sb.append(contextPath);
         return sb.toString();
     }
 
