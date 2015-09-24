@@ -26,20 +26,16 @@
 		<url>https://github.com/venusdrogon/feilong-servlet/issues</url>
 	</issueManagement>
 
-	<properties>
-		<version.tomcat6>6.0.44</version.tomcat6>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>feilong-core</artifactId>
 		</dependency>
 
-		<!-- jstl -->
+		<!-- servlet-api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 
 		<dependency>
@@ -48,34 +44,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>el-api</artifactId>
 		</dependency>
 
-		<!-- -->
-		<!-- <dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-catalina</artifactId>
-			<version>7.0.57</version>
-			<scope>provided</scope>
-			</dependency> -->
-
+		<!-- jstl -->
 		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>catalina</artifactId>
-			<version>${version.tomcat6}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>coyote</artifactId>
-			<version>${version.tomcat6}</version>
-			<scope>provided</scope>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
 		</dependency>
 
 	</dependencies>

@@ -120,6 +120,93 @@ import com.feilong.servlet.http.entity.RequestAttributes;
  * </table>
  * </blockquote>
  * 
+ * 
+ * <h3>{@link <a href="http://tomcat.apache.org/whichversion.html">Apache Tomcat Versions:</a>}</h3>
+ * 
+ * <p>
+ * Apache Tomcat™ is an open source software implementation of the Java Servlet and JavaServer Pages technologies. <br>
+ * Different versions of Apache Tomcat are available for different versions of the Servlet and JSP specifications. <br>
+ * The mapping between the specifications and the respective Apache Tomcat versions is:
+ * </p>
+ * 
+ * <blockquote>
+ * <table border="1" cellspacing="0" cellpadding="4">
+ * <tr style="background-color:#ccccff">
+ * <th align="left">Servlet Spec</th>
+ * <th align="left">JSP Spec</th>
+ * <th align="left">EL Spec</th>
+ * <th align="left">WebSocket Spec</th>
+ * <th align="left">Apache Tomcat version</th>
+ * <th align="left">Actual release revision</th>
+ * <th align="left">Support Java Versions</th>
+ * </tr>
+ * <tr valign="top">
+ * <td>4.0</td>
+ * <td>TBD (2.4?)</td>
+ * <td>TBD (3.1?)</td>
+ * <td>TBD (1.2?)</td>
+ * <td>9.0.x</td>
+ * <td>None</td>
+ * <td>8 and later</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>3.1</td>
+ * <td>2.3</td>
+ * <td>3.0</td>
+ * <td>1.1</td>
+ * <td>8.0.x</td>
+ * <td>8.0.26</td>
+ * <td>7 and later</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>3.0</td>
+ * <td>2.2</td>
+ * <td>2.2</td>
+ * <td>1.1</td>
+ * <td>7.0.x</td>
+ * <td>7.0.64</td>
+ * <td>6 and later<br>
+ * (WebSocket 1.1 requires 7 or later)</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>2.5</td>
+ * <td>2.1</td>
+ * <td>2.1</td>
+ * <td>N/A</td>
+ * <td>6.0.x</td>
+ * <td>6.0.44</td>
+ * <td>5 and later</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>2.4</td>
+ * <td>2.0</td>
+ * <td>N/A</td>
+ * <td>N/A</td>
+ * <td>5.5.x (archived)</td>
+ * <td>5.5.36 (archived)</td>
+ * <td>1.4 and later</td>
+ * </tr>
+ * <tr valign="top" style="background-color:#eeeeff">
+ * <td>2.3</td>
+ * <td>1.2</td>
+ * <td>N/A</td>
+ * <td>N/A</td>
+ * <td>4.1.x (archived)</td>
+ * <td>4.1.40 (archived)</td>
+ * <td>1.3 and later</td>
+ * </tr>
+ * <tr valign="top">
+ * <td>2.2</td>
+ * <td>1.1</td>
+ * <td>N/A</td>
+ * <td>N/A</td>
+ * <td>3.3.x (archived)</td>
+ * <td>3.3.2 (archived)</td>
+ * <td>1.1 and later</td>
+ * </tr>
+ * </table>
+ * </blockquote>
+ * 
  * @author feilong
  * @version 1.0.0 2011-11-3 下午02:24:55
  * @version 1.0.4 2014-3-27 14:38
@@ -153,7 +240,6 @@ public final class RequestUtil{
         if (Validator.isNullOrEmpty(paramName)){
             throw new NullPointerException("paramName can't be null/empty!");
         }
-        @SuppressWarnings("unchecked")
         Enumeration<String> parameterNames = request.getParameterNames();
         return CollectionsUtil.contains(parameterNames, paramName);
     }
@@ -189,7 +275,6 @@ public final class RequestUtil{
      * @see "org.apache.catalina.connector.Request#getParameterMap()"
      */
     public static Map<String, String[]> getParameterMap(HttpServletRequest request){
-        @SuppressWarnings("unchecked")
         // http://localhost:8888/s.htm?keyword&a=
         // 这种链接  map key 会是 keyword,a 值都是空
         // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
