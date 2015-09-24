@@ -73,7 +73,6 @@ public final class ServletContextUtil{
      * @return if isNotNullOrEmpty(attributeNames),will return {@link java.util.Collections#emptyMap()}
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
-        @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
 
         if (Validator.isNullOrEmpty(attributeNames)){
@@ -100,7 +99,6 @@ public final class ServletContextUtil{
      * @see "org.springframework.web.context.support#registerEnvironmentBeans(ConfigurableListableBeanFactory, ServletContext)"
      */
     public static Map<String, String> getInitParameterMap(ServletContext servletContext){
-        @SuppressWarnings("unchecked")
         Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
 
         if (Validator.isNullOrEmpty(initParameterNames)){

@@ -179,9 +179,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             //Checks whether the requested session ID came in as a cookie.
             aboutElseMap.put("request.isRequestedSessionIdFromCookie()", request.isRequestedSessionIdFromCookie());
 
-            //The method isRequestedSessionIdFromUrl() from the type HttpServletRequest is deprecated
-            aboutElseMap.put("request.isRequestedSessionIdFromUrl()", request.isRequestedSessionIdFromUrl());
-
             //Checks whether the requested session ID came in as part of the request URL.
             aboutElseMap.put("request.isRequestedSessionIdFromURL()", request.isRequestedSessionIdFromURL());
 
@@ -448,7 +445,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getHeaderMap(){
         Map<String, String> map = new TreeMap<String, String>();
-        @SuppressWarnings("unchecked")
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
             String name = headerNames.nextElement();

@@ -139,7 +139,6 @@ public final class SessionUtil{
         // 返回服务器创建的一个SESSION,客户端是否已经加入 
         map.put("session.isNew()", session.isNew());
 
-        @SuppressWarnings({ "unchecked" })
         Enumeration<String> attributeNames = session.getAttributeNames();
         map.put("session.getAttributeNames()", ConvertUtil.toList(attributeNames));
 
@@ -158,7 +157,6 @@ public final class SessionUtil{
     public static Map<String, Serializable> getAttributeMap(HttpSession session){
         Map<String, Serializable> map = new HashMap<String, Serializable>();
 
-        @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();

@@ -753,7 +753,6 @@ public final class RequestUtil{
      */
     public static Map<String, Object> getAttributeMap(HttpServletRequest request){
         Map<String, Object> map = new HashMap<String, Object>();
-        @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();

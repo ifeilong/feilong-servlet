@@ -21,9 +21,6 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.feilong.core.io.IOReaderUtil;
 import com.feilong.core.util.Validator;
 
@@ -34,8 +31,6 @@ import com.feilong.core.util.Validator;
  * @since 1.4.1
  */
 public class ServletContextUtilTest{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServletContextUtilTest.class);
 
     /**
      * 读取servletContext.getRealPath("/")下面,文件内容
@@ -81,7 +76,6 @@ public class ServletContextUtilTest{
     @Deprecated
     public static Map<String, String> getAttributeStringMapForLog(ServletContext servletContext){
         Map<String, String> map = new TreeMap<String, String>();
-        @SuppressWarnings("unchecked")
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
