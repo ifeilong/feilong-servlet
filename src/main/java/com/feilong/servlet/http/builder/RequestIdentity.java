@@ -94,5 +94,4 @@ public class RequestIdentity implements Serializable{
     public void setSessionId(String sessionId){
         this.sessionId = sessionId;
     }
-
 }

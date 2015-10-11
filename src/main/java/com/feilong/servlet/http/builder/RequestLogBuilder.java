@@ -103,7 +103,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             Map<String, String[]> parameterMap = RequestUtil.getParameterMap(request);
 
             if (Validator.isNotNullOrEmpty(parameterMap)){
-                map.put("_parameterMap", parameterMap);
+                map.put("parameterMap", parameterMap);
             }
         }
 
@@ -118,14 +118,14 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _headerMap
         if (opRequestLogSwitch.getShowHeaders()){
-            map.put("_headerInfoMap", getHeaderMap());
+            map.put("headerInfoMap", getHeaderMap());
         }
 
         // _cookieMap
         if (opRequestLogSwitch.getShowCookies()){
             Map<String, String> cookieMap = CookieUtil.getCookieMap(request);
             if (Validator.isNotNullOrEmpty(cookieMap)){
-                map.put("_cookieInfoMap", cookieMap);
+                map.put("cookieInfoMap", cookieMap);
             }
         }
 
@@ -236,27 +236,27 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         if (opRequestLogSwitch.getShowErrors()){
             Map<String, String> errorMap = getErrorMap();
             if (Validator.isNotNullOrEmpty(errorMap)){
-                map.put("_errorInfos", errorMap);
+                map.put("errorInfos", errorMap);
             }
         }
         // _forwardInfos
         if (opRequestLogSwitch.getShowForwardInfos()){
             Map<String, String> forwardMap = getForwardMap();
             if (Validator.isNotNullOrEmpty(forwardMap)){
-                map.put("_forwardInfos", forwardMap);
+                map.put("forwardInfos", forwardMap);
             }
         }
         // _includeInfos
         if (opRequestLogSwitch.getShowIncludeInfos()){
             Map<String, String> includeMap = getIncludeMap();
             if (Validator.isNotNullOrEmpty(includeMap)){
-                map.put("_includeInfos", includeMap);
+                map.put("includeInfos", includeMap);
             }
         }
 
         // 避免json渲染出错，只放 key
         // attribute 不属于 log 范围之内, 如果有需要 自行调用 getAttributeMap(request)
-        // map.put("_attributeKeys", getAttributeMap(request).keySet());
+        // map.put("attributeKeys", getAttributeMap(request).keySet());
 
         return map;
     }
