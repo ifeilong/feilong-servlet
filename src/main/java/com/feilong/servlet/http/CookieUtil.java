@@ -168,18 +168,44 @@ public final class CookieUtil{
     /**
      * 删除cookie.
      * 
+     * <p style="color:red">
+     * 删除 Cookie的时候,path必须保持一致
+     * </p>
+     * 
      * @param cookieName
      *            the cookie name
      * @param response
      *            the response
-     * @see #addCookie(CookieEntity, HttpServletResponse)
+     * @see #deleteCookie(CookieEntity, HttpServletResponse)
      */
     public static void deleteCookie(String cookieName,HttpServletResponse response){
-        int expiry = 0;// 设置为0为立即删除该Cookie
-        CookieEntity cookieEntity = new CookieEntity(cookieName, null, expiry);
+        CookieEntity cookieEntity = new CookieEntity(cookieName, "");
+        deleteCookie(cookieEntity, response);
+    }
+
+    /**
+     * 删除cookie.
+     * 
+     * <p style="color:red">
+     * 删除 Cookie的时候,path必须保持一致
+     * </p>
+     * 
+     * @param cookieEntity
+     *            the cookie entity
+     * @param response
+     *            the response
+     * @see #addCookie(CookieEntity, HttpServletResponse)
+     * @since 1.5.0
+     */
+    public static void deleteCookie(CookieEntity cookieEntity,HttpServletResponse response){
+        if (Validator.isNullOrEmpty(cookieEntity)){
+            throw new NullPointerException("cookieEntity can't be null/empty!");
+        }
+
+        cookieEntity.setMaxAge(0);// 设置为0为立即删除该Cookie
         addCookie(cookieEntity, response);
 
-        LOGGER.debug("deleteCookie,cookieName:[{}]", cookieName);
+        LOGGER.debug("deleteCookie,cookieName:[{}]", cookieEntity.getName());
     }
 
     /**
@@ -236,6 +262,7 @@ public final class CookieUtil{
         //HttpOnly cookies are not supposed to be exposed to client-side scripting code, 
         //and may therefore help mitigate certain kinds of cross-site scripting attacks.
         cookie.setHttpOnly(cookieEntity.getHttpOnly()); //@since Servlet 3.0
+
         if (LOGGER.isDebugEnabled()){
             LOGGER.debug("input cookieEntity info:[{}],response.addCookie", JsonUtil.format(cookieEntity));
         }

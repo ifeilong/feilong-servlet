@@ -52,7 +52,7 @@ import com.feilong.core.date.TimeInterval;
  * <tr valign="top">
  * <td>正数(positive value)</td>
  * <td>则表示该cookie会在max-age秒之后自动失效。<br>
- * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+ * 浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
  * </tr>
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>负数(negative value)</td>
@@ -67,6 +67,69 @@ import com.feilong.core.date.TimeInterval;
  * </blockquote>
  * 
  * 
+ * <h3>关于 path:</h3>
+ * 
+ * <blockquote>
+ * <p>
+ * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+ * </p>
+ * 
+ * <h3>示例:</h3>
+ * 
+ * <blockquote>
+ * <p>
+ * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+ * 但不能被www.xxxx.com/d.html访问。
+ * </p>
+ * </blockquote>
+ * 
+ * <p>
+ * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+ * </p>
+ * <p>
+ * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
+ * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+ * </p>
+ * 
+ * 
+ * <h3>注意点:</h3>
+ * 
+ * <blockquote>
+ * <ol>
+ * <li>path 属性值有大小写之分，应与浏览器中的地址栏的输入一致</li>
+ * <li>path 不可读;<br>
+ * 同 expires一样，path 只可写，不可读。</li>
+ * <li>path 不可更改;<br>
+ * 同 expires 不一样,如果我们试图更改 path，那么实际上我们是另外写了一个 cookie，而不是更改了 path 值。</li>
+ * <li>path 权限有继承性;<br>
+ * 假如指定了 /test/ 目录有权限读取某 cookie，那么 /test/ 之下的目录 /test/t/ 也有权限读取该 cookie。</li>
+ * </ol>
+ * </blockquote>
+ * 
+ * </blockquote>
+ * 
+ * 
+ * <h3>关于 domain:</h3>
+ * 
+ * <blockquote>
+ * <p>
+ * 和路径类似,主机名是指同一个域下的不同主机,例如：www.google.com和gmail.google.com就是两个不同的主机名。<br>
+ * 默认情况下,一个主机中创建的cookie在另一个主机下是不能被访问的,<br>
+ * 但可以通过domain参数来实现对其的控制,<br>
+ * 其语法格式为： document.cookie="name=value; domain=cookieDomain";
+ * </p>
+ * 
+ * <h3>示例:</h3>
+ * 
+ * <blockquote>
+ * <p>
+ * 以google为例,要实现跨主机访问,可以写为： document.cookie="name=value;domain=.google.com"; <br>
+ * 这样,所有google.com下的主机都可以访问该cookie。
+ * </p>
+ * </blockquote>
+ * 
+ * </blockquote>
+ * 
  * @author feilong
  * @version 1.0.0 2010-6-24 上午08:07:11
  * @since 1.0.0
@@ -76,9 +139,8 @@ public class CookieEntity implements Serializable{
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -5580364261848277853L;
 
-    //     The value of the cookie itself.
     /** name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号. */
-    private String            name;                                    //NAME= ... "$Name" style is reserved
+    private String            name;
 
     /** value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号. */
     private String            value;
@@ -95,7 +157,7 @@ public class CookieEntity implements Serializable{
      * <tr valign="top">
      * <td>正数(positive value)</td>
      * <td>则表示该cookie会在max-age秒之后自动失效。<br>
-     * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     * 浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
      * </tr>
      * <tr valign="top" style="background-color:#eeeeff">
      * <td>负数(negative value)</td>
@@ -126,12 +188,49 @@ public class CookieEntity implements Serializable{
     private String            comment;
 
     /**
-     * ;Domain=VALUE ... domain that sees cookie
+     * ;Domain=VALUE ... domain that sees cookie.
+     * 
+     * <p>
+     * 和路径类似,主机名是指同一个域下的不同主机,例如：www.google.com和gmail.google.com就是两个不同的主机名。<br>
+     * 默认情况下,一个主机中创建的cookie在另一个主机下是不能被访问的,<br>
+     * 但可以通过domain参数来实现对其的控制,<br>
+     * 其语法格式为： document.cookie="name=value; domain=cookieDomain";
+     * </p>
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 以google为例,要实现跨主机访问,可以写为： document.cookie="name=value;domain=.google.com"; <br>
+     * 这样,所有google.com下的主机都可以访问该cookie。
+     * </p>
+     * </blockquote>
      */
     private String            domain;
 
     /**
      * ;Path=VALUE ... URLs that see the cookie
+     * <p>
+     * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+     * </p>
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+     * 但不能被www.xxxx.com/d.html访问。
+     * </p>
+     * </blockquote>
+     * 
+     * <p>
+     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+     * </p>
+     * 
+     * <p>
+     * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
+     * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+     * </p>
      */
     private String            path;
 
@@ -194,7 +293,7 @@ public class CookieEntity implements Serializable{
      *            <tr valign="top">
      *            <td>正数(positive value)</td>
      *            <td>则表示该cookie会在max-age秒之后自动失效。<br>
-     *            浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     *            浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
      *            </tr>
      *            <tr valign="top" style="background-color:#eeeeff">
      *            <td>负数(negative value)</td>
@@ -267,7 +366,7 @@ public class CookieEntity implements Serializable{
      * <tr valign="top">
      * <td>正数(positive value)</td>
      * <td>则表示该cookie会在max-age秒之后自动失效。<br>
-     * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     * 浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
      * </tr>
      * <tr valign="top" style="background-color:#eeeeff">
      * <td>负数(negative value)</td>
@@ -297,7 +396,7 @@ public class CookieEntity implements Serializable{
      * <tr valign="top">
      * <td>正数(positive value)</td>
      * <td>则表示该cookie会在max-age秒之后自动失效。<br>
-     * 浏览器会将max-age为正数的cookie持久化，即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑，只要还在max-age秒之前，登录网站时该cookie仍然有效 。</td>
+     * 浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
      * </tr>
      * <tr valign="top" style="background-color:#eeeeff">
      * <td>负数(negative value)</td>
@@ -337,8 +436,24 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * 获得 ;Domain=VALUE .
-     *
+     * 获得 ;Domain=VALUE.
+     * 
+     * <p>
+     * 和路径类似,主机名是指同一个域下的不同主机,例如：www.google.com和gmail.google.com就是两个不同的主机名。<br>
+     * 默认情况下,一个主机中创建的cookie在另一个主机下是不能被访问的,<br>
+     * 但可以通过domain参数来实现对其的控制,<br>
+     * 其语法格式为： document.cookie="name=value; domain=cookieDomain";
+     * </p>
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 以google为例,要实现跨主机访问,可以写为： document.cookie="name=value;domain=.google.com"; <br>
+     * 这样,所有google.com下的主机都可以访问该cookie。
+     * </p>
+     * </blockquote>
+     * 
      * @return the domain
      */
     public String getDomain(){
@@ -347,7 +462,23 @@ public class CookieEntity implements Serializable{
 
     /**
      * 设置 ;Domain=VALUE .
-     *
+     * 
+     * <p>
+     * 和路径类似,主机名是指同一个域下的不同主机,例如：www.google.com和gmail.google.com就是两个不同的主机名。<br>
+     * 默认情况下,一个主机中创建的cookie在另一个主机下是不能被访问的,<br>
+     * 但可以通过domain参数来实现对其的控制,<br>
+     * 其语法格式为： document.cookie="name=value; domain=cookieDomain";
+     * </p>
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 以google为例,要实现跨主机访问,可以写为： document.cookie="name=value;domain=.google.com"; <br>
+     * 这样,所有google.com下的主机都可以访问该cookie。
+     * </p>
+     * </blockquote>
+     * 
      * @param domain
      *            the domain to set
      */
@@ -358,6 +489,27 @@ public class CookieEntity implements Serializable{
     /**
      * 获得 ;Path=VALUE .
      *
+     * <p>
+     * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+     * </p>
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+     * 但不能被www.xxxx.com/d.html访问。
+     * </p>
+     * </blockquote>
+     * 
+     * <p>
+     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+     * </p>
+     * <p>
+     * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
+     * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+     * </p>
+     * 
      * @return the path
      */
     public String getPath(){
@@ -367,6 +519,25 @@ public class CookieEntity implements Serializable{
     /**
      * 设置 ;Path=VALUE .
      *
+     * <p>
+     * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+     * </p>
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+     * 但不能被www.xxxx.com/d.html访问。
+     * </p>
+     * </blockquote>
+     * 
+     * <p>
+     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";<br>
+     * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
+     * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+     * </p>
+     * 
      * @param path
      *            the path to set
      */
