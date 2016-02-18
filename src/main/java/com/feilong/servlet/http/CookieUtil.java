@@ -93,16 +93,18 @@ public final class CookieUtil{
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
 
+    //********************************************************************
+
     /**
      * 取到Cookie值.
      * 
      * @param request
      *            HttpServletRequest
      * @param cookieName
-     *            cookie名字,{@link javax.servlet.http.Cookie#getName()}
-     * @return 如果取不到cookie,返回 <code>null</code>;否则,返回 {@link javax.servlet.http.Cookie#getValue()}
+     *            cookie名字,{@link Cookie#getName()}
+     * @return 如果取不到cookie,返回 <code>null</code>;否则,返回 {@link Cookie#getValue()}
      * @see #getCookie(HttpServletRequest, String)
-     * @see javax.servlet.http.Cookie#getValue()
+     * @see Cookie#getValue()
      */
     public static String getCookieValue(HttpServletRequest request,String cookieName){
         Cookie cookie = getCookie(request, cookieName);
@@ -112,11 +114,15 @@ public final class CookieUtil{
     /**
      * 获得cookie.
      * 
+     * <p>
+     * 循环遍历 {@link HttpServletRequest#getCookies()},找到 {@link Cookie#getName()}是 <code>cookieName</code> 的 {@link Cookie}
+     * </p>
+     * 
      * @param request
      *            the request
      * @param cookieName
      *            the cookie name
-     * @return the cookie
+     * @return 如果 {@link HttpServletRequest#getCookies()}是 null,则返回null;如果通过 <code>cookieName</code> 找不到指定的 {@link Cookie},也返回null
      * @see javax.servlet.http.HttpServletRequest#getCookies()
      * @see javax.servlet.http.Cookie#getName()
      */
@@ -165,11 +171,14 @@ public final class CookieUtil{
         return map;
     }
 
+    //*********************************************************************************
+
     /**
      * 删除cookie.
      * 
      * <p style="color:red">
-     * 删除 Cookie的时候,path必须保持一致
+     * 删除Cookie的时候,path必须保持一致;<br>
+     * 如果path不一致,请使用 {@link CookieUtil#deleteCookie(CookieEntity, HttpServletResponse)}
      * </p>
      * 
      * @param cookieName
@@ -206,6 +215,29 @@ public final class CookieUtil{
         addCookie(cookieEntity, response);
 
         LOGGER.debug("deleteCookie,cookieName:[{}]", cookieEntity.getName());
+    }
+
+    //****************************************************************************************************
+
+    /**
+     * 创建个cookie.
+     *
+     * @param cookieName
+     *            the cookie name
+     * @param value
+     *            the value
+     * @param response
+     *            response
+     * @see CookieUtil#addCookie(CookieEntity, HttpServletResponse)
+     * @since 1.5.0
+     */
+    public static void addCookie(String cookieName,String value,HttpServletResponse response){
+        if (Validator.isNullOrEmpty(cookieName)){
+            throw new NullPointerException("cookieName can't be null/empty!");
+        }
+
+        CookieEntity cookieEntity = new CookieEntity(cookieName, value);
+        addCookie(cookieEntity, response);
     }
 
     /**
