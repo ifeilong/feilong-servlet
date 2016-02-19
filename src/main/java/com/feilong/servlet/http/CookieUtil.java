@@ -242,6 +242,29 @@ public final class CookieUtil{
 
     /**
      * 创建个cookie.
+     *
+     * @param cookieName
+     *            the cookie name
+     * @param value
+     *            the value
+     * @param maxAge
+     *            the max age
+     * @param response
+     *            response
+     * @see CookieUtil#addCookie(CookieEntity, HttpServletResponse)
+     * @since 1.5.0
+     */
+    public static void addCookie(String cookieName,String value,int maxAge,HttpServletResponse response){
+        if (Validator.isNullOrEmpty(cookieName)){
+            throw new NullPointerException("cookieName can't be null/empty!");
+        }
+
+        CookieEntity cookieEntity = new CookieEntity(cookieName, value, maxAge);
+        addCookie(cookieEntity, response);
+    }
+
+    /**
+     * 创建个cookie.
      * 
      * @param cookieEntity
      *            cookieEntity
