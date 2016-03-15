@@ -191,8 +191,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             //Returns a java.security.Principal object containing the name of the current authenticated user. If the user has not been authenticated, the method returns null.
             aboutElseMap.put("request.getUserPrincipal()", request.getUserPrincipal());
 
-            //          aboutElseMap.put("request.isUserInRole(role)", request.isUserInRole(role));
-
             map.put("about Else Map", aboutElseMap);
         }
 
@@ -253,10 +251,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
                 map.put("includeInfos", includeMap);
             }
         }
-
-        // 避免json渲染出错，只放 key
-        // attribute 不属于 log 范围之内, 如果有需要 自行调用 getAttributeMap(request)
-        // map.put("attributeKeys", getAttributeMap(request).keySet());
 
         return map;
     }

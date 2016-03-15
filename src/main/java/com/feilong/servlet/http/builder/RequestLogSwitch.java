@@ -444,6 +444,8 @@ public abstract class RequestLogSwitch implements Serializable{
          *
          * @return the singleton
          */
+        @SuppressWarnings("static-method")
+        //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
         private Object readResolve(){
             return RequestLogSwitch.FULL;
         }
@@ -471,6 +473,8 @@ public abstract class RequestLogSwitch implements Serializable{
          *
          * @return the singleton
          */
+        @SuppressWarnings("static-method")
+        //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
         private Object readResolve(){
             return RequestLogSwitch.NORMAL;
         }
@@ -499,6 +503,8 @@ public abstract class RequestLogSwitch implements Serializable{
          *
          * @return the singleton
          */
+        @SuppressWarnings("static-method")
+        //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
         private Object readResolve(){
             return RequestLogSwitch.NORMAL_WITH_IDENTITY;
         }
@@ -529,6 +535,8 @@ public abstract class RequestLogSwitch implements Serializable{
          *
          * @return the singleton
          */
+        @SuppressWarnings("static-method")
+        //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
         private Object readResolve(){
             return RequestLogSwitch.NORMAL_WITH_IDENTITY_INCLUDE_FORWARD;
         }
