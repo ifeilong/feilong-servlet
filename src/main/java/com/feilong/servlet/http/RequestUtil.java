@@ -288,7 +288,7 @@ public final class RequestUtil{
      * 获得参数 and 单值map.
      * 
      * <p>
-     * 由于 j2ee {@link ServletRequest#getParameterMap()}返回的map 值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request)，不便于后续处理
+     * 由于 j2ee{@link ServletRequest#getParameterMap()}返回的map值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request)，不便于后续处理
      * </p>
      * 
      * @param request
@@ -304,16 +304,35 @@ public final class RequestUtil{
     }
 
     /**
-     * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
+     * 将 {@link HttpServletRequest} 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
      * 
      * <p>
-     * 使用默认的 {@link RequestLogSwitch}
+     * 默认使用 {@link RequestLogSwitch#NORMAL}
      * </p>
+     * 
+     * <h3>示例:</h3>
+     * <blockquote>
+     * 
+     * <pre>
+     * Example 1:
+     * {@code Map<String, Object> requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request);}
+     * LOGGER.debug("class:[{}],request info:{}", getClass().getSimpleName(), JsonUtil.format(requestInfoMapForLog);
+     * 
+     * 输出结果:
+    19:28:37 DEBUG (AbstractWriteContentTag.java:63) execute() - class:[HttpConcatTag],request info:    {
+        "requestFullURL": "/member/login.htm?a=b",
+        "request.getMethod": "GET",
+        "parameterMap": {"a": ["b"]}
+    }
+     * </pre>
+     * 
+     * </blockquote>
      * 
      * @param request
      *            the request
      * @return the request string for log
      * @see RequestLogSwitch
+     * @see #getRequestInfoMapForLog(HttpServletRequest, RequestLogSwitch)
      */
     public static Map<String, Object> getRequestInfoMapForLog(HttpServletRequest request){
         return getRequestInfoMapForLog(request, RequestLogSwitch.NORMAL);
@@ -321,6 +340,27 @@ public final class RequestUtil{
 
     /**
      * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
+     * 
+     * <h3>示例:</h3>
+     * <blockquote>
+     * 
+     * <pre>
+     * Example 1:
+     * {@code 
+     * RequestLogSwitch requestLogSwitch = RequestLogSwitch.NORMAL;
+     * Map<String, Object> requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request, requestLogSwitch);
+     * }
+     * LOGGER.debug("class:[{}],request info:{}", getClass().getSimpleName(), JsonUtil.format(requestInfoMapForLog);
+     * 
+     * 输出结果:
+    19:28:37 DEBUG (AbstractWriteContentTag.java:63) execute() - class:[HttpConcatTag],request info:    {
+        "requestFullURL": "/member/login.htm?a=b",
+        "request.getMethod": "GET",
+        "parameterMap": {"a": ["b"]}
+    }
+     * </pre>
+     * 
+     * </blockquote>
      * 
      * @param request
      *            the request
@@ -346,15 +386,19 @@ public final class RequestUtil{
      * @param name
      *            the name
      * @return the attribute
+     * @see javax.servlet.ServletRequest#getAttribute(String)
      * @since 1.3.0
      */
     @SuppressWarnings("unchecked")
     public static <T> T getAttribute(HttpServletRequest request,String name){
+        if (Validator.isNullOrEmpty(name)){
+            throw new NullPointerException("name can't be null/empty!");
+        }
         return (T) request.getAttribute(name);
     }
 
     /**
-     * 取到request里面的属性值,<span style="color:green">自动转换类型</span>.
+     * 取到request里面的属性值,<span style="color:green">转换类型成指定的参数 <code>klass</code></span>.
      *
      * @param <T>
      *            the generic type
@@ -363,9 +407,10 @@ public final class RequestUtil{
      * @param name
      *            属性名称
      * @param klass
-     *            the klass
+     *            需要被转换成的类型
      * @return the attribute
      * @see com.feilong.core.bean.ConvertUtil#convert(Object, Class)
+     * @see #getAttribute(HttpServletRequest, String)
      * @since 1.3.0
      */
     public static <T> T getAttribute(HttpServletRequest request,String name,Class<T> klass){
@@ -408,7 +453,7 @@ public final class RequestUtil{
      * @return 获得请求的?部分前面的地址
      */
     public static String getRequestURL(HttpServletRequest request){
-        String forwardRequestUri = (String) request.getAttribute(RequestAttributes.FORWARD_REQUEST_URI);
+        String forwardRequestUri = getAttribute(request, RequestAttributes.FORWARD_REQUEST_URI);
         return Validator.isNotNullOrEmpty(forwardRequestUri) ? forwardRequestUri : request.getRequestURL().toString();
     }
 
@@ -420,7 +465,7 @@ public final class RequestUtil{
      * @return the servlet path
      */
     public static String getOriginatingServletPath(HttpServletRequest request){
-        String servletPath = (String) request.getAttribute(RequestAttributes.FORWARD_SERVLET_PATH);
+        String servletPath = getAttribute(request, RequestAttributes.FORWARD_SERVLET_PATH);
         return Validator.isNotNullOrEmpty(servletPath) ? servletPath : request.getServletPath();
     }
 
@@ -616,10 +661,10 @@ public final class RequestUtil{
         //ip header可控制的, 以后如果有新增 加在这里(比如 多CDN 可能是cdn_real_ip),而不是通过传参的形式
         //这样做的好处是,对开发透明
         String[] ipHeaderNames = {
-                HttpHeaders.X_FORWARDED_FOR,
-                HttpHeaders.X_REAL_IP,
-                HttpHeaders.PROXY_CLIENT_IP,
-                HttpHeaders.WL_PROXY_CLIENT_IP };
+                                   HttpHeaders.X_FORWARDED_FOR,
+                                   HttpHeaders.X_REAL_IP,
+                                   HttpHeaders.PROXY_CLIENT_IP,
+                                   HttpHeaders.WL_PROXY_CLIENT_IP };
 
         //先在代理里面找一找
         for (int i = 0; i < ipHeaderNames.length; ++i){
@@ -756,7 +801,7 @@ public final class RequestUtil{
         Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
-            Object attributeValue = request.getAttribute(name);
+            Object attributeValue = getAttribute(request, name);
             map.put(name, attributeValue);
         }
         return map;

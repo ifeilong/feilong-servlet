@@ -54,10 +54,30 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.2, RFC 2616 (HTTP/1.1) Section 14.8 */
     public static final String AUTHORIZATION               = "Authorization";
 
-    /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.9 */
+    /**
+     * <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.9
+     * 
+     * <p>
+     * 在HTTP/1.1这个标准中引入了一个新的字段Cache-control。Cache-control中有一条指令，叫max-age。<br>
+     * Age表示这个Response已经存活了多久了。
+     * 而max-age表示response最大的存活时间。所以，max-age表明了这条被cache的消息在多长时间段内是有效的。
+     * </p>
+     * 
+     * <p>
+     * Example 1: {@code response.setHeader("Cache-Control", "max-age=3600");}
+     * </p>
+     * 
+     * <p style="color:red">
+     * 如果返回的消息中，同时出现了Cache-control: max-age和Expires，那么以Cache-control: max-age为准，Expires的声明将会被覆盖掉。
+     * </p>
+     * 
+     * @see #EXPIRES
+     */
     public static final String CACHE_CONTROL               = "Cache-Control";
 
-    /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.10 */
+    /**
+     * <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.10
+     */
     public static final String CONNECTION                  = "Connection";
 
     /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.3, RFC 2616 (HTTP/1.1) Section 14.11 */
@@ -101,7 +121,7 @@ public final class HttpHeaders{
      *    content and/or the name extension(s) of the URI used to identify the resource. 
      *    If the media type remains unknown, the recipient SHOULD treat it as type "application/octet-stream".
      * </pre>
-     * */
+     */
     public static final String CONTENT_TYPE                = "Content-Type";
 
     /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.6, RFC 2616 (HTTP/1.1) Section 14.18 */
@@ -135,13 +155,38 @@ public final class HttpHeaders{
      * </p>
      * 
      * @see "org.springframework.web.filter.ShallowEtagHeaderFilter"
-     * */
+     */
     public static final String ETAG                        = "ETag";
 
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.20 */
     public static final String EXPECT                      = "Expect";
 
-    /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.7, RFC 2616 (HTTP/1.1) Section 14.21 */
+    /**
+     * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.7, RFC 2616 (HTTP/1.1) Section 14.21
+     * <p>
+     * Expires早就存在于HTTP/1.0，是由服务器指定的Response过期时间。<br>
+     * 表明在Expires这个时间点之前，返回的response都是足够新的或者说是有效的，Client无需再向Server发送请求。<br>
+     * 
+     * Expires表示的是一个 <span style="color:red">绝对的时刻</span>，所以每次返回的Expires的时间极有可能都不一样。
+     * </p>
+     * 
+     * <p>
+     * 比如 :Example 1: <code>response.setDateHeader("Expires", now + 3600000);</code>
+     * </p>
+     * 
+     * <p>
+     * 需要注意的是，这里的Expires指示告诉Client如果这个response没有过期，没有必要再次访问。<br>
+     * 但这并不意味着response过期之前，Client不能向Server发送请求。<br>
+     * 同时，Expires也不意味在response过期以后，Client需要主动的去Server取最新的消息。
+     * </p>
+     * 
+     * <p style="color:red">
+     * 如果返回的消息中，同时出现了Cache-control: max-age和Expires，那么以Cache-control: max-age为准，Expires的声明将会被覆盖掉。
+     * </p>
+     * 
+     * @see #CACHE_CONTROL
+     * 
+     */
     public static final String EXPIRES                     = "Expires";
 
     /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.8, RFC 2616 (HTTP/1.1) Section 14.22 */
@@ -168,7 +213,7 @@ public final class HttpHeaders{
      * 当用户第二次再请求同样的 url 的时候，浏览器会将last-modified 的值附加到 if-modified-since 这个 http 请求头中，服务器端接收到请求后，首先 check 一下 if-modified-since 头信息中的时间是否与当前
      * url 对应的资源的最后修改时间一致，如果一致，则服务器返回 http 304 状态码，这样当浏览器收到 http 304 状态码了以后，就会利用本地缓存的内容来完成对本次用户操作的响应。
      * </p>
-     * */
+     */
     public static final String IF_MODIFIED_SINCE           = "If-Modified-Since";
 
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.26 */
