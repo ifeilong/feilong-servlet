@@ -180,15 +180,15 @@ public final class SessionUtil{
      * </blockquote>
      * 
      * <p>
-     * 该方法通常在用户登陆逻辑里面调用,要确保登陆前和登陆后的session不相同,(确切的说,登陆后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话，那么这就是一个固定SessionID的漏洞（详见《黑客攻防技术宝典-web实战》
-     * 第七章）
+     * 该方法通常在用户登陆逻辑里面调用,要确保登陆前和登陆后的session不相同,(确切的说,登陆后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话，那么这就是一个固定SessionID的漏洞(详见《黑客攻防技术宝典-web实战》
+     * 第七章)
      * </p>
      * 
      * <h3>简单的漏洞攻击:</h3>
      * 
      * <blockquote>
      * <ul>
-     * <li>第一步，需要获取被攻击用户的JSESSIONID，可以通过给被攻击用户一个伪造的JSESSIONID，使其用该JESSIONID登录，获取用户登录后的JESSIONID。（这里作为示范，直接从浏览器中获取）</li>
+     * <li>第一步，需要获取被攻击用户的JSESSIONID，可以通过给被攻击用户一个伪造的JSESSIONID，使其用该JESSIONID登录，获取用户登录后的JESSIONID。(这里作为示范，直接从浏览器中获取)</li>
      * <li>第二步，等被攻击用户登录，是JESSIONID成为已登录状态。</li>
      * <li>第三步，伪造请求，访问登录后的资源。在用户登录使该JSESSIONID称为已登录的ID后，攻击者就可以利用这个ID伪造请求访问登录后的资源。</li>
      * </ul>

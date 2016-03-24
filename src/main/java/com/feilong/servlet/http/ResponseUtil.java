@@ -388,7 +388,7 @@ public final class ResponseUtil{
         //contentType = "application/force-download";//,php强制下载application/force-download,将发送HTTP 标头您的浏览器并告诉它下载，而不是在浏览器中运行的文件
         //application/x-download
 
-        //.*（ 二进制流，不知道下载文件类型）   application/octet-stream
+        //.*( 二进制流，不知道下载文件类型)   application/octet-stream
         return MimeType.BIN.getMime();
         //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
         //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).

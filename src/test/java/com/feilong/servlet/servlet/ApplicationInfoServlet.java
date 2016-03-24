@@ -31,7 +31,7 @@ import com.feilong.core.tools.jsonlib.JsonUtil;
 import com.feilong.servlet.ServletContextUtil;
 
 /**
- * 应用信息（用于监控查看）.
+ * 应用信息(用于监控查看).
  * 
  * @author feilong
  * @version 1.0.8 2014年11月23日 上午3:51:21
