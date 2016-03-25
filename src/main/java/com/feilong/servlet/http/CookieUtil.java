@@ -282,26 +282,11 @@ public final class CookieUtil{
      */
     public static void addCookie(CookieEntity cookieEntity,HttpServletResponse response){
 
-        if (Validator.isNullOrEmpty(cookieEntity)){
-            throw new NullPointerException("cookieEntity can't be null/empty!");
-        }
+        //校验
+        validateCookieEntity(cookieEntity);
 
         String cookieName = cookieEntity.getName();
-
-        if (Validator.isNullOrEmpty(cookieName)){
-            throw new NullPointerException("cookieName can't be null/empty!");
-        }
-
         String value = cookieEntity.getValue();
-
-        //如果长度超过4000,浏览器可能不支持
-        if (Validator.isNotNullOrEmpty(value) && value.length() > 4000){
-            LOGGER.warn(
-                            "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}",
-                            value,
-                            value.length(),
-                            JsonUtil.format(cookieEntity));
-        }
 
         //****************************************************************************
         Cookie cookie = new Cookie(cookieName, value);
@@ -339,5 +324,36 @@ public final class CookieUtil{
             LOGGER.debug("input cookieEntity info:[{}],response.addCookie", JsonUtil.format(cookieEntity));
         }
         response.addCookie(cookie);
+    }
+
+    /**
+     * Validate cookie entity.
+     *
+     * @param cookieEntity
+     *            the cookie entity
+     * @since 1.5.0
+     */
+    private static void validateCookieEntity(CookieEntity cookieEntity){
+
+        if (Validator.isNullOrEmpty(cookieEntity)){
+            throw new NullPointerException("cookieEntity can't be null/empty!");
+        }
+
+        String cookieName = cookieEntity.getName();
+
+        if (Validator.isNullOrEmpty(cookieName)){
+            throw new NullPointerException("cookieName can't be null/empty!");
+        }
+
+        String value = cookieEntity.getValue();
+
+        //如果长度超过4000,浏览器可能不支持
+        if (Validator.isNotNullOrEmpty(value) && value.length() > 4000){
+            LOGGER.warn(
+                            "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}",
+                            value,
+                            value.length(),
+                            JsonUtil.format(cookieEntity));
+        }
     }
 }

@@ -20,13 +20,19 @@ package com.feilong.servlet.http.entity;
  * Constants enumerating the HTTP headers.
  * 
  * <p>
- * All headers defined in RFC1945 (HTTP/1.0), RFC2616 (HTTP/1.1), and RFC2518 (WebDAV) are listed.
+ * All headers defined in {@link <a href="http://tools.ietf.org/html/rfc1945">RFC 1945</a>} (HTTP/1.0),
+ * {@link <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a>} (HTTP/1.1), and
+ * {@link <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a>} (WebDAV) are listed.
  * </p>
  *
  * @see "org.apache.http.HttpHeaders"
  * @see "org.springframework.http.HttpHeaders"
  * @since 1.0.8
  * @since httpcore 4.1
+ * 
+ * @see <a href="http://tools.ietf.org/html/rfc1945">RFC1945</a>
+ * @see <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a>
+ * @see <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a>
  */
 public final class HttpHeaders{
 
@@ -279,7 +285,14 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.42 */
     public static final String UPGRADE                     = "Upgrade";
 
-    /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.15, RFC 2616 (HTTP/1.1) Section 14.43 */
+    /**
+     * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.15, RFC 2616 (HTTP/1.1) Section 14.43
+     * <p>
+     * 它是一个特殊字符串头，使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
+     * </p>
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc2616#section-14.43">14.43 User-Agent</a>
+     */
     public static final String USER_AGENT                  = "User-Agent";
 
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.44 */

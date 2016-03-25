@@ -331,7 +331,7 @@ public final class ResponseUtil{
         //JSP中调用了out.flush()或response.flushbuffer() 
 
         //缓冲区的优点是：我们暂时不输出，直到确定某一情况时，才将写入缓冲区的数据输出到浏览器，否则就将缓冲区的数据取消。
-        //response.setBufferSize(10240);
+        //XXX 确认是否需要 response.setBufferSize(10240); ^_^
 
         //see org.apache.commons.io.IOUtils.copyLarge(InputStream, OutputStream) javadoc
         //This method buffers the input internally, so there is no need to use a BufferedInputStream
