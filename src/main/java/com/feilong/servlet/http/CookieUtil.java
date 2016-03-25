@@ -102,7 +102,8 @@ public final class CookieUtil{
      *            HttpServletRequest
      * @param cookieName
      *            cookie名字,{@link Cookie#getName()}
-     * @return 如果取不到cookie,返回 <code>null</code>;否则,返回 {@link Cookie#getValue()}
+     * @return 如果取不到cookie,返回 <code>null</code>;<br>
+     *         否则,返回 {@link Cookie#getValue()}
      * @see #getCookie(HttpServletRequest, String)
      * @see Cookie#getValue()
      */
@@ -122,7 +123,8 @@ public final class CookieUtil{
      *            the request
      * @param cookieName
      *            the cookie name
-     * @return 如果 {@link HttpServletRequest#getCookies()}是 null,则返回null;如果通过 <code>cookieName</code> 找不到指定的 {@link Cookie},也返回null
+     * @return 如果 {@link HttpServletRequest#getCookies()}是 null,则返回null;<br>
+     *         如果通过 <code>cookieName</code> 找不到指定的 {@link Cookie},也返回null
      * @see javax.servlet.http.HttpServletRequest#getCookies()
      * @see javax.servlet.http.Cookie#getName()
      */
