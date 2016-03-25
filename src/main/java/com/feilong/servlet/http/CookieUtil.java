@@ -227,7 +227,10 @@ public final class CookieUtil{
      * @param cookieName
      *            the cookie name
      * @param value
-     *            the value
+     *            cookie的值,更多说明,参见 {@link CookieEntity#getValue()}
+     *            <p style="color:red">
+     *            注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     *            </p>
      * @param response
      *            response
      * @see CookieUtil#addCookie(CookieEntity, HttpServletResponse)
@@ -248,9 +251,12 @@ public final class CookieUtil{
      * @param cookieName
      *            the cookie name
      * @param value
-     *            the value
+     *            cookie的值,更多说明,参见 {@link CookieEntity#getValue()}
+     *            <p style="color:red">
+     *            注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     *            </p>
      * @param maxAge
-     *            the max age
+     *            设置以秒计的cookie的最大存活时间,可以使用 {@link com.feilong.core.date.TimeInterval TimeInterval}相关常量
      * @param response
      *            response
      * @see CookieUtil#addCookie(CookieEntity, HttpServletResponse)

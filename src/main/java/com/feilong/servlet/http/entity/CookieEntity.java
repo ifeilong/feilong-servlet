@@ -142,7 +142,13 @@ public class CookieEntity implements Serializable{
     /** name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号. */
     private String            name;
 
-    /** value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号. */
+    /**
+     * value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
+     * 
+     * <p style="color:red">
+     * 注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     * </p>
+     */
     private String            value;
 
     /**
@@ -210,8 +216,10 @@ public class CookieEntity implements Serializable{
 
     /**
      * ;Path=VALUE ... URLs that see the cookie
+     * 
      * <p>
-     * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+     * 当不设置值的时候(tomcat默认情况)，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。<br>
+     * <span style="color:red">为了方便使用cookie,特意将此默认值设置为/,表示所有页面均可读取改cookie</span>
      * </p>
      * 
      * <h3>示例:</h3>
@@ -221,7 +229,6 @@ public class CookieEntity implements Serializable{
      * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
      * 但不能被www.xxxx.com/d.html访问。
      * </p>
-     * </blockquote>
      * 
      * <p>
      * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
@@ -231,6 +238,8 @@ public class CookieEntity implements Serializable{
      * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
      * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
      * </p>
+     * </blockquote>
+     * 
      */
     private String            path             = "/";
 
@@ -269,6 +278,9 @@ public class CookieEntity implements Serializable{
      *            name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
      * @param value
      *            value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
+     *            <p style="color:red">
+     *            注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     *            </p>
      */
     public CookieEntity(String name, String value){
         this.name = name;
@@ -282,6 +294,9 @@ public class CookieEntity implements Serializable{
      *            name名称,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
      * @param value
      *            value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
+     *            <p style="color:red">
+     *            注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     *            </p>
      * @param maxAge
      *            设置存活时间,单位秒.
      *            <blockquote>
@@ -338,6 +353,9 @@ public class CookieEntity implements Serializable{
 
     /**
      * Gets the value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
+     * <p style="color:red">
+     * 注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     * </p>
      * 
      * @return the value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号
      */
@@ -347,6 +365,9 @@ public class CookieEntity implements Serializable{
 
     /**
      * Sets the value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号.
+     * <p style="color:red">
+     * 注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
+     * </p>
      * 
      * @param value
      *            the new value,名字和值都不能包含空白字符以及下列字符： @ : ;? , " / [ ] ( ) = 这些符号
@@ -489,8 +510,11 @@ public class CookieEntity implements Serializable{
     /**
      * 获得 ;Path=VALUE .
      *
+     * ;Path=VALUE ... URLs that see the cookie
+     * 
      * <p>
-     * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+     * 当不设置值的时候(tomcat默认情况)，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。<br>
+     * <span style="color:red">为了方便使用cookie,特意将此默认值设置为/,表示所有页面均可读取改cookie</span>
      * </p>
      * 
      * <h3>示例:</h3>
@@ -500,15 +524,16 @@ public class CookieEntity implements Serializable{
      * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
      * 但不能被www.xxxx.com/d.html访问。
      * </p>
-     * </blockquote>
      * 
      * <p>
      * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
      * </p>
+     * 
      * <p>
      * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
      * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
      * </p>
+     * </blockquote>
      * 
      * @return the path
      */
@@ -519,8 +544,11 @@ public class CookieEntity implements Serializable{
     /**
      * 设置 ;Path=VALUE .
      *
+     * ;Path=VALUE ... URLs that see the cookie
+     * 
      * <p>
-     * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+     * 当不设置值的时候(tomcat默认情况)，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。<br>
+     * <span style="color:red">为了方便使用cookie,特意将此默认值设置为/,表示所有页面均可读取改cookie</span>
      * </p>
      * 
      * <h3>示例:</h3>
@@ -530,13 +558,16 @@ public class CookieEntity implements Serializable{
      * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
      * 但不能被www.xxxx.com/d.html访问。
      * </p>
-     * </blockquote>
      * 
      * <p>
-     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";<br>
+     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+     * </p>
+     * 
+     * <p>
      * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
      * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
      * </p>
+     * </blockquote>
      * 
      * @param path
      *            the path to set
