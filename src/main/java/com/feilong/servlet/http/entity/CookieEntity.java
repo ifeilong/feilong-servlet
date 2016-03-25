@@ -232,7 +232,7 @@ public class CookieEntity implements Serializable{
      * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
      * </p>
      */
-    private String            path;
+    private String            path             = "/";
 
     /**
      * ;Secure ... e.g. use SSL
