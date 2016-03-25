@@ -20,9 +20,9 @@ import java.io.Serializable;
 import com.feilong.core.date.TimeInterval;
 
 /**
- * cookie实体.
+ * cookie实体,用于 {@link com.feilong.servlet.http.CookieUtil CookieUtil}.
  * 
- * <h3>关于 name && value字符说明:</h3>
+ * <h3>关于 {@link #name} && {@link #value}字符说明:</h3>
  * 
  * <blockquote>
  * <table border="1" cellspacing="0" cellpadding="4">
@@ -41,7 +41,31 @@ import com.feilong.core.date.TimeInterval;
  * </table>
  * </blockquote>
  * 
- * <h3>关于 maxAge</h3>
+ * <h3>关于cookie大小:</h3>
+ * <blockquote>
+ * 
+ * <p>
+ * 虽然,<a href="http://tools.ietf.org/html/rfc6265">RFC 2965</a>官方文档没有说key name的长度限制, 并且鼓励支持大的 cookie<br>
+ * 但是每个浏览器的实现不同,以下是最佳实践:
+ * </p>
+ * 
+ * <p>
+ * 
+ * <span style="color:red">整个cookie(包含name,value,expiry date 等等)大小限制在4K,如果你想兼容大部分的浏览器,建议name小于 4000 bytes,并且整个cookie小于 4093 bytes.</span>
+ * <br>
+ * 有一点要注意的,如果name太大的话,那么你删不掉cookie(至少在javascript是这样的).删除一个cookie是将它设置为过期.如果name太大(比如4090 bytes),发现我不能设置过期时间,我这么做只是个兴趣,并不是真的要有一个很大name的
+ * cookie!
+ * </p>
+ * 
+ * <p>
+ * 关于这个话题,如果你要兼容大部分的浏览器,那么一个domain下面不要超过50个cookies,并且每个domain下面cookie的总大小不要超过4093 bytes.<br>
+ * 也就是说,所有的cookie大小不要超过4093 bytes.<br>
+ * 也就是说,你可以有一个 1 个 4093 bytes大小的 cookie, 或者 2 个 2045 bytes 大小的cookies, etc.<br>
+ * </p>
+ * </blockquote>
+ * 
+ * 
+ * <h3>关于 {@link #maxAge}</h3>
  * 
  * <blockquote>
  * <table border="1" cellspacing="0" cellpadding="4">
@@ -52,7 +76,8 @@ import com.feilong.core.date.TimeInterval;
  * <tr valign="top">
  * <td>正数(positive value)</td>
  * <td>则表示该cookie会在max-age秒之后自动失效。<br>
- * 浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
+ * 浏览器会将max-age为正数的cookie持久化,即写到对应的cookie文件中。<br>
+ * 无论客户关闭了浏览器还是电脑,只要还在max-age秒之前,登录网站时该cookie仍然有效 。</td>
  * </tr>
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>负数(negative value)</td>
@@ -63,11 +88,15 @@ import com.feilong.core.date.TimeInterval;
  * <td>表示删除</td>
  * </tr>
  * </table>
- * 默认和servlet 保持一致,为-1,表示不保存不持久化, 浏览器退出就删除,如果需要设置有效期,可以调用 {@link TimeInterval}类
+ * 
+ * <p>
+ * 默认和servlet 保持一致,为-1,表示不保存不持久化, 浏览器退出就删除;也就是所谓的会话Cookie<br>
+ * 如果需要设置有效期,可以调用 {@link TimeInterval}类
+ * </p>
  * </blockquote>
  * 
  * 
- * <h3>关于 path:</h3>
+ * <h3>关于 {@link #path}:</h3>
  * 
  * <blockquote>
  * <p>
@@ -109,7 +138,7 @@ import com.feilong.core.date.TimeInterval;
  * </blockquote>
  * 
  * 
- * <h3>关于 domain:</h3>
+ * <h3>关于 {@link #domain}:</h3>
  * 
  * <blockquote>
  * <p>
@@ -130,9 +159,26 @@ import com.feilong.core.date.TimeInterval;
  * 
  * </blockquote>
  * 
+ * <h3>关于 {@link #httpOnly}和 {@link #secure}:</h3>
+ * <blockquote>
+ * <ol>
+ * <li>secure属性是防止信息在传递的过程中被监听捕获后信息泄漏</li>
+ * <li>HttpOnly属性的目的是防止程序(JS脚本、Applet等),获取cookie后进行攻击。</li>
+ * </ol>
+ * 
+ * <p>
+ * 但是这两个属性,并不能解决cookie在本机出现的信息泄漏的问题(FireFox的插件FireBug能直接看到cookie的相关信息)
+ * </p>
+ * </blockquote>
+ * 
  * @author feilong
  * @version 1.0.0 2010-6-24 上午08:07:11
  * @since 1.0.0
+ * 
+ * @see <a href="http://tools.ietf.org/html/rfc6265">HTTP State Management Mechanism</a>
+ * @see <a href="http://stackoverflow.com/questions/640938/what-is-the-maximum-size-of-a-web-browsers-cookies-key">What is the maximum size
+ *      of a web browser cookie</a>
+ * @see <a href="http://browsercookielimits.squawky.net/">test page and size limits for common browsers</a>
  */
 public class CookieEntity implements Serializable{
 
@@ -183,6 +229,8 @@ public class CookieEntity implements Serializable{
      * </p>
      * 
      * @see javax.servlet.http.Cookie#setMaxAge(int)
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.2">4.1.2.2. The Max-Age Attribute</a>
      */
     private int               maxAge           = -1;
 
@@ -211,6 +259,8 @@ public class CookieEntity implements Serializable{
      * 这样,所有google.com下的主机都可以访问该cookie。
      * </p>
      * </blockquote>
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.3">4.1.2.3. The Domain Attribute</a>
      */
     private String            domain;
 
@@ -240,11 +290,33 @@ public class CookieEntity implements Serializable{
      * </p>
      * </blockquote>
      * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.4">4.1.2.4. The Path Attribute</a>
+     * 
      */
     private String            path             = "/";
 
     /**
-     * ;Secure ... e.g. use SSL
+     * ;Secure ... e.g. use SSL.
+     * 
+     * <p>
+     * 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+     * </p>
+     * 
+     * <p>
+     * secure值为true时，在http中是无效的; 在https中才有效
+     * </p>
+     * 
+     * <p>
+     * keep cookie communication limited to encrypted transmission, directing browsers to use cookies only
+     * via secure/encrypted connections.
+     * </p>
+     * <p>
+     * However, if a web server sets a cookie with a secure attribute from a non-secure connection, the
+     * cookie can still be intercepted when it is sent to the user by man-in-the-middle attacks. <br>
+     * Therefore, for maximum security, cookies with the Secure attribute should only be set over a secure connection.
+     * </p>
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.5">4.1.2.5. The Secure Attribute</a>
      */
     private boolean           secure;
 
@@ -261,6 +333,12 @@ public class CookieEntity implements Serializable{
 
     /**
      * Not in cookie specs, but supported by browsers.
+     * 
+     * <p>
+     * 如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。
+     * </p>
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.6">4.1.2.6. The HttpOnly Attribute</a>
      */
     private boolean           httpOnly;
 
@@ -401,6 +479,7 @@ public class CookieEntity implements Serializable{
      * </blockquote>
      * 
      * @return the maxAge
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.2">4.1.2.2. The Max-Age Attribute</a>
      */
     public int getMaxAge(){
         return maxAge;
@@ -432,6 +511,7 @@ public class CookieEntity implements Serializable{
      * 
      * @param maxAge
      *            the maxAge to set
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.2">4.1.2.2. The Max-Age Attribute</a>
      */
     public void setMaxAge(int maxAge){
         this.maxAge = maxAge;
@@ -476,6 +556,7 @@ public class CookieEntity implements Serializable{
      * </blockquote>
      * 
      * @return the domain
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.3">4.1.2.3. The Domain Attribute</a>
      */
     public String getDomain(){
         return domain;
@@ -502,6 +583,7 @@ public class CookieEntity implements Serializable{
      * 
      * @param domain
      *            the domain to set
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.3">4.1.2.3. The Domain Attribute</a>
      */
     public void setDomain(String domain){
         this.domain = domain;
@@ -536,6 +618,8 @@ public class CookieEntity implements Serializable{
      * </blockquote>
      * 
      * @return the path
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.4">4.1.2.4. The Path Attribute</a>
      */
     public String getPath(){
         return path;
@@ -571,25 +655,67 @@ public class CookieEntity implements Serializable{
      * 
      * @param path
      *            the path to set
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.4">4.1.2.4. The Path Attribute</a>
      */
     public void setPath(String path){
         this.path = path;
     }
 
     /**
-     * 获得 ;Secure .
+     * ;Secure ... e.g. use SSL.
+     * 
+     * <p>
+     * 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+     * </p>
+     * 
+     * <p>
+     * secure值为true时，在http中是无效的; 在https中才有效
+     * </p>
+     * 
+     * <p>
+     * keep cookie communication limited to encrypted transmission, directing browsers to use cookies only
+     * via secure/encrypted connections.
+     * </p>
+     * <p>
+     * However, if a web server sets a cookie with a secure attribute from a non-secure connection, the
+     * cookie can still be intercepted when it is sent to the user by man-in-the-middle attacks. <br>
+     * Therefore, for maximum security, cookies with the Secure attribute should only be set over a secure connection.
+     * </p>
      *
      * @return the secure
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.5">4.1.2.5. The Secure Attribute</a>
      */
     public boolean getSecure(){
         return secure;
     }
 
     /**
-     * 设置 ;Secure .
+     * ;Secure ... e.g. use SSL.
+     * 
+     * <p>
+     * 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+     * </p>
+     * 
+     * <p>
+     * secure值为true时，在http中是无效的; 在https中才有效
+     * </p>
+     * 
+     * <p>
+     * keep cookie communication limited to encrypted transmission, directing browsers to use cookies only
+     * via secure/encrypted connections.
+     * </p>
+     * <p>
+     * However, if a web server sets a cookie with a secure attribute from a non-secure connection, the
+     * cookie can still be intercepted when it is sent to the user by man-in-the-middle attacks. <br>
+     * Therefore, for maximum security, cookies with the Secure attribute should only be set over a secure connection.
+     * </p>
      *
      * @param secure
      *            the secure to set
+     * 
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.5">4.1.2.5. The Secure Attribute</a>
      */
     public void setSecure(boolean secure){
         this.secure = secure;
@@ -627,19 +753,29 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * 获得 not in cookie specs, but supported by browsers.
+     * Not in cookie specs, but supported by browsers.
+     * 
+     * <p>
+     * 如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。
+     * </p>
      *
      * @return the httpOnly
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.6">4.1.2.6. The HttpOnly Attribute</a>
      */
     public boolean getHttpOnly(){
         return httpOnly;
     }
 
     /**
-     * 设置 not in cookie specs, but supported by browsers.
+     * Not in cookie specs, but supported by browsers.
+     * 
+     * <p>
+     * 如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。
+     * </p>
      *
      * @param httpOnly
      *            the httpOnly to set
+     * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.6">4.1.2.6. The HttpOnly Attribute</a>
      */
     public void setHttpOnly(boolean httpOnly){
         this.httpOnly = httpOnly;

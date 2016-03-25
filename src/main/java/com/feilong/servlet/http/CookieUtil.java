@@ -272,7 +272,7 @@ public final class CookieUtil{
     }
 
     /**
-     * 创建个cookie.
+     * 创建cookie.
      * 
      * @param cookieEntity
      *            cookieEntity
@@ -293,6 +293,15 @@ public final class CookieUtil{
         }
 
         String value = cookieEntity.getValue();
+
+        //如果长度超过4000,浏览器可能不支持
+        if (Validator.isNotNullOrEmpty(value) && value.length() > 4000){
+            LOGGER.warn(
+                            "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}",
+                            value,
+                            value.length(),
+                            JsonUtil.format(cookieEntity));
+        }
 
         //****************************************************************************
         Cookie cookie = new Cookie(cookieName, value);
