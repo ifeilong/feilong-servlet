@@ -28,15 +28,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.date.DateExtensionUtil;
-import com.feilong.core.io.FileUtil;
-import com.feilong.core.io.IOWriteUtil;
-import com.feilong.core.io.MimeType;
-import com.feilong.core.io.MimeTypeUtil;
 import com.feilong.core.io.UncheckedIOException;
 import com.feilong.core.lang.CharsetType;
 import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.util.Validator;
+import com.feilong.io.FileUtil;
+import com.feilong.io.IOWriteUtil;
+import com.feilong.io.MimeType;
+import com.feilong.io.MimeTypeUtil;
 import com.feilong.servlet.http.entity.HttpHeaders;
 
 /**
@@ -85,8 +85,8 @@ public final class ResponseDownloadUtil{
      *            用来获取request相关信息 ,仅用来记录log
      * @param response
      *            the response
-     * @see com.feilong.core.io.FilenameUtil#getFileName(String)
-     * @see com.feilong.core.io.FileUtil#getFileInputStream(File)
+     * @see com.feilong.io.FilenameUtil#getFileName(String)
+     * @see com.feilong.io.FileUtil#getFileInputStream(File)
      * @see #download(String, InputStream, Number, HttpServletRequest, HttpServletResponse)
      * @since 1.4.1
      */
@@ -153,7 +153,7 @@ public final class ResponseDownloadUtil{
      * @see "org.springframework.http.MediaType"
      * @see "org.apache.http.HttpHeaders"
      * @see "org.springframework.http.HttpHeaders"
-     * @see com.feilong.core.io.MimeTypeUtil#getContentTypeByFileName(String)
+     * @see com.feilong.io.MimeTypeUtil#getContentTypeByFileName(String)
      * @see javax.servlet.ServletContext#getMimeType(String)
      */
     public static void download(
