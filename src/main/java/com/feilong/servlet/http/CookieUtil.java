@@ -23,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -209,9 +210,7 @@ public final class CookieUtil{
      * @since 1.5.0
      */
     public static void deleteCookie(CookieEntity cookieEntity,HttpServletResponse response){
-        if (Validator.isNullOrEmpty(cookieEntity)){
-            throw new NullPointerException("cookieEntity can't be null/empty!");
-        }
+        Validate.notNull(cookieEntity, "cookieEntity can't be null!");
 
         cookieEntity.setMaxAge(0);// 设置为0为立即删除该Cookie
         addCookie(cookieEntity, response);
@@ -237,9 +236,7 @@ public final class CookieUtil{
      * @since 1.5.0
      */
     public static void addCookie(String cookieName,String value,HttpServletResponse response){
-        if (Validator.isNullOrEmpty(cookieName)){
-            throw new NullPointerException("cookieName can't be null/empty!");
-        }
+        Validate.notEmpty(cookieName, "cookieName can't be null/empty!");
 
         CookieEntity cookieEntity = new CookieEntity(cookieName, value);
         addCookie(cookieEntity, response);
@@ -263,9 +260,7 @@ public final class CookieUtil{
      * @since 1.5.0
      */
     public static void addCookie(String cookieName,String value,int maxAge,HttpServletResponse response){
-        if (Validator.isNullOrEmpty(cookieName)){
-            throw new NullPointerException("cookieName can't be null/empty!");
-        }
+        Validate.notEmpty(cookieName, "cookieName can't be null/empty!");
 
         CookieEntity cookieEntity = new CookieEntity(cookieName, value, maxAge);
         addCookie(cookieEntity, response);
@@ -281,7 +276,6 @@ public final class CookieUtil{
      * @see "org.apache.catalina.connector.Response#generateCookieString(Cookie, boolean)"
      */
     public static void addCookie(CookieEntity cookieEntity,HttpServletResponse response){
-
         //校验
         validateCookieEntity(cookieEntity);
 
@@ -334,16 +328,10 @@ public final class CookieUtil{
      * @since 1.5.0
      */
     private static void validateCookieEntity(CookieEntity cookieEntity){
-
-        if (Validator.isNullOrEmpty(cookieEntity)){
-            throw new NullPointerException("cookieEntity can't be null/empty!");
-        }
+        Validate.notNull(cookieEntity, "cookieEntity can't be null!");
 
         String cookieName = cookieEntity.getName();
-
-        if (Validator.isNullOrEmpty(cookieName)){
-            throw new NullPointerException("cookieName can't be null/empty!");
-        }
+        Validate.notEmpty(cookieName, "cookieName can't be null/empty!");
 
         String value = cookieEntity.getValue();
 

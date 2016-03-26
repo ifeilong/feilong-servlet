@@ -31,6 +31,7 @@ import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -237,9 +238,8 @@ public final class RequestUtil{
      * @since 1.4.0
      */
     public static boolean containsParam(HttpServletRequest request,String paramName){
-        if (Validator.isNullOrEmpty(paramName)){
-            throw new NullPointerException("paramName can't be null/empty!");
-        }
+        Validate.notEmpty(paramName, "paramName can't be null/empty!");
+
         Enumeration<String> parameterNames = request.getParameterNames();
         return CollectionsUtil.contains(parameterNames, paramName);
     }
@@ -391,9 +391,7 @@ public final class RequestUtil{
      */
     @SuppressWarnings("unchecked")
     public static <T> T getAttribute(HttpServletRequest request,String name){
-        if (Validator.isNullOrEmpty(name)){
-            throw new NullPointerException("name can't be null/empty!");
-        }
+        Validate.notEmpty(name, "name can't be null/empty!");
         return (T) request.getAttribute(name);
     }
 
