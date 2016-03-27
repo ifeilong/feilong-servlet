@@ -97,32 +97,14 @@ public final class SessionUtil{
             return Collections.emptyMap();
         }
 
-        Date now = new Date();
-
         // 返回SESSION创建时JSP引擎为它设的惟一ID号 
         map.put("session.getId()", session.getId());
 
         //返回SESSION创建时间
-        long creationTime = session.getCreationTime();
-        Date creationTimeDate = new Date(creationTime);
-        map.put(
-                        "session.getCreationTime()",
-                        Slf4jUtil.formatMessage(
-                                        "[{}],format:[{}],intervalToNow:[{}]",
-                                        creationTime,
-                                        DateUtil.date2String(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
-                                        DateExtensionUtil.getIntervalForView(creationTimeDate, now)));
+        map.put("session.getCreationTime()", toPrettyMessage(session.getCreationTime()));
 
         //返回此SESSION里客户端最近一次请求时间 
-        long lastAccessedTime = session.getLastAccessedTime();
-        Date lastAccessedTimeDate = new Date(lastAccessedTime);
-        map.put(
-                        "session.getLastAccessedTime()",
-                        Slf4jUtil.formatMessage(
-                                        "[{}],format:[{}],intervalToNow:[{}]",
-                                        lastAccessedTime,
-                                        DateUtil.date2String(lastAccessedTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
-                                        DateExtensionUtil.getIntervalForView(lastAccessedTimeDate, now)));
+        map.put("session.getLastAccessedTime()", toPrettyMessage(session.getLastAccessedTime()));
 
         //返回两次请求间隔多长时间此SESSION被取消(in seconds) 
         //Returns the maximum time interval, in seconds, 
@@ -222,5 +204,23 @@ public final class SessionUtil{
             newSession.setAttribute(key, attributeMap.get(key));
         }
         return newSession;
+    }
+
+    /**
+     * To pretty message.
+     *
+     * @param creationTime
+     *            the creation time
+     * @return the string
+     * @since 1.5.2
+     */
+    private static String toPrettyMessage(long creationTime){
+        Date now = new Date();
+        Date creationTimeDate = new Date(creationTime);
+        return Slf4jUtil.formatMessage(
+                        "[{}],format:[{}],intervalToNow:[{}]",
+                        creationTime,
+                        DateUtil.date2String(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
+                        DateExtensionUtil.getIntervalForView(creationTimeDate, now));
     }
 }
