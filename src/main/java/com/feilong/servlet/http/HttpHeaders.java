@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.feilong.servlet.http.entity;
+package com.feilong.servlet.http;
 
 /**
  * Constants enumerating the HTTP headers.

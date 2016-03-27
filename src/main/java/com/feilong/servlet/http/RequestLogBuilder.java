@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.feilong.servlet.http.builder;
+package com.feilong.servlet.http;
 
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
@@ -28,15 +28,14 @@ import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.Validator;
 import com.feilong.core.lang.CharsetType;
 import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.ParamUtil;
-import com.feilong.core.tools.slf4j.Slf4jUtil;
 import com.feilong.core.util.MapUtil;
-import com.feilong.core.util.Validator;
-import com.feilong.servlet.http.CookieUtil;
-import com.feilong.servlet.http.RequestUtil;
-import com.feilong.servlet.http.entity.RequestAttributes;
+import com.feilong.servlet.http.entity.RequestIdentity;
+import com.feilong.servlet.http.entity.RequestLogSwitch;
+import com.feilong.tools.slf4j.Slf4jUtil;
 
 /**
  * The Class RequestLogBuilder.

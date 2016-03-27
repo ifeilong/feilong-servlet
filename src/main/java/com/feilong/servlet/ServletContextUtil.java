@@ -23,7 +23,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
-import com.feilong.core.util.Validator;
+import com.feilong.core.Validator;
 
 /**
  * {@link javax.servlet.ServletContext} 工具类.

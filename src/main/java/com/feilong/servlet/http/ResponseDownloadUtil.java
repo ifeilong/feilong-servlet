@@ -27,17 +27,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.UncheckedIOException;
+import com.feilong.core.Validator;
 import com.feilong.core.date.DateExtensionUtil;
-import com.feilong.core.io.UncheckedIOException;
 import com.feilong.core.lang.CharsetType;
 import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.URIUtil;
-import com.feilong.core.util.Validator;
 import com.feilong.io.FileUtil;
 import com.feilong.io.IOWriteUtil;
 import com.feilong.io.MimeType;
 import com.feilong.io.MimeTypeUtil;
-import com.feilong.servlet.http.entity.HttpHeaders;
 
 /**
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.
