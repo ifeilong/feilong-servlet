@@ -28,9 +28,9 @@ import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.CharsetType;
+import com.feilong.core.HttpMethodType;
 import com.feilong.core.Validator;
-import com.feilong.core.lang.CharsetType;
-import com.feilong.core.net.HttpMethodType;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;

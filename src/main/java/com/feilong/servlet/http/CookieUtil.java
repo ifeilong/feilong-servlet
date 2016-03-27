@@ -253,7 +253,7 @@ public final class CookieUtil{
      *            注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
      *            </p>
      * @param maxAge
-     *            设置以秒计的cookie的最大存活时间,可以使用 {@link com.feilong.core.date.TimeInterval TimeInterval}相关常量
+     *            设置以秒计的cookie的最大存活时间,可以使用 {@link com.feilong.core.TimeInterval TimeInterval}相关常量
      * @param response
      *            response
      * @see CookieUtil#addCookie(CookieEntity, HttpServletResponse)

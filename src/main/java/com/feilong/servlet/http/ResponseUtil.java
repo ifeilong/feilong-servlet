@@ -22,9 +22,9 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.feilong.core.CharsetType;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
-import com.feilong.core.lang.CharsetType;
 import com.feilong.io.MimeType;
 
 /**
