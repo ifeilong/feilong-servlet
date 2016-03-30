@@ -59,11 +59,34 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * 再次注意关闭浏览器只会使存储在客户端浏览器内存中的session cookie失效，不会使服务器端的session对象失效
  * </blockquote>
  * 
+ * <h3>SessionId会重复吗?</h3>
+ * 
+ * <blockquote>
+ * 不会,参见 {@link "org.apache.catalina.session.ManagerBase#generateSessionId()"} 实现, 使用 while循环再次确认判断
+ * 
+ * <pre>
+{@code
+    protected String generateSessionId() {
+        String result = null;
+        do {
+            if (result != null) {
+                duplicates++;
+            }
+            result = sessionIdGenerator.generateSessionId();
+        } while (sessions.containsKey(result));
+        return result;
+    }
+}
+ * </pre>
+ * 
+ * </blockquote>
+ * 
  * @author feilong
  * @version 1.0.0 2010-7-6 下午02:10:33
  * @version 1.0.1 Jan 15, 2013 2:31:32 PM 进行精简
  * @version 1.0.7 2014-6-17 14:32 删除历史不用的方法
  * @since 1.0.0
+ * @see "org.apache.catalina.session.ManagerBase#generateSessionId()"
  */
 public final class SessionUtil{
 
