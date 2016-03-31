@@ -28,58 +28,140 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.Validator;
+import com.feilong.core.bean.PropertyUtil;
 import com.feilong.servlet.http.entity.CookieEntity;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * {@link javax.servlet.http.Cookie} 工具 类.
+ * {@link javax.servlet.http.Cookie Cookie} 工具类.
  * 
+ * <p>
+ * 注意:该类创建Cookie仅支持Servlet3以上的版本
+ * </p>
  * 
- * <h3>cookie适用场合:</h3>
+ * <h3>使用说明:</h3>
  * 
- * cookie机制将信息存储于用户硬盘，因此可以作为全局变量，这是它最大的一个优点。
+ * <h4>
+ * case:创建Cookie
+ * </h4>
  * 
  * <blockquote>
- * <ol>
- * <li>保存用户登录状态。<br>
- * 例如将用户id存储于一个cookie内，这样当用户下次访问该页面时就不需要重新登录了，现在很多论坛和社区都提供这样的功能。<br>
- * cookie还可以设置过期时间，当超过时间期限后，cookie就会自动消失。<br>
- * 因此，系统往往可以提示用户保持登录状态的时间： 常见选项有一个月、三个月、一年等。</li>
- * <li>
- * 跟踪用户行为。<br>
- * 例如一个天气预报网站，能够根据用户选择的地区显示当地的天气情况。<br>
- * 如果每次都需要选择所在地是烦琐的，当利用了cookie后就会显得很人性化了，系统能够记住上一次访问的地区，当下次再打开该页面时，它就会自动显示上次用户所在地区的天气情况。<br>
- * 因为一切都是在后台完成 ，所以这样的页面就像为某个用户所定制的一样，使用起来非常方便。</li>
- * <li>定制页面。<br>
- * 如果网站提供了换肤或更换布局的功能，那么可以使用cookie来记录用户的选项，例如：背景色、分辨率等。<br>
- * 当用户下次访问时，仍然可以保存上一次访问的界面风格。</li>
- * <li>创建购物车。<br>
- * 正如在前面的例子中使用cookie来记录用户需要购买的商品一样，在结账的时候可以统一提交。<br>
- * 例如淘宝网就使用cookie记录了用户曾经浏览过的商品，方便随时进行比较。</li>
- * </ol>
+ * <p>
+ * 1.创建一个name名字是shopName,value是feilong的 Cookie (通常出于安全起见,存放到Cookie的值需要加密或者混淆,此处为了举例方便使用原码)<br>
+ * 可以调用{@link #addCookie(String, String, HttpServletResponse)}<br>
+ * 如:
+ * <p>
+ * <code>CookieUtil.addCookie("shopName","feilong",response)</code>
+ * </p>
+ * 注意:该方法创建的cookie,有效期是默认值 -1,即浏览器退出就删除
+ * </p>
+ * 
+ * <p>
+ * 2.如果想给该cookie加个过期时间,有效期一天,可以调用 {@link #addCookie(String, String, int, HttpServletResponse)}<br>
+ * 如:
+ * <p>
+ * <code>CookieUtil.addCookie("shopName","feilong", TimeInterval.SECONDS_PER_DAY,response)</code>
+ * </p>
+ * </p>
+ * 
+ * <p>
+ * 3.如果还想给该cookie加上httpOnly等标识,可以调用 {@link #addCookie(CookieEntity, HttpServletResponse)}<br>
+ * 如:
+ * 
+ * <pre>
+{@code
+CookieEntity cookieEntity=new CookieEntity("shopName","feilong",TimeInterval.SECONDS_PER_DAY);
+cookieEntity.setHttpOnly(true);
+CookieUtil.addCookie(cookieEntity,response)
+}
+ * </pre>
+ * 
+ * 此外,如果有特殊需求,还可以对cookieEntity设置 path,domain等属性
+ * </p>
+ * </blockquote>
+ * 
+ * <h4>
+ * case:获取Cookie
+ * </h4>
+ * 
+ * <blockquote>
+ * 
+ * <p>
+ * 1.可以使用 {@link #getCookie(HttpServletRequest, String)}来获得 {@link Cookie}对象
+ * <br>
+ * 如:
+ * <p>
+ * <code>CookieUtil.getCookie(request, "shopName")</code>
+ * </p>
+ * </p>
+ * 
+ * <p>
+ * 2.更多的时候,可以使用 {@link #getCookieValue(HttpServletRequest, String)}来获得Cookie对象的值
+ * <br>
+ * 如:
+ * <p>
+ * <code>CookieUtil.getCookieValue(request, "shopName")</code>
+ * </p>
+ * 
+ * 返回 "feilong" 字符串
+ * </p>
+ * 
+ * 
+ * <p>
+ * 3.当然,你也可以使用 {@link #getCookieMap(HttpServletRequest)}来获得 所有的Cookie name和value组成的map
+ * <br>
+ * 如:
+ * <p>
+ * <code>CookieUtil.getCookieMap(request)</code>
+ * </p>
+ * 
+ * 使用场景,如 {@link com.feilong.servlet.http.RequestLogBuilder#build()}
+ * </p>
+ * </blockquote>
+ * 
+ * 
+ * 
+ * <h4>
+ * case:删除Cookie
+ * </h4>
+ * 
+ * <blockquote>
+ * 
+ * <p>
+ * 1.可以使用 {@link #deleteCookie(String, HttpServletResponse)}来删除Cookie
+ * <br>
+ * 如:
+ * <p>
+ * <code>CookieUtil.deleteCookie(request, "shopName")</code>
+ * </p>
+ * </p>
+ * 
+ * <p>
+ * 2.特殊时候,由于Cookie原先保存时候设置了path属性,可以使用 {@link #deleteCookie(CookieEntity, HttpServletResponse)}来删除Cookie
+ * <br>
+ * 如:
+ * 
+ * <p>
+ * 
+ * <pre>
+{@code
+CookieEntity cookieEntity=new CookieEntity("shopName","feilong");
+cookieEntity.setPath("/member/account");
+CookieUtil.deleteCookie(request, "shopName")
+}
+ * </pre>
+ * </p>
+ * 
+ * </p>
  * 
  * </blockquote>
  * 
- * <h3>cookie的缺点主要集中于安全性和隐私保护:</h3>
- * 
- * <blockquote>
- * <ol>
- * <li>cookie可能被禁用。<br>
- * 当用户非常注重个人隐私保护时，他很可能禁用浏览器的cookie功能；</li>
- * <li>cookie是与浏览器相关的。<br>
- * 这意味着即使访问的是同一个页面，不同浏览器之间所保存的cookie也是不能互相访问的；</li>
- * <li>cookie可能被删除。<br>
- * 因为每个cookie都是硬盘上的一个文件，因此很有可能被用户删除；</li>
- * <li>cookie安全性不够高。<br>
- * 所有的cookie都是以纯文本的形式记录于文件中，因此如果要保存用户名密码等信息时，最好事先经过加密处理。</li>
- * </ol>
- * </blockquote>
- *
  * @author feilong
  * @version 2010-6-24 上午08:05:32
  * @version 2012-5-18 14:53
  * @see javax.servlet.http.Cookie
  * @see "org.springframework.web.util.CookieGenerator"
+ * @see com.feilong.servlet.http.entity.CookieEntity
  * @since 1.0.0
  */
 public final class CookieUtil{
@@ -114,7 +196,7 @@ public final class CookieUtil{
     }
 
     /**
-     * 获得cookie.
+     * 获得 {@link Cookie}对象.
      * 
      * <p>
      * 循环遍历 {@link HttpServletRequest#getCookies()},找到 {@link Cookie#getName()}是 <code>cookieName</code> 的 {@link Cookie}
@@ -221,7 +303,11 @@ public final class CookieUtil{
     //****************************************************************************************************
 
     /**
-     * 创建个cookie.
+     * 创建cookie.
+     * 
+     * <p>
+     * 注意:该方法创建的cookie,有效期是默认值 -1,即浏览器退出就删除
+     * </p>
      *
      * @param cookieName
      *            the cookie name
@@ -243,7 +329,7 @@ public final class CookieUtil{
     }
 
     /**
-     * 创建个cookie.
+     * 创建cookie.
      *
      * @param cookieName
      *            the cookie name
@@ -279,45 +365,37 @@ public final class CookieUtil{
         //校验
         validateCookieEntity(cookieEntity);
 
-        String cookieName = cookieEntity.getName();
-        String value = cookieEntity.getValue();
-
-        //****************************************************************************
-        Cookie cookie = new Cookie(cookieName, value);
-
-        cookie.setMaxAge(cookieEntity.getMaxAge());//设置以秒计的cookie的最大存活时间。
-
-        String comment = cookieEntity.getComment();
-        if (Validator.isNotNullOrEmpty(comment)){
-            cookie.setComment(comment);//指定一个注释来描述cookie的目的。
-        }
-
-        // 指明cookie应当被声明的域。
-        String domain = cookieEntity.getDomain();
-        if (Validator.isNotNullOrEmpty(domain)){ //NullPointerException at javax.servlet.http.Cookie.setDomain(Cookie.java:213) ~[servlet-api-6.0.37.jar:na]
-            cookie.setDomain(domain);
-        }
-
-        //指定客户端将cookie返回的cookie的路径。
-        String path = cookieEntity.getPath();
-        if (Validator.isNotNullOrEmpty(path)){
-            cookie.setPath(path);
-        }
-
-        //指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
-        cookie.setSecure(cookieEntity.getSecure());
-
-        //设置本cookie遵循的cookie的协议的版本
-        cookie.setVersion(cookieEntity.getVersion());
-
-        //HttpOnly cookies are not supposed to be exposed to client-side scripting code, 
-        //and may therefore help mitigate certain kinds of cross-site scripting attacks.
-        cookie.setHttpOnly(cookieEntity.getHttpOnly()); //@since Servlet 3.0
+        Cookie cookie = toCookie(cookieEntity);
 
         if (LOGGER.isDebugEnabled()){
             LOGGER.debug("input cookieEntity info:[{}],response.addCookie", JsonUtil.format(cookieEntity));
         }
         response.addCookie(cookie);
+    }
+
+    /**
+     * To cookie.
+     *
+     * @param cookieEntity
+     *            the cookie entity
+     * @return the cookie
+     * @since 1.5.3
+     */
+    private static Cookie toCookie(CookieEntity cookieEntity){
+        Cookie cookie = new Cookie(cookieEntity.getName(), cookieEntity.getValue());
+
+        PropertyUtil.copyProperties(cookie, cookieEntity //
+                        , "maxAge"//设置以秒计的cookie的最大存活时间。
+                        , "secure"//指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+                        , "version"//设置本cookie遵循的cookie的协议的版本
+                        , "httpOnly"//@since Servlet 3.0
+        );
+        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "comment", cookieEntity.getComment());//指定一个注释来描述cookie的目的。
+
+        //NullPointerException at javax.servlet.http.Cookie.setDomain(Cookie.java:213) ~[servlet-api-6.0.37.jar:na]
+        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "domain", cookieEntity.getDomain());// 指明cookie应当被声明的域。
+        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "path", cookieEntity.getPath());//指定客户端将cookie返回的cookie的路径。
+        return cookie;
     }
 
     /**
