@@ -212,10 +212,10 @@ public final class ResponseDownloadUtil{
             }
         }catch (IOException e){
             /*
-             * 在写数据的时候， 对于 ClientAbortException 之类的异常， 是因为客户端取消了下载，而服务器端继续向浏览器写入数据时， 抛出这个异常，这个是正常的。
-             * 尤其是对于迅雷这种吸血的客户端软件， 明明已经有一个线程在读取
-             * 如果短时间内没有读取完毕，迅雷会再启第二个、第三个。。。线程来读取相同的字节段，
-             * 直到有一个线程读取完毕，迅雷会 KILL掉其他正在下载同一字节段的线程， 强行中止字节读出，造成服务器抛 ClientAbortException。
+             * 在写数据的时候, 对于 ClientAbortException 之类的异常, 是因为客户端取消了下载,而服务器端继续向浏览器写入数据时, 抛出这个异常,这个是正常的。
+             * 尤其是对于迅雷这种吸血的客户端软件, 明明已经有一个线程在读取
+             * 如果短时间内没有读取完毕,迅雷会再启第二个、第三个。。。线程来读取相同的字节段,
+             * 直到有一个线程读取完毕,迅雷会 KILL掉其他正在下载同一字节段的线程, 强行中止字节读出,造成服务器抛 ClientAbortException。
              */
             //ClientAbortException:  java.net.SocketException: Connection reset by peer: socket write error
             final String exceptionName = e.getClass().getName();
@@ -255,7 +255,7 @@ public final class ResponseDownloadUtil{
                     HttpServletResponse response){
 
         //清空response
-        //getResponse的getWriter()方法连续两次输出流到页面的时候，第二次的流会包括第一次的流，所以可以使用将response.reset或者resetBuffer的方法。
+        //getResponse的getWriter()方法连续两次输出流到页面的时候,第二次的流会包括第一次的流,所以可以使用将response.reset或者resetBuffer的方法。
         //getOutputStream() has already been called for this response问题的解决
         //在jsp向页面输出图片的时候,使用response.getOutputStream()会有这样的提示：java.lang.IllegalStateException:getOutputStream() has already been called for this response,会抛出Exception
         response.reset();
@@ -264,7 +264,7 @@ public final class ResponseDownloadUtil{
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, resolverContentDisposition(saveFileName, contentDisposition));
 
         // ===================== Default MIME Type Mappings =================== -->
-        //浏览器接收到文件后，会进入插件系统进行查找，查找出哪种插件可以识别读取接收到的文件。如果浏览器不清楚调用哪种插件系统，它可能会告诉用户缺少某插件，
+        //浏览器接收到文件后,会进入插件系统进行查找,查找出哪种插件可以识别读取接收到的文件。如果浏览器不清楚调用哪种插件系统,它可能会告诉用户缺少某插件,
         response.setContentType(resolverContentType(saveFileName, contentType));
 
         if (Validator.isNotNullOrEmpty(contentLength)){
@@ -274,12 +274,12 @@ public final class ResponseDownloadUtil{
         //************************about buffer***********************************************************
 
         //缺省情况下:服务端要输出到客户端的内容,不直接写到客户端,而是先写到一个输出缓冲区中.
-        //只有在下面三中情况下，才会把该缓冲区的内容输出到客户端上： 
+        //只有在下面三中情况下,才会把该缓冲区的内容输出到客户端上： 
         //该JSP网页已完成信息的输出 
         //输出缓冲区已满 
         //JSP中调用了out.flush()或response.flushbuffer() 
 
-        //缓冲区的优点是：我们暂时不输出，直到确定某一情况时，才将写入缓冲区的数据输出到浏览器，否则就将缓冲区的数据取消。
+        //缓冲区的优点是：我们暂时不输出,直到确定某一情况时,才将写入缓冲区的数据输出到浏览器,否则就将缓冲区的数据取消。
         //XXX 确认是否需要 response.setBufferSize(10240); ^_^
 
         //see org.apache.commons.io.IOUtils.copyLarge(InputStream, OutputStream) javadoc
@@ -334,10 +334,10 @@ public final class ResponseDownloadUtil{
             return contentTypeByFileName;
         }
 
-        //contentType = "application/force-download";//,php强制下载application/force-download,将发送HTTP 标头您的浏览器并告诉它下载，而不是在浏览器中运行的文件
+        //contentType = "application/force-download";//,php强制下载application/force-download,将发送HTTP 标头您的浏览器并告诉它下载,而不是在浏览器中运行的文件
         //application/x-download
 
-        //.*( 二进制流，不知道下载文件类型)   application/octet-stream
+        //.*( 二进制流,不知道下载文件类型)   application/octet-stream
         return MimeType.BIN.getMime();
         //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
         //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).

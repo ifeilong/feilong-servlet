@@ -40,7 +40,7 @@ public class RequestUtilTest{
      * </p>
      * 
      * <p>
-     * 注:({@link javax.servlet.ServletRequest#getParameter(String)}函数时，会自动进行一次URI的解码过程，调用时内置的解码过程会导致乱码出现)
+     * 注:({@link javax.servlet.ServletRequest#getParameter(String)}函数时,会自动进行一次URI的解码过程,调用时内置的解码过程会导致乱码出现)
      * </p>
      * 
      * @param request

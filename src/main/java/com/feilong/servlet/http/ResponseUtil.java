@@ -49,15 +49,15 @@ import com.feilong.io.MimeType;
  * <td>URL会改变</td>
  * </tr>
  * <tr valign="top">
- * <td>在服务器端内部将请求转发给另一个资源， 浏览器只知道发出请求并得到相应结果，并不知在服务器内部发生的转发行为</td>
- * <td>对浏览器的请求直接作出响应，响应的结果告诉浏览器重新发出对另外一个URL的访问请求</td>
+ * <td>在服务器端内部将请求转发给另一个资源, 浏览器只知道发出请求并得到相应结果,并不知在服务器内部发生的转发行为</td>
+ * <td>对浏览器的请求直接作出响应,响应的结果告诉浏览器重新发出对另外一个URL的访问请求</td>
  * </tr>
  * <tr valign="top" style="background-color:#eeeeff">
- * <td>调用者与被调用者之间共享相同的request、response对象，它们属于同一个访问请求和相应过程；</td>
- * <td>调用者和被调用者使用各自的request、response对象，它们属于两个独立的访问请求和相应过程</td>
+ * <td>调用者与被调用者之间共享相同的request、response对象,它们属于同一个访问请求和相应过程；</td>
+ * <td>调用者和被调用者使用各自的request、response对象,它们属于两个独立的访问请求和相应过程</td>
  * </tr>
  * <tr>
- * <td>适用于一次请求响应过程由Web程序内部的多个资源来协同完成， 需要在同一个Web程序内部资源之间跳转， 使用 {@link HttpServletRequest#setAttribute(String, Object)}方法将预处理结果传递给下一个资源。</td>
+ * <td>适用于一次请求响应过程由Web程序内部的多个资源来协同完成, 需要在同一个Web程序内部资源之间跳转, 使用 {@link HttpServletRequest#setAttribute(String, Object)}方法将预处理结果传递给下一个资源。</td>
  * <td>适用于不同Web程序之间的重定向。</td>
  * </tr>
  * </table>
@@ -68,13 +68,13 @@ import com.feilong.io.MimeType;
  * 
  * <blockquote>
  * <p>
- * 用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
+ * 用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL。
  * </p>
  * 
  * <p>
- * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span> <br>
- * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
- * 既然您已要做转向了，那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+ * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span> <br>
+ * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作。<br>
+ * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
  * </p>
  * </blockquote>
  *
@@ -96,13 +96,13 @@ public final class ResponseUtil{
      * 设置不缓存并跳转.
      * 
      * <p>
-     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
+     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL。
      * </p>
      * 
      * <p>
-     * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span> <br>
-     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
-     * 既然您已要做转向了，那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+     * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span> <br>
+     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作。<br>
+     * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
      * </p>
      * 
      * @param response
@@ -120,12 +120,12 @@ public final class ResponseUtil{
     /**
      * 跳转.
      * <p>
-     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头，从而通知客户端重新访问Location响应头指定的URL。
+     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL。
      * </p>
      * <p>
-     * 在 {@link HttpServletResponse#sendRedirect(String)}之后，<span style="color:red">应该紧跟一句return;</span>; <br>
-     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的，所以只有在页面处理完成后，才会有实际的动作。<br>
-     * 既然您已要做转向了，那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+     * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span>; <br>
+     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作。<br>
+     * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
      * </p>
      *
      * @param response
@@ -150,15 +150,15 @@ public final class ResponseUtil{
      *            HttpServletResponse
      */
     public static void setNoCacheHeader(HttpServletResponse response){
-        // 当HTTP1.1服务器指定 CacheControl = no-cache时，浏览器就不会缓存该网页。
+        // 当HTTP1.1服务器指定 CacheControl = no-cache时,浏览器就不会缓存该网页。
         // 旧式 HTTP1.0 服务器不能使用 Cache-Control 标题
 
-        // 为了向后兼容 HTTP1.0 服务器，IE使用Pragma:no-cache 标题对 HTTP提供特殊支持
-        // 如果客户端通过安全连接 (https://)/与服务器通讯，且服务器响应中返回 Pragma:no-cache 标题，则 Internet Explorer不会缓存此响应。
-        // 注意：Pragma:no-cache 仅当在安全连接中使用时才防止缓存，如果在非安全页中使用，处理方式与 Expires:-1相同，该页将被缓存，但被标记为立即过期
+        // 为了向后兼容 HTTP1.0 服务器,IE使用Pragma:no-cache 标题对 HTTP提供特殊支持
+        // 如果客户端通过安全连接 (https://)/与服务器通讯,且服务器响应中返回 Pragma:no-cache 标题,则 Internet Explorer不会缓存此响应。
+        // 注意：Pragma:no-cache 仅当在安全连接中使用时才防止缓存,如果在非安全页中使用,处理方式与 Expires:-1相同,该页将被缓存,但被标记为立即过期
         response.setHeader(HttpHeaders.PRAGMA, "No-cache");
 
-        // Cache-control值为“no-cache”时，访问此页面不会在Internet临时文章夹留下页面备份。
+        // Cache-control值为“no-cache”时,访问此页面不会在Internet临时文章夹留下页面备份。
         response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
 
         //In other words Expires: 
@@ -249,7 +249,7 @@ public final class ResponseUtil{
             printWriter.flush();
 
             //http://www.iteye.com/problems/56543
-            //你是用了tomcat，jetty这样的容器，就不需要 printWriter.close();
+            //你是用了tomcat,jetty这样的容器,就不需要 printWriter.close();
         }catch (IOException e){
             throw new UncheckedIOException(e);
         }

@@ -100,24 +100,24 @@ import com.feilong.core.TimeInterval;
  * 
  * <blockquote>
  * <p>
- * 默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。
+ * 默认情况下,如果在某个页面创建了一个cookie,那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录,则在子目录中也可以访问。
  * </p>
  * 
  * <h3>示例:</h3>
  * 
  * <blockquote>
  * <p>
- * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+ * 例如在www.xxxx.com/html/a.html中所创建的cookie,可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问,<br>
  * 但不能被www.xxxx.com/d.html访问。
  * </p>
  * </blockquote>
  * 
  * <p>
- * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+ * 为了控制cookie可以访问的目录,需要使用path参数设置cookie,语法如下： document.cookie="name=value; path=cookieDir";
  * </p>
  * <p>
  * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
- * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+ * 如果要使cookie在整个网站下可用,可以将cookie_dir指定为根目录,例如： document.cookie="userId=320; path=/";
  * </p>
  * 
  * 
@@ -125,13 +125,13 @@ import com.feilong.core.TimeInterval;
  * 
  * <blockquote>
  * <ol>
- * <li>path 属性值有大小写之分，应与浏览器中的地址栏的输入一致</li>
+ * <li>path 属性值有大小写之分,应与浏览器中的地址栏的输入一致</li>
  * <li>path 不可读;<br>
- * 同 expires一样，path 只可写，不可读。</li>
+ * 同 expires一样,path 只可写,不可读。</li>
  * <li>path 不可更改;<br>
- * 同 expires 不一样,如果我们试图更改 path，那么实际上我们是另外写了一个 cookie，而不是更改了 path 值。</li>
+ * 同 expires 不一样,如果我们试图更改 path,那么实际上我们是另外写了一个 cookie,而不是更改了 path 值。</li>
  * <li>path 权限有继承性;<br>
- * 假如指定了 /test/ 目录有权限读取某 cookie，那么 /test/ 之下的目录 /test/t/ 也有权限读取该 cookie。</li>
+ * 假如指定了 /test/ 目录有权限读取某 cookie,那么 /test/ 之下的目录 /test/t/ 也有权限读取该 cookie。</li>
  * </ol>
  * </blockquote>
  * 
@@ -268,7 +268,7 @@ public class CookieEntity implements Serializable{
      * ;Path=VALUE ... URLs that see the cookie
      * 
      * <p>
-     * 当不设置值的时候(tomcat默认情况)，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。<br>
+     * 当不设置值的时候(tomcat默认情况),如果在某个页面创建了一个cookie,那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录,则在子目录中也可以访问。<br>
      * <span style="color:red">为了方便使用cookie,特意将此默认值设置为/,表示所有页面均可读取改cookie</span>
      * </p>
      * 
@@ -276,17 +276,17 @@ public class CookieEntity implements Serializable{
      * 
      * <blockquote>
      * <p>
-     * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+     * 例如在www.xxxx.com/html/a.html中所创建的cookie,可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问,<br>
      * 但不能被www.xxxx.com/d.html访问。
      * </p>
      * 
      * <p>
-     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+     * 为了控制cookie可以访问的目录,需要使用path参数设置cookie,语法如下： document.cookie="name=value; path=cookieDir";
      * </p>
      * 
      * <p>
      * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
-     * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+     * 如果要使cookie在整个网站下可用,可以将cookie_dir指定为根目录,例如： document.cookie="userId=320; path=/";
      * </p>
      * </blockquote>
      * 
@@ -299,11 +299,11 @@ public class CookieEntity implements Serializable{
      * ;Secure ... e.g. use SSL.
      * 
      * <p>
-     * 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+     * 指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器。
      * </p>
      * 
      * <p>
-     * secure值为true时，在http中是无效的; 在https中才有效
+     * secure值为true时,在http中是无效的; 在https中才有效
      * </p>
      * 
      * <p>
@@ -335,7 +335,7 @@ public class CookieEntity implements Serializable{
      * Not in cookie specs, but supported by browsers.
      * 
      * <p>
-     * 如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。
+     * 如果在Cookie中设置了"HttpOnly"属性,那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息,这样能有效的防止XSS攻击。
      * </p>
      * 
      * @see <a href="http://tools.ietf.org/html/rfc6265#section-4.1.2.6">4.1.2.6. The HttpOnly Attribute</a>
@@ -595,7 +595,7 @@ public class CookieEntity implements Serializable{
      * ;Path=VALUE ... URLs that see the cookie
      * 
      * <p>
-     * 当不设置值的时候(tomcat默认情况)，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。<br>
+     * 当不设置值的时候(tomcat默认情况),如果在某个页面创建了一个cookie,那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录,则在子目录中也可以访问。<br>
      * <span style="color:red">为了方便使用cookie,特意将此默认值设置为/,表示所有页面均可读取改cookie</span>
      * </p>
      * 
@@ -603,17 +603,17 @@ public class CookieEntity implements Serializable{
      * 
      * <blockquote>
      * <p>
-     * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+     * 例如在www.xxxx.com/html/a.html中所创建的cookie,可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问,<br>
      * 但不能被www.xxxx.com/d.html访问。
      * </p>
      * 
      * <p>
-     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+     * 为了控制cookie可以访问的目录,需要使用path参数设置cookie,语法如下： document.cookie="name=value; path=cookieDir";
      * </p>
      * 
      * <p>
      * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
-     * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+     * 如果要使cookie在整个网站下可用,可以将cookie_dir指定为根目录,例如： document.cookie="userId=320; path=/";
      * </p>
      * </blockquote>
      * 
@@ -631,7 +631,7 @@ public class CookieEntity implements Serializable{
      * ;Path=VALUE ... URLs that see the cookie
      * 
      * <p>
-     * 当不设置值的时候(tomcat默认情况)，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录，则在子目录中也可以访问。<br>
+     * 当不设置值的时候(tomcat默认情况),如果在某个页面创建了一个cookie,那么该页面所在目录中的其他页面也可以访问该cookie,如果这个目录下还有子目录,则在子目录中也可以访问。<br>
      * <span style="color:red">为了方便使用cookie,特意将此默认值设置为/,表示所有页面均可读取改cookie</span>
      * </p>
      * 
@@ -639,17 +639,17 @@ public class CookieEntity implements Serializable{
      * 
      * <blockquote>
      * <p>
-     * 例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问，<br>
+     * 例如在www.xxxx.com/html/a.html中所创建的cookie,可以被www.xxxx.com/html/b.html或www.xxx.com/html/some/c.html所访问,<br>
      * 但不能被www.xxxx.com/d.html访问。
      * </p>
      * 
      * <p>
-     * 为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： document.cookie="name=value; path=cookieDir";
+     * 为了控制cookie可以访问的目录,需要使用path参数设置cookie,语法如下： document.cookie="name=value; path=cookieDir";
      * </p>
      * 
      * <p>
      * 其中cookieDir表示可访问cookie的目录。例如： document.cookie="userId=320; path=/shop"; 就表示当前cookie仅能在shop目录下使用。<br>
-     * 如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： document.cookie="userId=320; path=/";
+     * 如果要使cookie在整个网站下可用,可以将cookie_dir指定为根目录,例如： document.cookie="userId=320; path=/";
      * </p>
      * </blockquote>
      * 
@@ -666,11 +666,11 @@ public class CookieEntity implements Serializable{
      * ;Secure ... e.g. use SSL.
      * 
      * <p>
-     * 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+     * 指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器。
      * </p>
      * 
      * <p>
-     * secure值为true时，在http中是无效的; 在https中才有效
+     * secure值为true时,在http中是无效的; 在https中才有效
      * </p>
      * 
      * <p>
@@ -695,11 +695,11 @@ public class CookieEntity implements Serializable{
      * ;Secure ... e.g. use SSL.
      * 
      * <p>
-     * 指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+     * 指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器。
      * </p>
      * 
      * <p>
-     * secure值为true时，在http中是无效的; 在https中才有效
+     * secure值为true时,在http中是无效的; 在https中才有效
      * </p>
      * 
      * <p>
@@ -756,7 +756,7 @@ public class CookieEntity implements Serializable{
      * Not in cookie specs, but supported by browsers.
      * 
      * <p>
-     * 如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。
+     * 如果在Cookie中设置了"HttpOnly"属性,那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息,这样能有效的防止XSS攻击。
      * </p>
      *
      * @return the httpOnly
@@ -770,7 +770,7 @@ public class CookieEntity implements Serializable{
      * Not in cookie specs, but supported by browsers.
      * 
      * <p>
-     * 如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。
+     * 如果在Cookie中设置了"HttpOnly"属性,那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息,这样能有效的防止XSS攻击。
      * </p>
      *
      * @param httpOnly

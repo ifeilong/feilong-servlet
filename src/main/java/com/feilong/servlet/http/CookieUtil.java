@@ -386,7 +386,7 @@ public final class CookieUtil{
 
         PropertyUtil.copyProperties(cookie, cookieEntity //
                         , "maxAge"//设置以秒计的cookie的最大存活时间。
-                        , "secure"//指定是否cookie应该只通过安全协议，例如HTTPS或SSL,传送给浏览器。
+                        , "secure"//指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器。
                         , "version"//设置本cookie遵循的cookie的协议的版本
                         , "httpOnly"//@since Servlet 3.0
         );

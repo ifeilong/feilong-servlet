@@ -73,9 +73,9 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <blockquote>
  * 
  * <ol>
- * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\"，linux系统是"/")，而getPathInfo()以"/"开头。</li>
- * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值，其他时候都返回null。</li>
- * <li>在servlet的url-pattern被设置为*.xx之类的pattern时，getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
+ * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头。</li>
+ * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null。</li>
+ * <li>在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
  * </ol>
  * 
  * <table border="1" cellspacing="0" cellpadding="4">
@@ -90,7 +90,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>request.getPathInfo()</td>
  * <td>Returns any extra path information associated with the URL the client sent when it made this request. <br>
- * Servlet访问路径之后，QueryString之前的中间部分</td>
+ * Servlet访问路径之后,QueryString之前的中间部分</td>
  * </tr>
  * <tr valign="top">
  * <td>request.getServletPath()</td>
@@ -245,17 +245,17 @@ public final class RequestUtil{
      * 获得参数 map(结果转成了 TreeMap).
      * 
      * <p>
-     * 此方式会将tomcat返回的map 转成TreeMap 处理返回，便于log;也可以<span style="color:red">对这个map进行操作</span>
+     * 此方式会将tomcat返回的map 转成TreeMap 处理返回,便于log;也可以<span style="color:red">对这个map进行操作</span>
      * </p>
      * 
      * <h3>tomcat getParameterMap() <span style="color:red">locked</span>(只能读):</h3>
      * 
      * <blockquote>
-     * 注意:tomcat 默认实现，返回的是 {@link "org.apache.catalina.util#ParameterMap<K, V>"},tomcat返回之前，会将此map的状态设置为locked,<br>
+     * 注意:tomcat 默认实现,返回的是 {@link "org.apache.catalina.util#ParameterMap<K, V>"},tomcat返回之前,会将此map的状态设置为locked,<br>
      * <p>
-     * 不像普通的map数据一样可以修改。这是因为服务器为了实现一定的安全规范，所作的限制，WebLogic，Tomcat，Resin，JBoss等服务器均实现了此规范。
+     * 不像普通的map数据一样可以修改。这是因为服务器为了实现一定的安全规范,所作的限制,WebLogic,Tomcat,Resin,JBoss等服务器均实现了此规范。
      * </p>
-     * 此时，不能做以下的map操作：
+     * 此时,不能做以下的map操作：
      * 
      * <ul>
      * <li>{@link Map#clear()}</li>
@@ -285,7 +285,7 @@ public final class RequestUtil{
      * 获得参数 and 单值map.
      * 
      * <p>
-     * 由于 j2ee{@link ServletRequest#getParameterMap()}返回的map值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request)，不便于后续处理
+     * 由于 j2ee{@link ServletRequest#getParameterMap()}返回的map值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request),不便于后续处理
      * </p>
      * 
      * @param request
@@ -301,7 +301,7 @@ public final class RequestUtil{
     }
 
     /**
-     * 将 {@link HttpServletRequest} 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
+     * 将 {@link HttpServletRequest} 相关属性,数据转成json格式 以便log显示(目前仅作log使用).
      * 
      * <p>
      * 默认使用 {@link RequestLogSwitch#NORMAL}
@@ -336,7 +336,7 @@ public final class RequestUtil{
     }
 
     /**
-     * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
+     * 将request 相关属性,数据转成json格式 以便log显示(目前仅作log使用).
      * 
      * <h3>示例:</h3>
      * <blockquote>
@@ -532,7 +532,7 @@ public final class RequestUtil{
     // [end]
 
     /**
-     * 用于将请求转发到 {@link RequestDispatcher} 对象封装的资源，Servlet程序在调用该方法进行转发之前可以对请求进行前期预处理。
+     * 用于将请求转发到 {@link RequestDispatcher} 对象封装的资源,Servlet程序在调用该方法进行转发之前可以对请求进行前期预处理。
      * 
      * <p>
      * Forwards a request from a servlet to another resource (servlet, JSP file, or HTML file) on the server.<br>
@@ -577,7 +577,7 @@ public final class RequestUtil{
     }
 
     /**
-     * 用于将 {@link RequestDispatcher} 对象封装的资源内容作为当前响应内容的一部分包含进来，从而实现可编程服务器的服务器端包含功能。
+     * 用于将 {@link RequestDispatcher} 对象封装的资源内容作为当前响应内容的一部分包含进来,从而实现可编程服务器的服务器端包含功能。
      * 
      * <p>
      * Includes the content of a resource (servlet, JSP page,HTML file) in the response. <br>
@@ -585,7 +585,7 @@ public final class RequestUtil{
      * </p>
      * 
      * <p>
-     * 注：被包含的Servlet程序不能改变响应信息的状态码和响应头，如果里面包含这样的语句将被忽略。<br>
+     * 注：被包含的Servlet程序不能改变响应信息的状态码和响应头,如果里面包含这样的语句将被忽略。<br>
      * The {@link ServletResponse} object has its path elements and parameters remain unchanged from the caller's. <br>
      * The included servlet cannot change the response status code or set headers; any attempt to make a change is ignored.
      * </p>
@@ -678,9 +678,9 @@ public final class RequestUtil{
             map.put("request.getRemoteAddr()", ipAddress);
         }
 
-        // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        // 对于通过多个代理的情况,第一个IP为客户端真实IP,多个IP按照','分割
         if (ipAddress != null && ipAddress.indexOf(",") > 0){
-            //如果通过了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串ip值，取第一个非unknown的有效IP字符串。 
+            //如果通过了多级反向代理的话,X-Forwarded-For的值并不止一个,而是一串ip值,取第一个非unknown的有效IP字符串。 
             ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
             map.put("firstIp", ipAddress);
         }
@@ -694,10 +694,10 @@ public final class RequestUtil{
     // *****************************Header区域**************************************
 
     /**
-     * User Agent中文名为用户代理，简称 UA.
+     * User Agent中文名为用户代理,简称 UA.
      * 
      * <p>
-     * 它是一个特殊字符串头，使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
+     * 它是一个特殊字符串头,使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
      * </p>
      * 
      * @param request
@@ -732,9 +732,9 @@ public final class RequestUtil{
     }
 
     /**
-     * 1、Origin字段里只包含是谁发起的请求，并没有其他信息 (通常情况下是方案，主机和活动文档URL的端口). <br>
-     * 跟Referer不一样的是，Origin字段并没有包含涉及到用户隐私的URL路径和请求内容，这个尤其重要. <br>
-     * 2、Origin字段只存在于POST请求，而Referer则存在于所有类型的请求.
+     * 1、Origin字段里只包含是谁发起的请求,并没有其他信息 (通常情况下是方案,主机和活动文档URL的端口). <br>
+     * 跟Referer不一样的是,Origin字段并没有包含涉及到用户隐私的URL路径和请求内容,这个尤其重要. <br>
+     * 2、Origin字段只存在于POST请求,而Referer则存在于所有类型的请求.
      * 
      * @param request
      *            the request
@@ -748,7 +748,7 @@ public final class RequestUtil{
      * 判断一个请求是否是ajax请求.
      * 
      * <p>
-     * 注:x-requested-with这个头是某些JS类库给加上去的，直接写AJAX是没有这个头的,<br>
+     * 注:x-requested-with这个头是某些JS类库给加上去的,直接写AJAX是没有这个头的,<br>
      * jquery/ext 确定添加,暂时可以使用这个来判断
      * </p>
      * 

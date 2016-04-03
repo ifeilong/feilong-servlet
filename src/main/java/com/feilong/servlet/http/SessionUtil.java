@@ -56,7 +56,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * <li>距离上一次收到客户端发送的session id时间间隔超过了session的最大有效时间</li>
  * <li>服务器进程被停止</li>
  * </ol>
- * 再次注意关闭浏览器只会使存储在客户端浏览器内存中的session cookie失效，不会使服务器端的session对象失效
+ * 再次注意关闭浏览器只会使存储在客户端浏览器内存中的session cookie失效,不会使服务器端的session对象失效
  * </blockquote>
  * 
  * <h3>SessionId会重复吗?</h3>
@@ -185,7 +185,7 @@ public final class SessionUtil{
      * </blockquote>
      * 
      * <p>
-     * 该方法通常在用户登陆逻辑里面调用,要确保登陆前和登陆后的session不相同,(确切的说,登陆后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话，那么这就是一个固定SessionID的漏洞(详见《黑客攻防技术宝典-web实战》
+     * 该方法通常在用户登陆逻辑里面调用,要确保登陆前和登陆后的session不相同,(确切的说,登陆后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话,那么这就是一个固定SessionID的漏洞(详见《黑客攻防技术宝典-web实战》
      * 第七章)
      * </p>
      * 
@@ -193,9 +193,9 @@ public final class SessionUtil{
      * 
      * <blockquote>
      * <ul>
-     * <li>第一步，需要获取被攻击用户的JSESSIONID，可以通过给被攻击用户一个伪造的JSESSIONID，使其用该JESSIONID登录，获取用户登录后的JESSIONID。(这里作为示范，直接从浏览器中获取)</li>
-     * <li>第二步，等被攻击用户登录，是JESSIONID成为已登录状态。</li>
-     * <li>第三步，伪造请求，访问登录后的资源。在用户登录使该JSESSIONID称为已登录的ID后，攻击者就可以利用这个ID伪造请求访问登录后的资源。</li>
+     * <li>第一步,需要获取被攻击用户的JSESSIONID,可以通过给被攻击用户一个伪造的JSESSIONID,使其用该JESSIONID登录,获取用户登录后的JESSIONID。(这里作为示范,直接从浏览器中获取)</li>
+     * <li>第二步,等被攻击用户登录,是JESSIONID成为已登录状态。</li>
+     * <li>第三步,伪造请求,访问登录后的资源。在用户登录使该JSESSIONID称为已登录的ID后,攻击者就可以利用这个ID伪造请求访问登录后的资源。</li>
      * </ul>
      * </blockquote>
      * 
@@ -207,8 +207,8 @@ public final class SessionUtil{
      * @see <a href="http://blog.csdn.net/jiangbo_hit/article/details/6073710">固定SessionID漏洞</a>
      */
     public static HttpSession replaceSession(HttpServletRequest request){
-        // 当session存在时返回该session，否则不会新建session，返回null
-        // getSession()/getSession(true)：当session存在时返回该session，否则新建一个session并返回该对象
+        // 当session存在时返回该session,否则不会新建session,返回null
+        // getSession()/getSession(true)：当session存在时返回该session,否则新建一个session并返回该对象
         HttpSession oldSession = request.getSession(false);
 
         if (null == oldSession){// 是null 新建一个并直接返回

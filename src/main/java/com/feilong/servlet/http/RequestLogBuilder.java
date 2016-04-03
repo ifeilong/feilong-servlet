@@ -72,7 +72,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     }
 
     /**
-     * 将request 相关属性，数据转成json格式 以便log显示(目前仅作log使用).
+     * 将request 相关属性,数据转成json格式 以便log显示(目前仅作log使用).
      * 
      * the request log switch
      * 
@@ -342,9 +342,9 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * <blockquote>
      * 
      * <ol>
-     * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\"，linux系统是"/")，而getPathInfo()以"/"开头。</li>
-     * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值，其他时候都返回null。</li>
-     * <li>在servlet的url-pattern被设置为*.xx之类的pattern时，getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
+     * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头。</li>
+     * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null。</li>
+     * <li>在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
      * </ol>
      * 
      * <table border="1" cellspacing="0" cellpadding="4">
@@ -359,7 +359,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * <tr valign="top" style="background-color:#eeeeff">
      * <td>request.getPathInfo()</td>
      * <td>Returns any extra path information associated with the URL the client sent when it made this request. <br>
-     * Servlet访问路径之后，QueryString之前的中间部分</td>
+     * Servlet访问路径之后,QueryString之前的中间部分</td>
      * </tr>
      * <tr valign="top">
      * <td>request.getServletPath()</td>
@@ -391,16 +391,16 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @since 1.0.9
      */
     private Map<String, String> getAboutURLMapForLog(){
-        // 1.getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\"，linux系统是"/")，而getPathInfo()以"/"开头。
-        // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值，其他时候都返回null。
-        // 3.在servlet的url-pattern被设置为*.xx之类的pattern时，getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。
+        // 1.getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头。
+        // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null。
+        // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。
 
         Map<String, String> aboutURLMap = new LinkedHashMap<String, String>();
 
         aboutURLMap.put("request.getContextPath()", request.getContextPath());
 
         // Returns any extra path information associated with the URL the client sent when it made this request.
-        // Servlet访问路径之后，QueryString之前的中间部分
+        // Servlet访问路径之后,QueryString之前的中间部分
         aboutURLMap.put("request.getPathInfo()", request.getPathInfo());
 
         // web.xml中定义的Servlet访问路径
