@@ -21,6 +21,8 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang3.Validate;
+
 import com.feilong.core.Validator;
 import com.feilong.io.IOReaderUtil;
 
@@ -51,10 +53,7 @@ public class ServletContextUtilTest{
      */
     @Deprecated
     public static String getFileContent(ServletContext servletContext,String directoryName,String fileName){
-        if (Validator.isNullOrEmpty(fileName)){
-            throw new IllegalArgumentException("fileName can't be null/empty");
-        }
-
+        Validate.notBlank(fileName, "fileName can't be blank!");
         String filePathString = servletContext.getRealPath("/");
         if (Validator.isNullOrEmpty(directoryName)){
             filePathString = filePathString + fileName;
