@@ -212,20 +212,22 @@ public final class SessionUtil{
         HttpSession oldSession = request.getSession(false);
 
         if (null == oldSession){// 是null 新建一个并直接返回
+            LOGGER.debug("oldSession is null,return a new session~~");
             return request.getSession();
         }
 
-        LOGGER.debug("old session: {}", oldSession.getId());
+        String oldSessionId = oldSession.getId();
         Map<String, Serializable> attributeMap = getAttributeMap(oldSession);
+
+        //*************************************************************************************
 
         oldSession.invalidate();//老的session失效
 
         HttpSession newSession = request.getSession();
-        LOGGER.debug("new session: {}", newSession.getId());
-
         for (String key : attributeMap.keySet()){
             newSession.setAttribute(key, attributeMap.get(key));
         }
+        LOGGER.debug("old sessionId:[{}],invalidate it!new session:[{}],and put all attributes", oldSessionId, newSession.getId());
         return newSession;
     }
 
