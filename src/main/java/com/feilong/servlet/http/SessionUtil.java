@@ -65,18 +65,17 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * 不会,参见 {@link "org.apache.catalina.session.ManagerBase#generateSessionId()"} 实现, 使用 while循环再次确认判断
  * 
  * <pre>
-{@code
-    protected String generateSessionId() {
-        String result = null;
-        do {
-            if (result != null) {
-                duplicates++;
-            }
-            result = sessionIdGenerator.generateSessionId();
-        } while (sessions.containsKey(result));
-        return result;
-    }
-}
+ * 
+ * protected String generateSessionId(){
+ *     String result = null;
+ *     do{
+ *         if (result != null){
+ *             duplicates++;
+ *         }
+ *         result = sessionIdGenerator.generateSessionId();
+ *     }while (sessions.containsKey(result));
+ *     return result;
+ * }
  * </pre>
  * 
  * </blockquote>
