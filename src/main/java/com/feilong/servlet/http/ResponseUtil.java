@@ -44,11 +44,11 @@ import com.feilong.io.MimeType;
  * <th align="left">{@link HttpServletResponse#sendRedirect(String) HttpServletResponse.sendRedirect}</th>
  * </tr>
  * <tr valign="top">
- * <td>只能将请求转发给同一个Web应用中的组件；</td>
+ * <td>只能将请求转发给同一个Web应用中的组件;</td>
  * <td>可以定向到应用程序外的其他资源.</td>
  * </tr>
  * <tr valign="top" style="background-color:#eeeeff">
- * <td>重定向后URL不会改变；</td>
+ * <td>重定向后URL不会改变;</td>
  * <td>URL会改变</td>
  * </tr>
  * <tr valign="top">
@@ -56,7 +56,7 @@ import com.feilong.io.MimeType;
  * <td>对浏览器的请求直接作出响应,响应的结果告诉浏览器重新发出对另外一个URL的访问请求</td>
  * </tr>
  * <tr valign="top" style="background-color:#eeeeff">
- * <td>调用者与被调用者之间共享相同的request、response对象,它们属于同一个访问请求和相应过程；</td>
+ * <td>调用者与被调用者之间共享相同的request、response对象,它们属于同一个访问请求和相应过程;</td>
  * <td>调用者和被调用者使用各自的request、response对象,它们属于两个独立的访问请求和相应过程</td>
  * </tr>
  * <tr>
@@ -163,6 +163,9 @@ public final class ResponseUtil{
      * @see <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=28035">Cache doesnt adhear to No cache options(需要翻墙)</a>
      * @see <a href="https://code.google.com/p/chromium/codesearch#chromium/src/net/http/http_response_headers.cc&l=1082&rcl=1421094684">
      *      chrome http_response_headers源码</a>
+     * @see HttpHeaders#CACHE_CONTROL
+     * @see HttpHeaders#PRAGMA
+     * @see HttpHeaders#EXPIRES
      */
     public static void setNoCacheHeader(HttpServletResponse response){
         response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache,no-store,max-age=0");
@@ -173,7 +176,9 @@ public final class ResponseUtil{
     /**
      * 设置页面缓存.
      * 
+     * <p>
      * 过期时间 = max-age 属性,单位<span style="color:red">秒</span>.
+     * </p>
      * 
      * <p>
      * if value <=0 表示不缓存<br>
@@ -186,6 +191,7 @@ public final class ResponseUtil{
      *            the response
      * @param value
      *            过期时间 = max-age 属性,单位<span style="color:red">秒</span>,建议使用{@link TimeInterval}里面定义的常量.
+     * @see HttpHeaders#CACHE_CONTROL
      * @since 1.5.3
      */
     public static void setCacheHeader(HttpServletResponse response,int value){

@@ -27,12 +27,11 @@ package com.feilong.servlet.http;
  *
  * @see "org.apache.http.HttpHeaders"
  * @see "org.springframework.http.HttpHeaders"
- * @since 1.0.8
- * @since httpcore 4.1
- * 
  * @see <a href="http://tools.ietf.org/html/rfc1945">RFC1945</a>
  * @see <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a>
  * @see <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a>
+ * @since 1.0.8
+ * @since httpcore 4.1
  */
 public final class HttpHeaders{
 
@@ -63,6 +62,8 @@ public final class HttpHeaders{
     /**
      * <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.9
      * 
+     * HTTP 1.1介绍了另外一组头信息属性:Cache-Control响应头信息,让网站的发布者可以更全面的控制他们的内容,并定位过期时间的限制.
+     * 
      * <p>
      * Cache-control值为"no-cache"时,访问此页面不会在Internet临时文章夹留下页面备份.
      * </p>
@@ -81,34 +82,59 @@ public final class HttpHeaders{
      * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉.
      * </p>
      * 
+     * <h3>有用的 Cache-Control响应头信息包括:</h3>
+     * 
      * <blockquote>
      * <table border="1" cellspacing="0" cellpadding="4">
      * <tr style="background-color:#ccccff">
-     * <th align="left">Value</th>
+     * <th align="left">字段</th>
      * <th align="left">说明</th>
+     * </tr>
+     * <tr valign="top">
+     * <td>max-age=[秒]</td>
+     * <td>执行缓存被认为是最新的最长时间.<br>
+     * 类似于过期时间,这个参数是基于请求时间的相对时间间隔,而不是绝对过期时间,<br>
+     * [秒]是一个数字,单位是秒:从请求时间开始到过期时间之间的秒数.</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>s-maxage=[秒]</td>
+     * <td>类似于max-age属性,除了他应用于共享(如:代理服务器)缓存</td>
      * </tr>
      * <tr valign="top">
      * <td>Private</td>
      * <td>A cache mechanism may cache this page in a private cache and resend it only to a single client. This is the default value. Most
      * proxy servers will not cache pages with this setting.</td>
      * </tr>
+     * <tr valign="top">
+     * <td>public</td>
+     * <td>标记认证内容也可以被缓存, 一般来说: 经过HTTP认证才能访问的内容,输出是自动不可以缓存的;
+     * Shared caches, such as proxy servers, will cache pages with this setting. The cached page can be sent to any user.</td>
+     * </tr>
      * <tr valign="top" style="background-color:#eeeeff">
-     * <td>Public</td>
-     * <td>Shared caches, such as proxy servers, will cache pages with this setting. The cached page can be sent to any user.</td>
+     * <td>no-cache</td>
+     * <td>强制每次请求直接发送给源服务器,而不经过本地缓存版本的校验.<br>
+     * 这对于需要确认认证应用很有用(可以和public结合使用),或者严格要求使用最新数据的应用(不惜牺牲使用缓存的所有好处);Do not cache this page, even if for use by the same client.</td>
      * </tr>
      * <tr valign="top">
-     * <td>No-cache</td>
-     * <td>Do not cache this page, even if for use by the same client.</td>
+     * <td>no-store</td>
+     * <td>强制缓存在任何情况下都不要保留任何副本,The response and the request that created it must not be stored on any cache, whether shared or private. The
+     * storage inferred
+     * here is nonvolatile storage, such as tape backups. This is not an infallible security measure.</td>
      * </tr>
      * <tr valign="top" style="background-color:#eeeeff">
-     * <td>No-store</td>
-     * <td>The response and the request that created it must not be stored on any cache, whether shared or private. The storage inferred
-     * here is nonvolatile storage, such as tape backups. This is not an infallible security measure.
-     * </td>
+     * <td>must-revalidate</td>
+     * <td>告诉缓存必须遵循所有你给予副本的新鲜度的,HTTP允许缓存在某些特定情况下返回过期数据,<br>
+     * 指定了这个属性,你高速缓存,你希望严格的遵循你的规则.</td>
+     * </tr>
+     * <tr valign="top">
+     * <td>proxy-revalidate</td>
+     * <td>和 must-revalidate类似,除了他只对缓存代理服务器起作用</td>
      * </tr>
      * </table>
-     * </blockquote>
      * 
+     * 举例:
+     * Cache-Control: max-age=3600, must-revalidate
+     * </blockquote>
      * 
      * <h3>no-cache and no-store trigger a different behavior:</h3>
      * <blockquote>
@@ -132,7 +158,16 @@ public final class HttpHeaders{
      * 
      * </blockquote>
      * 
+     * <p style="color:red">
+     * 对于 Expires 响应头我们需要注意一点,当响应头中已经设置了 Cache-Contrl:max-age 以后, max-age 将覆盖掉 expires 的效果<br>
+     * (参见 http1.1 规范)原文如下:<br>
+     * Note: if a response includes a Cache-Control field with the max-age directive (see section 14.9.3 ), that directive overrides the
+     * Expires field.<br>
+     * 对于 Expires 特别适合对于网站静态资源的缓存,比如 js,image,logo 等,这些资源不会经常发生变化,另外一个也适合于一些周期性更新的内容.
+     * </p>
+     * 
      * @see #EXPIRES
+     * @since HTTP/1.1
      */
     public static final String CACHE_CONTROL               = "Cache-Control";
 
@@ -224,6 +259,18 @@ public final class HttpHeaders{
 
     /**
      * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.7, RFC 2616 (HTTP/1.1) Section 14.21
+     * 
+     * <p>
+     * Expires(过期时间) 属性是HTTP控制缓存的基本手段,Expires表示的是一个绝对的时刻.<br>
+     * 这个属性告诉缓存器:相关副本在多长时间内是新鲜的 ,过了这个时间,缓存器就会向源服务器发送请求,检查文档是否被修改.<br>
+     * 几乎所有的缓存服务器都支持Expires(过期时间)属性;
+     * </p>
+     * 
+     * <p>
+     * 记住:HTTP的日期时间必须是格林威治时间(GMT),而不是本地时间.其他的都会被解析成当前时间"之前",副本会过期<br>
+     * 举例: Expires: Fri, 30 Oct 1998 14:19:41 GMT
+     * </p>
+     * 
      * <p>
      * Expires早就存在于HTTP/1.0,是由服务器指定的Response过期时间.<br>
      * 表明在Expires这个时间点之前,返回的response都是足够新的或者说是有效的,Client无需再向Server发送请求.<br>
@@ -245,6 +292,13 @@ public final class HttpHeaders{
      * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉.
      * </p>
      * 
+     * <p style="color:red">
+     * (参见 http1.1 规范)原文如下:<br>
+     * Note: if a response includes a Cache-Control field with the max-age directive (see section 14.9.3 ), that directive overrides the
+     * Expires field.<br>
+     * 对于 Expires 特别适合对于网站静态资源的缓存,比如 js,image,logo 等,这些资源不会经常发生变化,另外一个也适合于一些周期性更新的内容.
+     * </p>
+     * 
      * <p>
      * In other words Expires:
      * 0 not always leads to immediate resource expiration,
@@ -252,7 +306,7 @@ public final class HttpHeaders{
      * </p>
      * 
      * @see #CACHE_CONTROL
-     * 
+     * @since HTTP/1.0
      */
     public static final String EXPIRES                     = "Expires";
 
@@ -336,6 +390,22 @@ public final class HttpHeaders{
      * <p>
      * 注意:Pragma:no-cache 仅当在安全连接中使用时才防止缓存,如果在非安全页中使用,处理方式与 Expires:-1相同,该页将被缓存,但被标记为立即过期
      * </p>
+     * 
+     * 
+     * Pragma头域用来包含实现特定的指令,最常用的是Pragma:no-cache.<br>
+     * 在HTTP/1.1协议中,它的含义和Cache-Control:no-cache相同..
+     * 
+     * <p>
+     * 
+     * 很多人认为在HTTP头信息中设置了Pragma: no-cache后会让内容无法被缓存. <br>
+     * 但事实并非如此:HTTP的规范中,响应型头信息没有任何关于Pragma属性的说明, <br>
+     * 原文如下(来自 http1.1 规范): <br>
+     * Note: because the meaning of "Pragma: no-cache as a response header field is not actually specified, it does not provide a reliable
+     * replacement for "Cache-Control: no-cache" in a response, <br>
+     * 虽然少数集中缓存服务器会遵循这个头信息,但大部分不会.<br>
+     * </p>
+     * 
+     * @since HTTP/1.0
      */
     public static final String PRAGMA                      = "Pragma";
 
@@ -436,8 +506,8 @@ public final class HttpHeaders{
     public static final String X_FORWARDED_FOR             = "x-forwarded-for";
 
     /**
-     * <code>{@value}</code>,如果主站使用cdn的话,
-     * 
+     * <code>{@value}</code>,如果主站使用cdn的话,.
+     *
      * @see <a href="http://distinctplace.com/infrastructure/2014/04/23/story-behind-x-forwarded-for-and-x-real-ip-headers/">Story behind
      *      X-Forwarded-For and X-Real-IP headers</a>
      * @see <a href="http://lavafree.iteye.com/blog/1559183">nginx做负载CDN加速获取端真实ip</a>
