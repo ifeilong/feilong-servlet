@@ -81,6 +81,57 @@ public final class HttpHeaders{
      * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉.
      * </p>
      * 
+     * <blockquote>
+     * <table border="1" cellspacing="0" cellpadding="4">
+     * <tr style="background-color:#ccccff">
+     * <th align="left">Value</th>
+     * <th align="left">说明</th>
+     * </tr>
+     * <tr valign="top">
+     * <td>Private</td>
+     * <td>A cache mechanism may cache this page in a private cache and resend it only to a single client. This is the default value. Most
+     * proxy servers will not cache pages with this setting.</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>Public</td>
+     * <td>Shared caches, such as proxy servers, will cache pages with this setting. The cached page can be sent to any user.</td>
+     * </tr>
+     * <tr valign="top">
+     * <td>No-cache</td>
+     * <td>Do not cache this page, even if for use by the same client.</td>
+     * </tr>
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>No-store</td>
+     * <td>The response and the request that created it must not be stored on any cache, whether shared or private. The storage inferred
+     * here is nonvolatile storage, such as tape backups. This is not an infallible security measure.
+     * </td>
+     * </tr>
+     * </table>
+     * </blockquote>
+     * 
+     * 
+     * <h3>no-cache and no-store trigger a different behavior:</h3>
+     * <blockquote>
+     * <p>
+     * While no-store effectively disables caching,no-cache allows the browser to cache but enforces it to always check the server for a
+     * change.
+     * </p>
+     * 
+     * <p>
+     * Quote:<br>
+     * 
+     * "If the no-cache directive does not specify a field-name, then a cache MUST NOT use the response to satisfy a subsequent request without successful revalidation with the origin server."
+     * </p>
+     * 
+     * <p>
+     * This usually is the desired behavior: <br>
+     * The browser sends a request every time the user navigates on a page. <br>
+     * The server either sends an updated page or a 304 HTTP header, if the site did not change. <br>
+     * This ensures fresh content with a minimum of traffic.
+     * </p>
+     * 
+     * </blockquote>
+     * 
      * @see #EXPIRES
      */
     public static final String CACHE_CONTROL               = "Cache-Control";

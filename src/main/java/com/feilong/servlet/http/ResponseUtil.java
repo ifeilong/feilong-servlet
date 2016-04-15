@@ -147,7 +147,6 @@ public final class ResponseUtil{
      * {@link <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>}
      * </p>
      * 
-     * 
      * <p>
      * We see the same here: Chrome no cache需要 明确指定 no-store.如果不设置,那么 must-revalidate+ETag 没有效果, 并且 页面都会被 cached
      * while they should not be since Chrome does not check for a 304 at all.
@@ -156,28 +155,6 @@ public final class ResponseUtil{
      * 
      * </blockquote>
      * 
-     * <h3>no-cache and no-store trigger a different behavior:</h3>
-     * <blockquote>
-     * <p>
-     * While no-store effectively disables caching,no-cache allows the browser to cache but enforces it to always check the server for a
-     * change.
-     * </p>
-     * 
-     * <p>
-     * Quote:<br>
-     * 
-     * "If the no-cache directive does not specify a field-name, then a cache MUST NOT use the response to satisfy a subsequent request without successful revalidation with the origin server."
-     * </p>
-     * 
-     * <p>
-     * This usually is the desired behavior: <br>
-     * The browser sends a request every time the user navigates on a page. <br>
-     * The server either sends an updated page or a 304 HTTP header, if the site did not change. <br>
-     * This ensures fresh content with a minimum of traffic.
-     * </p>
-     * 
-     * </blockquote>
-     *
      * @param response
      *            HttpServletResponse
      * @see <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>
