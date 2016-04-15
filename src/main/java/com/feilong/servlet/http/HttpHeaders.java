@@ -90,43 +90,54 @@ public final class HttpHeaders{
      * <th align="left">字段</th>
      * <th align="left">说明</th>
      * </tr>
+     * 
      * <tr valign="top">
      * <td>max-age=[秒]</td>
      * <td>执行缓存被认为是最新的最长时间.<br>
      * 类似于过期时间,这个参数是基于请求时间的相对时间间隔,而不是绝对过期时间,<br>
      * [秒]是一个数字,单位是秒:从请求时间开始到过期时间之间的秒数.</td>
      * </tr>
+     * 
      * <tr valign="top" style="background-color:#eeeeff">
      * <td>s-maxage=[秒]</td>
      * <td>类似于max-age属性,除了他应用于共享(如:代理服务器)缓存</td>
      * </tr>
+     * 
      * <tr valign="top">
      * <td>Private</td>
-     * <td>A cache mechanism may cache this page in a private cache and resend it only to a single client. This is the default value. Most
-     * proxy servers will not cache pages with this setting.</td>
+     * <td>A cache mechanism may cache this page in a private cache and resend it only to a single client. <br>
+     * This is the default value. Most proxy servers will not cache pages with this setting.</td>
      * </tr>
-     * <tr valign="top">
-     * <td>public</td>
-     * <td>标记认证内容也可以被缓存, 一般来说: 经过HTTP认证才能访问的内容,输出是自动不可以缓存的;
-     * Shared caches, such as proxy servers, will cache pages with this setting. The cached page can be sent to any user.</td>
-     * </tr>
+     * 
      * <tr valign="top" style="background-color:#eeeeff">
+     * <td>public</td>
+     * <td>标记认证内容也可以被缓存, 一般来说: 经过HTTP认证才能访问的内容,输出是自动不可以缓存的;<br>
+     * Shared caches, such as proxy servers, will cache pages with this setting. <br>
+     * The cached page can be sent to any user.</td>
+     * </tr>
+     * 
+     * <tr valign="top">
      * <td>no-cache</td>
      * <td>强制每次请求直接发送给源服务器,而不经过本地缓存版本的校验.<br>
-     * 这对于需要确认认证应用很有用(可以和public结合使用),或者严格要求使用最新数据的应用(不惜牺牲使用缓存的所有好处);Do not cache this page, even if for use by the same client.</td>
+     * 这对于需要确认认证应用很有用(可以和public结合使用),或者严格要求使用最新数据的应用(不惜牺牲使用缓存的所有好处);<br>
+     * Do not cache this page, even if for use by the same client.</td>
      * </tr>
-     * <tr valign="top">
-     * <td>no-store</td>
-     * <td>强制缓存在任何情况下都不要保留任何副本,The response and the request that created it must not be stored on any cache, whether shared or private. The
-     * storage inferred
-     * here is nonvolatile storage, such as tape backups. This is not an infallible security measure.</td>
-     * </tr>
+     * 
      * <tr valign="top" style="background-color:#eeeeff">
+     * <td>no-store</td>
+     * <td>强制缓存在任何情况下都不要保留任何副本,<br>
+     * The response and the request that created it must not be stored on any cache, whether shared or private. <br>
+     * The storage inferred here is nonvolatile storage, such as tape backups. <br>
+     * This is not an infallible security measure.</td>
+     * </tr>
+     * 
+     * <tr valign="top">
      * <td>must-revalidate</td>
      * <td>告诉缓存必须遵循所有你给予副本的新鲜度的,HTTP允许缓存在某些特定情况下返回过期数据,<br>
      * 指定了这个属性,你高速缓存,你希望严格的遵循你的规则.</td>
      * </tr>
-     * <tr valign="top">
+     * 
+     * <tr valign="top" style="background-color:#eeeeff">
      * <td>proxy-revalidate</td>
      * <td>和 must-revalidate类似,除了他只对缓存代理服务器起作用</td>
      * </tr>
