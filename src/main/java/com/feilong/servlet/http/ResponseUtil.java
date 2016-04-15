@@ -132,18 +132,62 @@ public final class ResponseUtil{
      * 
      * <blockquote>
      * <p>
-     * 仅仅设置 Cache-Control:no-cache,在 chrome 浏览器下面不起作用, 需要设置成 Cache-Control:no-cache,no-store,参见
+     * 仅仅设置 Cache-Control:no-cache,如
+     * 
+     * <pre>
+    {@code
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    }
+     * </pre>
+     * 
+     * 
+     * 在 chrome 浏览器下面不起作用, 需要设置成 Cache-Control:no-cache,no-store,参见
      * {@link <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>}
      * </p>
+     * 
+     * 
+     * <p>
+     * We see the same here: Chrome no cache需要 明确指定 no-store.如果不设置,那么 must-revalidate+ETag 没有效果, 并且 页面都会被 cached
+     * while they should not be since Chrome does not check for a 304 at all.
+     * </p>
+     * 
+     * 
+     * </blockquote>
+     * 
+     * <h3>no-cache and no-store trigger a different behavior:</h3>
+     * <blockquote>
+     * <p>
+     * While no-store effectively disables caching,no-cache allows the browser to cache but enforces it to always check the server for a
+     * change.
+     * </p>
+     * 
+     * <p>
+     * Quote:<br>
+     * 
+     * "If the no-cache directive does not specify a field-name, then a cache MUST NOT use the response to satisfy a subsequent request without successful revalidation with the origin server."
+     * </p>
+     * 
+     * <p>
+     * This usually is the desired behavior: <br>
+     * The browser sends a request every time the user navigates on a page. <br>
+     * The server either sends an updated page or a 304 HTTP header, if the site did not change. <br>
+     * This ensures fresh content with a minimum of traffic.
+     * </p>
+     * 
      * </blockquote>
      *
      * @param response
      *            HttpServletResponse
      * @see <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>
+     * @see <a href="https://bugs.chromium.org/p/chromium/issues/detail?id=28035">Cache doesnt adhear to No cache options(需要翻墙)</a>
+     * @see <a href="https://code.google.com/p/chromium/codesearch#chromium/src/net/http/http_response_headers.cc&l=1082&rcl=1421094684">
+     *      chrome http_response_headers源码</a>
      */
     public static void setNoCacheHeader(HttpServletResponse response){
-        response.setHeader(HttpHeaders.PRAGMA, "No-cache,no-store");
-        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache,no-store");
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache,no-store,max-age=0");
+        response.setHeader(HttpHeaders.PRAGMA, "no-cache,no-store");
         response.setDateHeader(HttpHeaders.EXPIRES, -1);
     }
 
