@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.feilong.core.CharsetType;
+import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
 import com.feilong.io.MimeType;
@@ -42,7 +43,7 @@ import com.feilong.io.MimeType;
  * </tr>
  * <tr valign="top">
  * <td>只能将请求转发给同一个Web应用中的组件；</td>
- * <td>可以定向到应用程序外的其他资源。</td>
+ * <td>可以定向到应用程序外的其他资源.</td>
  * </tr>
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>重定向后URL不会改变；</td>
@@ -57,8 +58,8 @@ import com.feilong.io.MimeType;
  * <td>调用者和被调用者使用各自的request、response对象,它们属于两个独立的访问请求和相应过程</td>
  * </tr>
  * <tr>
- * <td>适用于一次请求响应过程由Web程序内部的多个资源来协同完成, 需要在同一个Web程序内部资源之间跳转, 使用 {@link HttpServletRequest#setAttribute(String, Object)}方法将预处理结果传递给下一个资源。</td>
- * <td>适用于不同Web程序之间的重定向。</td>
+ * <td>适用于一次请求响应过程由Web程序内部的多个资源来协同完成, 需要在同一个Web程序内部资源之间跳转, 使用 {@link HttpServletRequest#setAttribute(String, Object)}方法将预处理结果传递给下一个资源.</td>
+ * <td>适用于不同Web程序之间的重定向.</td>
  * </tr>
  * </table>
  * </blockquote>
@@ -68,13 +69,13 @@ import com.feilong.io.MimeType;
  * 
  * <blockquote>
  * <p>
- * 用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL。
+ * 用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL.
  * </p>
  * 
  * <p>
  * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span> <br>
- * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作。<br>
- * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+ * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作.<br>
+ * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败.
  * </p>
  * </blockquote>
  *
@@ -93,39 +94,15 @@ public final class ResponseUtil{
     }
 
     /**
-     * 设置不缓存并跳转.
-     * 
-     * <p>
-     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL。
-     * </p>
-     * 
-     * <p>
-     * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span> <br>
-     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作。<br>
-     * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
-     * </p>
-     * 
-     * @param response
-     *            HttpServletResponse
-     * @param url
-     *            跳转路径
-     * @see #setNoCacheHeader(HttpServletResponse)
-     * @see #sendRedirect(HttpServletResponse, String)
-     */
-    public static void setNoCacheAndRedirect(HttpServletResponse response,String url){
-        setNoCacheHeader(response);
-        sendRedirect(response, url);
-    }
-
-    /**
      * 跳转.
+     * 
      * <p>
-     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL。
+     * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL.
      * </p>
      * <p>
      * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span>; <br>
-     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作。<br>
-     * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败。
+     * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作.<br>
+     * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败.
      * </p>
      *
      * @param response
@@ -145,26 +122,51 @@ public final class ResponseUtil{
 
     /**
      * 设置页面不缓存.
+     * 
+     * <p>
+     * 当HTTP1.1服务器指定 CacheControl = no-cache时,浏览器就不会缓存该网页.<br>
+     * 旧式 HTTP1.0 服务器不能使用 Cache-Control 标题
+     * </p>
+     * 
+     * <h3>注意:</h3>
+     * 
+     * <blockquote>
+     * <p>
+     * 仅仅设置 Cache-Control:no-cache,在 chrome 浏览器下面不起作用, 需要设置成 Cache-Control:no-cache,no-store,参见
+     * {@link <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>}
+     * </p>
+     * </blockquote>
      *
      * @param response
      *            HttpServletResponse
+     * @see <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>
      */
     public static void setNoCacheHeader(HttpServletResponse response){
-        // 当HTTP1.1服务器指定 CacheControl = no-cache时,浏览器就不会缓存该网页。
-        // 旧式 HTTP1.0 服务器不能使用 Cache-Control 标题
-
-        // 为了向后兼容 HTTP1.0 服务器,IE使用Pragma:no-cache 标题对 HTTP提供特殊支持
-        // 如果客户端通过安全连接 (https://)/与服务器通讯,且服务器响应中返回 Pragma:no-cache 标题,则 Internet Explorer不会缓存此响应。
-        // 注意：Pragma:no-cache 仅当在安全连接中使用时才防止缓存,如果在非安全页中使用,处理方式与 Expires:-1相同,该页将被缓存,但被标记为立即过期
-        response.setHeader(HttpHeaders.PRAGMA, "No-cache");
-
-        // Cache-control值为“no-cache”时,访问此页面不会在Internet临时文章夹留下页面备份。
-        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache");
-
-        //In other words Expires: 
-        //0 not always leads to immediate resource expiration, 
-        //therefore should be avoided and Expires: -1 or Expires: [some valid date in the past] should be used instead.
+        response.setHeader(HttpHeaders.PRAGMA, "No-cache,no-store");
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "no-cache,no-store");
         response.setDateHeader(HttpHeaders.EXPIRES, -1);
+    }
+
+    /**
+     * 设置页面缓存.
+     * 
+     * 过期时间 = max-age 属性,单位<span style="color:red">秒</span>.
+     * 
+     * <p>
+     * if value <=0 表示不缓存<br>
+     * 默认:0 不缓存
+     * </p>
+     * 
+     * 设置为int类型,int 最大值是{@link Integer#MAX_VALUE} 为 68.096259734906年,参见 {@link TimeInterval} ,绝对够用了
+     *
+     * @param response
+     *            the response
+     * @param value
+     *            过期时间 = max-age 属性,单位<span style="color:red">秒</span>,建议使用{@link TimeInterval}里面定义的常量.
+     * @since 1.5.3
+     */
+    public static void setCacheHeader(HttpServletResponse response,int value){
+        response.setHeader(HttpHeaders.CACHE_CONTROL, "max-age=" + value);
     }
 
     //   [start] PrintWriter

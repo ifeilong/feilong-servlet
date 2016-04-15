@@ -51,11 +51,11 @@ public final class ServletContextUtil{
     public static Map<String, Object> getServletContextInfoMapForLog(ServletContext servletContext){
 
         Map<String, Object> map = new HashMap<String, Object>();
-        // 返回servlet运行的servlet 容器的版本和名称。
+        // 返回servlet运行的servlet 容器的版本和名称.
         map.put("servletContext.getServerInfo()", servletContext.getServerInfo());
 
-        // 返回这个servlet容器支持的Java Servlet API的主要版本。所有符合2.5版本的实现,必须有这个方法返回的整数2。
-        // 返回这个servlet容器支持的Servlet API的次要版本。所有符合2.5版本的实现,必须有这个方法返回整数5。
+        // 返回这个servlet容器支持的Java Servlet API的主要版本.所有符合2.5版本的实现,必须有这个方法返回的整数2.
+        // 返回这个servlet容器支持的Servlet API的次要版本.所有符合2.5版本的实现,必须有这个方法返回整数5.
         map.put("servlet version:", servletContext.getMajorVersion() + "." + servletContext.getMinorVersion());
 
         map.put("servletContext.getContextPath()", servletContext.getContextPath());

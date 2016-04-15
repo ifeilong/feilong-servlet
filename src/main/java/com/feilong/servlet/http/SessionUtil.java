@@ -44,7 +44,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * <blockquote>
  * <p>
  * 一个常见的错误是以为session在有客户端访问时就被创建,<br>
- * 然而事实是直到某server端程序(如Servlet)调用 {@link javax.servlet.http.HttpServletRequest#getSession()} 这样的语句时才会被创建。
+ * 然而事实是直到某server端程序(如Servlet)调用 {@link javax.servlet.http.HttpServletRequest#getSession()} 这样的语句时才会被创建.
  * </p>
  * </blockquote>
  * 
@@ -192,9 +192,9 @@ public final class SessionUtil{
      * 
      * <blockquote>
      * <ul>
-     * <li>第一步,需要获取被攻击用户的JSESSIONID,可以通过给被攻击用户一个伪造的JSESSIONID,使其用该JESSIONID登录,获取用户登录后的JESSIONID。(这里作为示范,直接从浏览器中获取)</li>
-     * <li>第二步,等被攻击用户登录,是JESSIONID成为已登录状态。</li>
-     * <li>第三步,伪造请求,访问登录后的资源。在用户登录使该JSESSIONID称为已登录的ID后,攻击者就可以利用这个ID伪造请求访问登录后的资源。</li>
+     * <li>第一步,需要获取被攻击用户的JSESSIONID,可以通过给被攻击用户一个伪造的JSESSIONID,使其用该JESSIONID登录,获取用户登录后的JESSIONID.(这里作为示范,直接从浏览器中获取)</li>
+     * <li>第二步,等被攻击用户登录,是JESSIONID成为已登录状态.</li>
+     * <li>第三步,伪造请求,访问登录后的资源.在用户登录使该JSESSIONID称为已登录的ID后,攻击者就可以利用这个ID伪造请求访问登录后的资源.</li>
      * </ul>
      * </blockquote>
      * 
@@ -207,7 +207,7 @@ public final class SessionUtil{
      */
     public static HttpSession replaceSession(HttpServletRequest request){
         // 当session存在时返回该session,否则不会新建session,返回null
-        // getSession()/getSession(true)：当session存在时返回该session,否则新建一个session并返回该对象
+        // getSession()/getSession(true):当session存在时返回该session,否则新建一个session并返回该对象
         HttpSession oldSession = request.getSession(false);
 
         if (null == oldSession){// 是null 新建一个并直接返回

@@ -64,9 +64,13 @@ public final class HttpHeaders{
      * <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.9
      * 
      * <p>
-     * 在HTTP/1.1这个标准中引入了一个新的字段Cache-control。Cache-control中有一条指令,叫max-age。<br>
-     * Age表示这个Response已经存活了多久了。
-     * 而max-age表示response最大的存活时间。所以,max-age表明了这条被cache的消息在多长时间段内是有效的。
+     * Cache-control值为"no-cache"时,访问此页面不会在Internet临时文章夹留下页面备份.
+     * </p>
+     * 
+     * <p>
+     * 在HTTP/1.1这个标准中引入了一个新的字段Cache-control.Cache-control中有一条指令,叫max-age.<br>
+     * Age表示这个Response已经存活了多久了.
+     * 而max-age表示response最大的存活时间.所以,max-age表明了这条被cache的消息在多长时间段内是有效的.
      * </p>
      * 
      * <p>
@@ -74,7 +78,7 @@ public final class HttpHeaders{
      * </p>
      * 
      * <p style="color:red">
-     * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉。
+     * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉.
      * </p>
      * 
      * @see #EXPIRES
@@ -151,13 +155,13 @@ public final class HttpHeaders{
      * 
      * <p>
      * Etag 是 http 1.1 规范引入的一个新的 http 实体头, Etag 在规范中仅仅只 etag 可以用来对同一个资源的其它实体头进行对比,没有做进一步的解释,<br>
-     * 其实我们可以把 Etag 理解为一个服务器在某个资源上面做的一个记号,至于这个记号用来做什么要看服务器如何去解析它,因此我们在设计我们自己的应用的时候,可以借助 Etag 来实现客户端缓存和服务器之间的缓存协商控制。
+     * 其实我们可以把 Etag 理解为一个服务器在某个资源上面做的一个记号,至于这个记号用来做什么要看服务器如何去解析它,因此我们在设计我们自己的应用的时候,可以借助 Etag 来实现客户端缓存和服务器之间的缓存协商控制.
      * </p>
      * 
      * <p>
      * 当浏览器第一次请求一个资源的时候,服务器在响应头里面加入 Etag 的标识, Etag 的值既是当前响应内容经过计算以后的值( http 规范没有对 etag 值的计算方式做规定,可以是 md5 或者其它方式)当第二次浏览器发送请求的时候,浏览器便会用原先请求中
      * Etag 响应头的值作为 if-None-Match 请求头的值,这样服务器接受到此次请求以后,根据 if-None-Match 的取值和当前的内容进行对比,如果相同则返回一个 304 not modified 响应码,这样浏览器收到 304 后就会用客户端本地
-     * cache 来完成对本次请求的响应。
+     * cache 来完成对本次请求的响应.
      * </p>
      * 
      * @see "org.springframework.web.filter.ShallowEtagHeaderFilter"
@@ -170,10 +174,10 @@ public final class HttpHeaders{
     /**
      * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.7, RFC 2616 (HTTP/1.1) Section 14.21
      * <p>
-     * Expires早就存在于HTTP/1.0,是由服务器指定的Response过期时间。<br>
-     * 表明在Expires这个时间点之前,返回的response都是足够新的或者说是有效的,Client无需再向Server发送请求。<br>
+     * Expires早就存在于HTTP/1.0,是由服务器指定的Response过期时间.<br>
+     * 表明在Expires这个时间点之前,返回的response都是足够新的或者说是有效的,Client无需再向Server发送请求.<br>
      * 
-     * Expires表示的是一个 <span style="color:red">绝对的时刻</span>,所以每次返回的Expires的时间极有可能都不一样。
+     * Expires表示的是一个 <span style="color:red">绝对的时刻</span>,所以每次返回的Expires的时间极有可能都不一样.
      * </p>
      * 
      * <p>
@@ -181,13 +185,19 @@ public final class HttpHeaders{
      * </p>
      * 
      * <p>
-     * 需要注意的是,这里的Expires指示告诉Client如果这个response没有过期,没有必要再次访问。<br>
-     * 但这并不意味着response过期之前,Client不能向Server发送请求。<br>
-     * 同时,Expires也不意味在response过期以后,Client需要主动的去Server取最新的消息。
+     * 需要注意的是,这里的Expires指示告诉Client如果这个response没有过期,没有必要再次访问.<br>
+     * 但这并不意味着response过期之前,Client不能向Server发送请求.<br>
+     * 同时,Expires也不意味在response过期以后,Client需要主动的去Server取最新的消息.
      * </p>
      * 
      * <p style="color:red">
-     * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉。
+     * 如果返回的消息中,同时出现了Cache-control: max-age和Expires,那么以Cache-control: max-age为准,Expires的声明将会被覆盖掉.
+     * </p>
+     * 
+     * <p>
+     * In other words Expires:
+     * 0 not always leads to immediate resource expiration,
+     * therefore should be avoided and Expires: -1 or Expires: [some valid date in the past] should be used instead.
      * </p>
      * 
      * @see #CACHE_CONTROL
@@ -215,9 +225,9 @@ public final class HttpHeaders{
      * </p>
      * 
      * <p>
-     * 当用户第一次浏览一个网站的时候,服务器会在响应头中增加 Last-modified 这个 http 响应头, Last-modified 的格式如：Last-modified: Fri, 16 Mar 201 04:00:25 GMT<br>
+     * 当用户第一次浏览一个网站的时候,服务器会在响应头中增加 Last-modified 这个 http 响应头, Last-modified 的格式如:Last-modified: Fri, 16 Mar 201 04:00:25 GMT<br>
      * 当用户第二次再请求同样的 url 的时候,浏览器会将last-modified 的值附加到 if-modified-since 这个 http 请求头中,服务器端接收到请求后,首先 check 一下 if-modified-since 头信息中的时间是否与当前
-     * url 对应的资源的最后修改时间一致,如果一致,则服务器返回 http 304 状态码,这样当浏览器收到 http 304 状态码了以后,就会利用本地缓存的内容来完成对本次用户操作的响应。
+     * url 对应的资源的最后修改时间一致,如果一致,则服务器返回 http 304 状态码,这样当浏览器收到 http 304 状态码了以后,就会利用本地缓存的内容来完成对本次用户操作的响应.
      * </p>
      */
     public static final String IF_MODIFIED_SINCE           = "If-Modified-Since";
@@ -231,7 +241,25 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.28 */
     public static final String IF_UNMODIFIED_SINCE         = "If-Unmodified-Since";
 
-    /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.10, RFC 2616 (HTTP/1.1) Section 14.29 */
+    /**
+     * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.10, RFC 2616 (HTTP/1.1) Section 14.29 .
+     * <p>
+     * 如果没有设置 "Expires" and "Cache-Control" headers, 但是设置了 "Last-Modified" header , 浏览器就得自行判断它应该将这份资源缓存多久.
+     * <br>
+     * 有些浏览器会将其缓存一天以上.
+     * </p>
+     * 
+     * <p>
+     * Google caching best practices guide 里说浏览器会根据 Last-Modified 自行推算缓存时长.<br>
+     * Firefox 的推算方法是:缓存时长 = (Date - Last-Modified) / 10.<br>
+     * Chrome / Safari / IE 并没有公布他们的公式或算法.<br>
+     * 此类文件的缓存时长通常取决于以下因素
+     * </p>
+     * 
+     * @see <a href="http://webmasters.stackexchange.com/questions/53942/why-is-this-response-being-cached#53944">why-is-this-response-being
+     *      -cached</a>
+     * @see <a href="http://www-archive.mozilla.org/projects/netlib/http/http-caching-faq.html">HTTP Caching in Mozilla</a>
+     */
     public static final String LAST_MODIFIED               = "Last-Modified";
 
     /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.11, RFC 2616 (HTTP/1.1) Section 14.30 */
@@ -246,7 +274,18 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 2518 (WevDAV) Section 9.6 */
     public static final String OVERWRITE                   = "Overwrite";
 
-    /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.12, RFC 2616 (HTTP/1.1) Section 14.32 */
+    /**
+     * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.12, RFC 2616 (HTTP/1.1) Section 14.32 .
+     * 
+     * <p>
+     * 为了向后兼容 HTTP1.0 服务器,IE使用Pragma:no-cache 标题对 HTTP提供特殊支持<br>
+     * 如果客户端通过安全连接 (https://)/与服务器通讯,且服务器响应中返回 Pragma:no-cache 标题,则 Internet Explorer不会缓存此响应.<br>
+     * </p>
+     * 
+     * <p>
+     * 注意:Pragma:no-cache 仅当在安全连接中使用时才防止缓存,如果在非安全页中使用,处理方式与 Expires:-1相同,该页将被缓存,但被标记为立即过期
+     * </p>
+     */
     public static final String PRAGMA                      = "Pragma";
 
     /** <code>{@value}</code> RFC 2616 (HTTP/1.1) Section 14.33 */
@@ -288,18 +327,18 @@ public final class HttpHeaders{
     /**
      * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.15, RFC 2616 (HTTP/1.1) Section 14.43
      * <p>
-     * 它是一个特殊字符串头,使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
+     * 它是一个特殊字符串头,使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等.
      * </p>
      * 
      * <pre>
-    *  userAgent 属性是一个只读的字符串,声明了浏览器用于 HTTP 请求的用户代理头的值。
-    *  一般来讲,它是在 navigator.appCodeName 的值之后加上斜线和 navigator.appVersion 的值构成的。
-    *  例如：Mozilla/4.0 (compatible; MSIE6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322)。
-    *  注：用户代理头：user-agent header。
+    *  userAgent 属性是一个只读的字符串,声明了浏览器用于 HTTP 请求的用户代理头的值.
+    *  一般来讲,它是在 navigator.appCodeName 的值之后加上斜线和 navigator.appVersion 的值构成的.
+    *  例如:Mozilla/4.0 (compatible; MSIE6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322).
+    *  注:用户代理头:user-agent header.
     * 
-    *  User Agent中文名为用户代理,简称 UA,它是一个特殊字符串头,使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等。
+    *  User Agent中文名为用户代理,简称 UA,它是一个特殊字符串头,使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等.
     * 
-    *  标准格式为： 
+    *  标准格式为: 
     *  浏览器标识 (操作系统标识; 加密等级标识; 浏览器语言) 渲染引擎标识 版本信息
     *  
     *  //Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17
@@ -327,9 +366,9 @@ public final class HttpHeaders{
     // ****************************************header**************************************************************************
 
     /**
-     * 1、Origin字段里只包含是谁发起的请求,并没有其他信息 (通常情况下是方案,主机和活动文档URL的端口)。<br>
-     * 跟Referer不一样的是,Origin字段并没有包含涉及到用户隐私的URL路径和请求内容,这个尤其重要。 <br>
-     * 2、Origin字段只存在于POST请求,而Referer则存在于所有类型的请求。<br>
+     * 1、Origin字段里只包含是谁发起的请求,并没有其他信息 (通常情况下是方案,主机和活动文档URL的端口).<br>
+     * 跟Referer不一样的是,Origin字段并没有包含涉及到用户隐私的URL路径和请求内容,这个尤其重要. <br>
+     * 2、Origin字段只存在于POST请求,而Referer则存在于所有类型的请求.<br>
      * <code>{@value}</code> .
      */
     public static final String ORIGIN                      = "origin";
@@ -337,9 +376,9 @@ public final class HttpHeaders{
     /**
      * <code>{@value}</code>.
      * <p>
-     * X-Forwarded-For:简称XFF头,它代表客户端,也就是HTTP的请求端真实的IP,只有在通过了HTTP代理或者负载均衡服务器时才会添加该项。<br>
-     * 它不是RFC中定义的标准请求头信息,在squid缓存代理服务器开发文档中可以找到该项的详细介绍。 <br>
-     * 标准格式如下：<br>
+     * X-Forwarded-For:简称XFF头,它代表客户端,也就是HTTP的请求端真实的IP,只有在通过了HTTP代理或者负载均衡服务器时才会添加该项.<br>
+     * 它不是RFC中定义的标准请求头信息,在squid缓存代理服务器开发文档中可以找到该项的详细介绍. <br>
+     * 标准格式如下:<br>
      * X-Forwarded-For: client1, proxy1, proxy2.
      * </p>
      */

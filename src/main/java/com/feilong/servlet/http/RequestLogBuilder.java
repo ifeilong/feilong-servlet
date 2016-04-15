@@ -337,14 +337,14 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     /**
      * 获得 about url map.
      * 
-     * <h3>关于从request中获得相关路径和url：</h3>
+     * <h3>关于从request中获得相关路径和url:</h3>
      * 
      * <blockquote>
      * 
      * <ol>
-     * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头。</li>
-     * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null。</li>
-     * <li>在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。</li>
+     * <li>getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头.</li>
+     * <li>getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null.</li>
+     * <li>在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分.</li>
      * </ol>
      * 
      * <table border="1" cellspacing="0" cellpadding="4">
@@ -391,9 +391,9 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @since 1.0.9
      */
     private Map<String, String> getAboutURLMapForLog(){
-        // 1.getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头。
-        // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null。
-        // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分。
+        // 1.getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头.
+        // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null.
+        // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分.
 
         Map<String, String> aboutURLMap = new LinkedHashMap<String, String>();
 
@@ -484,7 +484,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         // Returns the query string that is contained in the request URL after the path.
         // This method returns null if the URL does not have a query string.
         // Same as the value of the CGI variable QUERY_STRING.
-        // 它只对get方法得到的数据有效。
+        // 它只对get方法得到的数据有效.
         return request.getQueryString();
     }
 }

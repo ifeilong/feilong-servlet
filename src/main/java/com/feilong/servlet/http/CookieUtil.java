@@ -385,16 +385,16 @@ public final class CookieUtil{
         Cookie cookie = new Cookie(cookieEntity.getName(), cookieEntity.getValue());
 
         PropertyUtil.copyProperties(cookie, cookieEntity //
-                        , "maxAge"//设置以秒计的cookie的最大存活时间。
-                        , "secure"//指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器。
+                        , "maxAge"//设置以秒计的cookie的最大存活时间.
+                        , "secure"//指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器.
                         , "version"//设置本cookie遵循的cookie的协议的版本
                         , "httpOnly"//@since Servlet 3.0
         );
-        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "comment", cookieEntity.getComment());//指定一个注释来描述cookie的目的。
+        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "comment", cookieEntity.getComment());//指定一个注释来描述cookie的目的.
 
         //NullPointerException at javax.servlet.http.Cookie.setDomain(Cookie.java:213) ~[servlet-api-6.0.37.jar:na]
-        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "domain", cookieEntity.getDomain());// 指明cookie应当被声明的域。
-        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "path", cookieEntity.getPath());//指定客户端将cookie返回的cookie的路径。
+        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "domain", cookieEntity.getDomain());// 指明cookie应当被声明的域.
+        PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "path", cookieEntity.getPath());//指定客户端将cookie返回的cookie的路径.
         return cookie;
     }
 
