@@ -22,6 +22,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.Validate;
+
 import com.feilong.core.CharsetType;
 import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
@@ -187,6 +189,7 @@ public final class ResponseUtil{
      * @since 1.5.3
      */
     public static void setCacheHeader(HttpServletResponse response,int value){
+        Validate.isTrue(value > 0, "cache value [%s] must > 0,if you no need cache,you can call setNoCacheHeader method!", value);
         response.setHeader(HttpHeaders.CACHE_CONTROL, "max-age=" + value);
     }
 
