@@ -184,7 +184,7 @@ public final class SessionUtil{
      * </blockquote>
      * 
      * <p>
-     * 该方法通常在用户登陆逻辑里面调用,要确保登陆前和登陆后的session不相同,(确切的说,登陆后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话,那么这就是一个固定SessionID的漏洞(详见《黑客攻防技术宝典-web实战》
+     * 该方法通常在用户登录逻辑里面调用,要确保登录前和登录后的session不相同,(确切的说,登录后使用新的JSESSIONID),如果登录前和登录后的JSESSIONID不发生改变的话,那么这就是一个固定SessionID的漏洞(详见《黑客攻防技术宝典-web实战》
      * 第七章)
      * </p>
      * 
