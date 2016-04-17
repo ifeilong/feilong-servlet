@@ -41,7 +41,7 @@ import com.feilong.core.Validator;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIUtil;
-import com.feilong.core.util.CollectionsUtil;
+import com.feilong.core.util.EnumerationUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
@@ -238,7 +238,7 @@ public final class RequestUtil{
         Validate.notEmpty(paramName, "paramName can't be null/empty!");
 
         Enumeration<String> parameterNames = request.getParameterNames();
-        return CollectionsUtil.contains(parameterNames, paramName);
+        return EnumerationUtil.contains(parameterNames, paramName);
     }
 
     /**
