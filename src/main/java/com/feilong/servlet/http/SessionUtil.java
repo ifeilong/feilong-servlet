@@ -86,6 +86,8 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * @version 1.0.7 2014-6-17 14:32 删除历史不用的方法
  * @since 1.0.0
  * @see "org.apache.catalina.session.ManagerBase#generateSessionId()"
+ * @see "org.apache.catalina.session.StandardSession#StandardSession(Manager)"
+ * @see "org.apache.catalina.core.ApplicationSessionCookieConfig#createSessionCookie(Context, String, boolean)"
  */
 public final class SessionUtil{
 
