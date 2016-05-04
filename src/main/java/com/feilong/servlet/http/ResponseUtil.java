@@ -17,6 +17,10 @@ package com.feilong.servlet.http;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -288,4 +292,34 @@ public final class ResponseUtil{
     }
 
     // [end]
+
+    /**
+     * 获得 response info map for LOGGER.
+     *
+     * @param response
+     *            the response
+     * @return the response info map for log
+     * @since 1.5.4
+     */
+    public static Map<String, Object> getResponseInfoMapForLog(HttpServletResponse response){
+        Map<String, Object> object = new LinkedHashMap<String, Object>();
+
+        object.put("response.getBufferSize()", response.getBufferSize());
+        object.put("response.getCharacterEncoding()", response.getCharacterEncoding());
+        object.put("response.getContentType()", response.getContentType());
+
+        //Servlet 3.0
+        Collection<String> headerNames = response.getHeaderNames();
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        for (String headerName : headerNames){
+            //Servlet 3.0
+            map.put(headerName, response.getHeader(headerName));
+        }
+        object.put("response headers", map);
+
+        object.put("response.getHeaderNames()", headerNames);
+        object.put("response.getLocale()", "" + response.getLocale());
+        return object;
+    }
 }
