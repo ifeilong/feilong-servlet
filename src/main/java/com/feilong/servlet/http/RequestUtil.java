@@ -310,7 +310,7 @@ public final class RequestUtil{
      * <h3>示例:</h3>
      * <blockquote>
      * 
-     * <pre>
+     * <pre class="code">
      * Example 1:
      * {@code Map<String, Object> requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request);}
      * LOGGER.debug("class:[{}],request info:{}", getClass().getSimpleName(), JsonUtil.format(requestInfoMapForLog);
@@ -341,7 +341,7 @@ public final class RequestUtil{
      * <h3>示例:</h3>
      * <blockquote>
      * 
-     * <pre>
+     * <pre class="code">
      * Example 1:
      * {@code 
      * RequestLogSwitch requestLogSwitch = RequestLogSwitch.NORMAL;
@@ -419,7 +419,7 @@ public final class RequestUtil{
      * <span style="color:red">自动识别 request 是否 forword</span>,如果是forword过来的,那么 取 {@link RequestAttributes#FORWARD_REQUEST_URI}变量
      * </p>
      * 
-     * <pre>
+     * <pre class="code">
      * 如:http://localhost:8080/feilong/requestdemo.jsp?id=2
      * 返回:http://localhost:8080/feilong/requestdemo.jsp
      * </pre>
@@ -711,7 +711,7 @@ public final class RequestUtil{
     /**
      * 获得上个请求的URL.
      * 
-     * <pre>
+     * <pre class="code">
      * 请用于常规请求,必须走http协议才有值,javascript跳转无效
      * 
      * 以下情况请慎用:

@@ -64,7 +64,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * <blockquote>
  * 不会,参见 {@link "org.apache.catalina.session.ManagerBase#generateSessionId()"} 实现, 使用 while循环再次确认判断
  * 
- * <pre>
+ * <pre class="code">
  * 
  * protected String generateSessionId(){
  *     String result = null;

@@ -140,7 +140,7 @@ public final class ResponseUtil{
      * <p>
      * 仅仅设置 Cache-Control:no-cache,如
      * 
-     * <pre>
+     * <pre class="code">
     {@code
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />

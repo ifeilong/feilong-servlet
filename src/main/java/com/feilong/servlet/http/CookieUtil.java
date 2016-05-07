@@ -68,7 +68,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 3.如果还想给该cookie加上httpOnly等标识,可以调用 {@link #addCookie(CookieEntity, HttpServletResponse)}<br>
  * 如:
  * 
- * <pre>
+ * <pre class="code">
 {@code
 CookieEntity cookieEntity=new CookieEntity("shopName","feilong",TimeInterval.SECONDS_PER_DAY);
 cookieEntity.setHttpOnly(true);
@@ -143,7 +143,7 @@ CookieUtil.addCookie(cookieEntity,response)
  * 
  * <p>
  * 
- * <pre>
+ * <pre class="code">
 {@code
 CookieEntity cookieEntity=new CookieEntity("shopName","feilong");
 cookieEntity.setPath("/member/account");

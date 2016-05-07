@@ -211,7 +211,7 @@ public final class HttpHeaders{
     /**
      * RFC 1945 (HTTP/1.0) Section 10.5, RFC 2616 (HTTP/1.1) Section 14.17 <code>{@value}</code><br>
      * 
-     * <pre>
+     * <pre class="code">
      * http://tools.ietf.org/html/rfc2616#section-7.2.1
      * 7.2.1 Type
      * 
@@ -462,7 +462,7 @@ public final class HttpHeaders{
      * 它是一个特殊字符串头,使得服务器能够识别客户使用的操作系统及版本、CPU 类型、浏览器及版本、浏览器渲染引擎、浏览器语言、浏览器插件等.
      * </p>
      * 
-     * <pre>
+     * <pre class="code">
     *  userAgent 属性是一个只读的字符串,声明了浏览器用于 HTTP 请求的用户代理头的值.
     *  一般来讲,它是在 navigator.appCodeName 的值之后加上斜线和 navigator.appVersion 的值构成的.
     *  例如:Mozilla/4.0 (compatible; MSIE6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322).
