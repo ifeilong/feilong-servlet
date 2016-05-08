@@ -172,8 +172,11 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             //Returns the login of the user making this request, if the user has been authenticated, or null if the user has not been authenticated. Whether the user name is sent with each subsequent request depends on the browser and type of authentication. Same as the value of the CGI variable REMOTE_USER.
             aboutElseMap.put("request.getRemoteUser()", request.getRemoteUser());
 
-            //Returns the session ID specified by the client. This may not be the same as the ID of the current valid session for this request. If the client did not specify a session ID, this method returns null.
-            aboutElseMap.put("request.getRequestedSessionId()", request.getRequestedSessionId());
+            //Returns the session ID specified by the client. This may not be the same as the ID of the current valid session for this request. 
+            //If the client did not specify a session ID, this method returns null.
+
+            //Moreover, this session ID should never be logged to prevent hijacking of active sessions.
+            //aboutElseMap.put("request.getRequestedSessionId()", request.getRequestedSessionId());
 
             //Checks whether the requested session ID came in as a cookie.
             aboutElseMap.put("request.isRequestedSessionIdFromCookie()", request.isRequestedSessionIdFromCookie());
