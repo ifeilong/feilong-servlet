@@ -179,7 +179,7 @@ public final class SessionUtil{
      * 
      * <blockquote>
      * <ol>
-     * <li>使用{@code request.getSession(false)},判断原先是否存在session,如果不存在,那么直接开启一个新的session并返回;</li>
+     * <li>使用<code>request.getSession(false)</code>,判断原先是否存在session,如果不存在,那么直接开启一个新的session并返回;</li>
      * <li>如果老session存在,那么取到里面所有的attribute属性map,然后让老session 失效 {@link HttpSession#invalidate()}</li>
      * <li>而后,开始一个新的session,并将老session 里面的属性设置进去,并返回</li>
      * </ol>

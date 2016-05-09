@@ -451,7 +451,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     }
 
     /**
-     * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当{@code null != map && null != value} 才将key/value put到map中).
+     * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当 <code>null != map && null != value </code>才将key/value put到map中).
      *
      * @param map
      *            the map

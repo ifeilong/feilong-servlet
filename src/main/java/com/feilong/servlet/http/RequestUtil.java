@@ -311,16 +311,18 @@ public final class RequestUtil{
      * <blockquote>
      * 
      * <pre class="code">
-     * Example 1:
-     * {@code Map<String, Object> requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request);}
+     * Map{@code <String, Object>} requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request);}
      * LOGGER.debug("class:[{}],request info:{}", getClass().getSimpleName(), JsonUtil.format(requestInfoMapForLog);
+     * </pre>
      * 
      * 输出结果:
-    19:28:37 DEBUG (AbstractWriteContentTag.java:63) execute() - class:[HttpConcatTag],request info:    {
-        "requestFullURL": "/member/login.htm?a=b",
-        "request.getMethod": "GET",
-        "parameterMap": {"a": ["b"]}
-    }
+     * 
+     * <pre class="code">
+     * 19:28:37 DEBUG (AbstractWriteContentTag.java:63) execute() - class:[HttpConcatTag],request info: {
+     * "requestFullURL": "/member/login.htm?a=b",
+     * "request.getMethod": "GET",
+     * "parameterMap": {"a": ["b"]}
+     * }
      * </pre>
      * 
      * </blockquote>
@@ -342,19 +344,19 @@ public final class RequestUtil{
      * <blockquote>
      * 
      * <pre class="code">
-     * Example 1:
-     * {@code 
      * RequestLogSwitch requestLogSwitch = RequestLogSwitch.NORMAL;
      * Map<String, Object> requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request, requestLogSwitch);
-     * }
      * LOGGER.debug("class:[{}],request info:{}", getClass().getSimpleName(), JsonUtil.format(requestInfoMapForLog);
+     * </pre>
      * 
      * 输出结果:
-    19:28:37 DEBUG (AbstractWriteContentTag.java:63) execute() - class:[HttpConcatTag],request info:    {
-        "requestFullURL": "/member/login.htm?a=b",
-        "request.getMethod": "GET",
-        "parameterMap": {"a": ["b"]}
-    }
+     * 
+     * <pre class="code">
+     * 19:28:37 DEBUG (AbstractWriteContentTag.java:63) execute() - class:[HttpConcatTag],request info: {
+     * "requestFullURL": "/member/login.htm?a=b",
+     * "request.getMethod": "GET",
+     * "parameterMap": {"a": ["b"]}
+     * }
      * </pre>
      * 
      * </blockquote>

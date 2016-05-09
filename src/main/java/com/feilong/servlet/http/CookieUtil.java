@@ -69,11 +69,9 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 如:
  * 
  * <pre class="code">
-{@code
-CookieEntity cookieEntity=new CookieEntity("shopName","feilong",TimeInterval.SECONDS_PER_DAY);
-cookieEntity.setHttpOnly(true);
-CookieUtil.addCookie(cookieEntity,response)
-}
+ * CookieEntity cookieEntity = new CookieEntity("shopName", "feilong", TimeInterval.SECONDS_PER_DAY);
+ * cookieEntity.setHttpOnly(true);
+ * CookieUtil.addCookie(cookieEntity, response);
  * </pre>
  * 
  * 此外,如果有特殊需求,还可以对cookieEntity设置 path,domain等属性
@@ -120,7 +118,6 @@ CookieUtil.addCookie(cookieEntity,response)
  * </blockquote>
  * 
  * 
- * 
  * <h4>
  * case:删除Cookie
  * </h4>
@@ -144,11 +141,9 @@ CookieUtil.addCookie(cookieEntity,response)
  * <p>
  * 
  * <pre class="code">
-{@code
-CookieEntity cookieEntity=new CookieEntity("shopName","feilong");
-cookieEntity.setPath("/member/account");
-CookieUtil.deleteCookie(request, "shopName")
-}
+ * CookieEntity cookieEntity = new CookieEntity("shopName", "feilong");
+ * cookieEntity.setPath("/member/account");
+ * CookieUtil.deleteCookie(request, "shopName");
  * </pre>
  * </p>
  * 
