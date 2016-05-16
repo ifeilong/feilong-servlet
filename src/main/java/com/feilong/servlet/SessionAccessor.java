@@ -67,4 +67,18 @@ public class SessionAccessor implements Accessor{
 
         return t;
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.feilong.servlet.Accessor#remove(java.lang.String, javax.servlet.http.HttpServletRequest)
+     */
+    @Override
+    public void remove(String key,HttpServletRequest request){
+        request.getSession().removeAttribute(key);
+
+        if (LOGGER.isDebugEnabled()){
+            LOGGER.debug("removeAttribute key:{}", key);
+        }
+    }
 }

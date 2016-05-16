@@ -52,4 +52,15 @@ public interface Accessor{
      * @return the barcode contents and config
      */
     <T extends Serializable> T get(String key,HttpServletRequest request);
+
+    /**
+     * 删除保存的key.
+     *
+     * @param key
+     *            the key
+     * @param request
+     *            the request
+     * @since 1.5.5
+     */
+    void remove(String key,HttpServletRequest request);
 }
