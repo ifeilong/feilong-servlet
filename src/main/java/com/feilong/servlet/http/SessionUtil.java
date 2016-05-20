@@ -115,12 +115,11 @@ public final class SessionUtil{
      * @see HttpSession#isNew()
      */
     public static Map<String, Object> getSessionInfoMapForLog(HttpSession session){
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-
         if (Validator.isNullOrEmpty(session)){
             return Collections.emptyMap();
         }
 
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
         // 返回SESSION创建时JSP引擎为它设的惟一ID号 
         map.put("session.getId()", session.getId());
 
@@ -144,10 +143,7 @@ public final class SessionUtil{
 
         // 返回服务器创建的一个SESSION,客户端是否已经加入 
         map.put("session.isNew()", session.isNew());
-
-        Enumeration<String> attributeNames = session.getAttributeNames();
-        map.put("session.getAttributeNames()", ConvertUtil.toList(attributeNames));
-
+        map.put("session.getAttributeNames()", ConvertUtil.toList(session.getAttributeNames()));
         return map;
     }
 

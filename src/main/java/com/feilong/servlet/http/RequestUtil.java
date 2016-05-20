@@ -482,12 +482,9 @@ public final class RequestUtil{
      */
     public static String getRequestFullURL(HttpServletRequest request,String charsetType){
         String requestURL = getRequestURL(request);
-
         String queryString = request.getQueryString();
-        if (Validator.isNullOrEmpty(queryString)){
-            return requestURL;
-        }
-        return requestURL + URIComponents.QUESTIONMARK + URIUtil.decodeISO88591String(queryString, charsetType);
+        return Validator.isNullOrEmpty(queryString) ? requestURL
+                        : requestURL + URIComponents.QUESTIONMARK + URIUtil.decodeISO88591String(queryString, charsetType);
     }
 
     /**

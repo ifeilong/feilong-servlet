@@ -288,6 +288,17 @@ public final class ResponseDownloadUtil{
 
     /**
      * Resolver content disposition.
+     * 
+     * <p>
+     * 默认 附件形式
+     * </p>
+     * 
+     * <pre class="code">
+     * Content-Disposition takes one of two values, `inline' and  `attachment'.  
+     * 'Inline' indicates that the entity should be immediately displayed to the user, 
+     * whereas `attachment' means that the user should take additional action to view the entity.
+     * The `filename' parameter can be used to suggest a filename for storing the bodypart, if the user wishes to store it in an external file.
+     * </pre>
      *
      * @param saveFileName
      *            the save file name
@@ -297,16 +308,8 @@ public final class ResponseDownloadUtil{
      * @since 1.4.0
      */
     private static String resolverContentDisposition(String saveFileName,String contentDisposition){
-        if (Validator.isNotNullOrEmpty(contentDisposition)){
-            return contentDisposition;
-        }
-
-        //Content-Disposition takes one of two values, `inline' and  `attachment'.  
-        //'Inline' indicates that the entity should be immediately displayed to the user, 
-        //whereas `attachment' means that the user should take additional action to view the entity.
-        //The `filename' parameter can be used to suggest a filename for storing the bodypart, if the user wishes to store it in an external file.
-        //默认 附件形式
-        return "attachment; filename=" + URIUtil.encode(saveFileName, CharsetType.UTF8);
+        return Validator.isNotNullOrEmpty(contentDisposition) ? contentDisposition
+                        : "attachment; filename=" + URIUtil.encode(saveFileName, CharsetType.UTF8);
     }
 
     /**
@@ -327,18 +330,13 @@ public final class ResponseDownloadUtil{
         if (Validator.isNotNullOrEmpty(inputContentType)){
             return inputContentType;
         }
-
         String contentTypeByFileName = MimeTypeUtil.getContentTypeByFileName(saveFileName);
-
-        if (Validator.isNotNullOrEmpty(contentTypeByFileName)){
-            return contentTypeByFileName;
-        }
 
         //contentType = "application/force-download";//,php强制下载application/force-download,将发送HTTP 标头您的浏览器并告诉它下载,而不是在浏览器中运行的文件
         //application/x-download
 
         //.*( 二进制流,不知道下载文件类型)   application/octet-stream
-        return MimeType.BIN.getMime();
+        return Validator.isNotNullOrEmpty(contentTypeByFileName) ? contentTypeByFileName : MimeType.BIN.getMime();
         //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
         //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).
     }
