@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.bean.BeanUtil;
 import com.feilong.core.bean.PropertyUtil;
 import com.feilong.servlet.http.entity.CookieEntity;
 import com.feilong.tools.jsonlib.JsonUtil;
@@ -49,6 +50,20 @@ public class CookieUtilTest{
         if (LOGGER.isDebugEnabled()){
             LOGGER.debug(JsonUtil.format(cookie));
         }
+    }
 
+    @Test
+    public final void test1(){
+        CookieEntity cookieEntity = new CookieEntity("name", "jinxin");
+        LOGGER.debug("cookieEntity:{}", JsonUtil.format(cookieEntity));
+
+        CookieEntity cloneCookieEntity = BeanUtil.cloneBean(cookieEntity);
+        LOGGER.debug("cloneCookieEntity:{}", JsonUtil.format(cloneCookieEntity));
+
+        cloneCookieEntity.setMaxAge(8888);
+        cloneCookieEntity.setName("feilong");
+
+        LOGGER.debug("cookieEntity:{}", JsonUtil.format(cookieEntity));
+        LOGGER.debug("cloneCookieEntity:{}", JsonUtil.format(cloneCookieEntity));
     }
 }
