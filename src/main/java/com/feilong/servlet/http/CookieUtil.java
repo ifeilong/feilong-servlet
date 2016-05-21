@@ -217,7 +217,7 @@ public final class CookieUtil{
         for (Cookie cookie : cookies){
             if (cookie.getName().equals(cookieName)){
                 if (LOGGER.isDebugEnabled()){
-                    LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie));
+                    LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie, 0, 0));
                 }
                 return cookie;
             }
@@ -363,7 +363,7 @@ public final class CookieUtil{
         Cookie cookie = toCookie(cookieEntity);
 
         if (LOGGER.isDebugEnabled()){
-            LOGGER.debug("input cookieEntity info:[{}],response.addCookie", JsonUtil.format(cookieEntity));
+            LOGGER.debug("input cookieEntity info:[{}],response.addCookie", JsonUtil.format(cookieEntity, 0, 0));
         }
         response.addCookie(cookie);
     }
@@ -414,7 +414,7 @@ public final class CookieUtil{
                             "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}",
                             value,
                             value.length(),
-                            JsonUtil.format(cookieEntity));
+                            JsonUtil.format(cookieEntity, 0, 0));
         }
     }
 }
