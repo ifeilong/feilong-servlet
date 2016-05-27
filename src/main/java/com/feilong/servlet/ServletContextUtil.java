@@ -70,7 +70,7 @@ public final class ServletContextUtil{
      * 
      * @param servletContext
      *            the servlet context
-     * @return if isNotNullOrEmpty(attributeNames),will return {@link java.util.Collections#emptyMap()}
+     * @return if isNotNullOrEmpty(attributeNames),返回 {@link java.util.Collections#emptyMap()}
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
@@ -94,7 +94,7 @@ public final class ServletContextUtil{
      * 
      * @param servletContext
      *            the servlet context
-     * @return if isNotNullOrEmpty(initParameterNames),will return {@link java.util.Collections#emptyMap()}
+     * @return if isNotNullOrEmpty(initParameterNames),返回 {@link java.util.Collections#emptyMap()}
      * @see javax.servlet.ServletContext#getInitParameterNames()
      * @see "org.springframework.web.context.support#registerEnvironmentBeans(ConfigurableListableBeanFactory, ServletContext)"
      */
