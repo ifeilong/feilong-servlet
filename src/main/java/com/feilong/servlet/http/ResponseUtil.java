@@ -41,7 +41,7 @@ import com.feilong.io.MimeType;
  * {@link HttpServletResponse#sendRedirect(String) HttpServletResponse.sendRedirect}</h3>
  * 
  * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
  * <tr style="background-color:#ccccff">
  * <th align="left">{@link RequestDispatcher#forward(javax.servlet.ServletRequest, javax.servlet.ServletResponse) RequestDispatcher.forward}
  * </th>

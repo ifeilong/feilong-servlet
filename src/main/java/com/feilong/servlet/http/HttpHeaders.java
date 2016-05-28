@@ -85,7 +85,7 @@ public final class HttpHeaders{
      * <h3>有用的 Cache-Control响应头信息包括:</h3>
      * 
      * <blockquote>
-     * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>

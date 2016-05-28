@@ -25,7 +25,7 @@ import com.feilong.core.TimeInterval;
  * <h3>关于 {@link #name} && {@link #value}字符说明:</h3>
  * 
  * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
  * <tr style="background-color:#ccccff">
  * <th align="left">字段</th>
  * <th align="left">说明</th>
@@ -68,7 +68,7 @@ import com.feilong.core.TimeInterval;
  * <h3>关于 {@link #maxAge}</h3>
  * 
  * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
  * <tr style="background-color:#ccccff">
  * <th align="left">字段</th>
  * <th align="left">说明</th>
@@ -201,7 +201,7 @@ public class CookieEntity implements Serializable{
      * 设置存活时间,单位秒.
      * 
      * <blockquote>
-     * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>
@@ -378,7 +378,7 @@ public class CookieEntity implements Serializable{
      * @param maxAge
      *            设置存活时间,单位秒.
      *            <blockquote>
-     *            <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
      *            <tr style="background-color:#ccccff">
      *            <th align="left">字段</th>
      *            <th align="left">说明</th>
@@ -457,7 +457,7 @@ public class CookieEntity implements Serializable{
     /**
      * 获得 设置存活时间,单位秒.
      * <blockquote>
-     * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>
@@ -488,7 +488,7 @@ public class CookieEntity implements Serializable{
     /**
      * 设置 设置存活时间,单位秒.
      * <blockquote>
-     * <table border="1" cellspacing="0" cellpadding="4">
+ * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>
