@@ -103,7 +103,7 @@ public final class SessionUtil{
      * 
      * @param session
      *            the session
-     * @return the session map for log,如果session is null,则返回 empty的{@link LinkedHashMap}
+     * @return the session map for log,如果session 是 null,则返回 empty的{@link LinkedHashMap}
      * @see HttpSession#getId()
      * @see HttpSession#getCreationTime()
      * @see HttpSession#getLastAccessedTime()
