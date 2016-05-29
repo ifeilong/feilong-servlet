@@ -19,9 +19,9 @@ package com.feilong.servlet.http;
  * Request 作用域中的属性.
  * 
  * @author feilong
- * @version 1.0.4 2014-3-27 14:38
  * @see "org.apache.catalina.Globals"
  * @see "org.springframework.web.util.WebUtils"
+ * @since 1.0.4
  */
 public final class RequestAttributes{
 

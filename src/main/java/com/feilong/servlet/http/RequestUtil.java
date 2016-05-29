@@ -206,10 +206,9 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * </blockquote>
  * 
  * @author feilong
- * @version 1.0.0 2011-11-3 下午02:24:55
- * @version 1.0.4 2014-3-27 14:38
  * @see RequestAttributes
  * @see RequestLogSwitch
+ * @since 1.0.0
  */
 public final class RequestUtil{
 
@@ -429,7 +428,7 @@ public final class RequestUtil{
      * 注:
      * 
      * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">返回值</th>

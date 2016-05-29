@@ -42,7 +42,6 @@ import com.feilong.io.MimeTypeUtil;
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.
  *
  * @author feilong
- * @version 1.5.1 2016年3月26日 下午4:27:38
  * @see javax.servlet.http.HttpServletResponse
  * @since 1.5.1
  */

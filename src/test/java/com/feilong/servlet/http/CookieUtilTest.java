@@ -29,7 +29,6 @@ import com.feilong.tools.jsonlib.JsonUtil;
 /**
  *
  * @author feilong
- * @version 1.5.4 2016年5月11日 下午5:35:24
  * @since 1.5.4
  */
 public class CookieUtilTest{

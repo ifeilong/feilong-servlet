@@ -170,15 +170,13 @@ import com.feilong.core.TimeInterval;
  * 但是这两个属性,并不能解决cookie在本机出现的信息泄漏的问题(FireFox的插件FireBug能直接看到cookie的相关信息)
  * </p>
  * </blockquote>
- * 
+ *
  * @author feilong
- * @version 1.0.0 2010-6-24 上午08:07:11
- * @since 1.0.0
- * 
  * @see <a href="http://tools.ietf.org/html/rfc6265">HTTP State Management Mechanism</a>
  * @see <a href="http://stackoverflow.com/questions/640938/what-is-the-maximum-size-of-a-web-browsers-cookies-key">What is the maximum size
  *      of a web browser cookie</a>
  * @see <a href="http://browsercookielimits.squawky.net/">test page and size limits for common browsers</a>
+ * @since 1.0.0
  */
 public class CookieEntity implements Serializable{
 
@@ -201,7 +199,7 @@ public class CookieEntity implements Serializable{
      * 设置存活时间,单位秒.
      * 
      * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>
@@ -378,7 +376,7 @@ public class CookieEntity implements Serializable{
      * @param maxAge
      *            设置存活时间,单位秒.
      *            <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     *            <table border="1" cellspacing="0" cellpadding="4" summary="">
      *            <tr style="background-color:#ccccff">
      *            <th align="left">字段</th>
      *            <th align="left">说明</th>
@@ -457,7 +455,7 @@ public class CookieEntity implements Serializable{
     /**
      * 获得 设置存活时间,单位秒.
      * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>
@@ -488,7 +486,7 @@ public class CookieEntity implements Serializable{
     /**
      * 设置 设置存活时间,单位秒.
      * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>

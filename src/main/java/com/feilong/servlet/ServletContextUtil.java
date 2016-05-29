@@ -29,7 +29,6 @@ import com.feilong.core.Validator;
  * {@link javax.servlet.ServletContext} 工具类.
  * 
  * @author feilong
- * @version 1.0.2 2012-5-31 下午12:53:01
  * @since 1.0.2
  */
 public final class ServletContextUtil{

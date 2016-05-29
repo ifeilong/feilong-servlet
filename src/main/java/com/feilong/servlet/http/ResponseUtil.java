@@ -86,7 +86,6 @@ import com.feilong.io.MimeType;
  * </blockquote>
  *
  * @author feilong
- * @version 1.0 2011-11-3 下午02:26:14
  * @see javax.servlet.http.HttpServletResponse
  * @since 1.0.0
  */

@@ -152,8 +152,6 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * </blockquote>
  * 
  * @author feilong
- * @version 2010-6-24 上午08:05:32
- * @version 2012-5-18 14:53
  * @see javax.servlet.http.Cookie
  * @see "org.springframework.web.util.CookieGenerator"
  * @see com.feilong.servlet.http.entity.CookieEntity

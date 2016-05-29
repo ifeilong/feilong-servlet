@@ -34,7 +34,6 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 应用信息(用于监控查看).
  * 
  * @author feilong
- * @version 1.0.8 2014年11月23日 上午3:51:21
  * @since 1.0.8
  * @deprecated 想个更好的办法
  */

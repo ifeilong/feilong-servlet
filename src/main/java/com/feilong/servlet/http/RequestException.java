@@ -30,7 +30,6 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * 请求异常.
  *
  * @author feilong
- * @version 1.4.0 2015年8月7日 上午1:39:36
  * @since 1.4.0
  */
 public final class RequestException extends RuntimeException{

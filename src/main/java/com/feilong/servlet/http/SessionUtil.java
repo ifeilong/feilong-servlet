@@ -79,15 +79,12 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * </pre>
  * 
  * </blockquote>
- * 
+ *
  * @author feilong
- * @version 1.0.0 2010-7-6 下午02:10:33
- * @version 1.0.1 Jan 15, 2013 2:31:32 PM 进行精简
- * @version 1.0.7 2014-6-17 14:32 删除历史不用的方法
- * @since 1.0.0
  * @see "org.apache.catalina.session.ManagerBase#generateSessionId()"
  * @see "org.apache.catalina.session.StandardSession#StandardSession(Manager)"
  * @see "org.apache.catalina.core.ApplicationSessionCookieConfig#createSessionCookie(Context, String, boolean)"
+ * @since 1.0.0
  */
 public final class SessionUtil{
 

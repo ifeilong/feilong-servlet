@@ -51,8 +51,6 @@ import java.io.Serializable;
  * </blockquote>
  *
  * @author feilong
- * @version 1.0.5 Apr 23, 2014 11:33:28 AM
- * @version 1.4.0 2015-8-4 23:33 重构整个类
  * @see org.apache.commons.lang3.builder.ToStringStyle
  * @since 1.4.0
  */

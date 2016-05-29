@@ -21,7 +21,6 @@ import java.io.Serializable;
  * 确认请求信息的身份.
  *
  * @author feilong
- * @version 1.4.0 2015年8月5日 上午12:11:29
  * @since 1.4.0
  */
 public class RequestIdentity implements Serializable{
