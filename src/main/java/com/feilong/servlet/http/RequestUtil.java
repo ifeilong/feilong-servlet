@@ -230,11 +230,14 @@ public final class RequestUtil{
      *            请求
      * @param paramName
      *            参数名称
-     * @return 包含该参数返回true,不包含返回false
+     * @return 包含该参数返回true,不包含返回false <br>
+     *         如果 <code>paramName</code> 是null,抛出 {@link NullPointerException}<br>
+     *         如果 <code>paramName</code> 是blank,抛出 {@link IllegalArgumentException}<br>
+     * @see com.feilong.core.util.EnumerationUtil#contains(Enumeration, Object)
      * @since 1.4.0
      */
     public static boolean containsParam(HttpServletRequest request,String paramName){
-        Validate.notEmpty(paramName, "paramName can't be null/empty!");
+        Validate.notBlank(paramName, "paramName can't be null/empty!");
 
         Enumeration<String> parameterNames = request.getParameterNames();
         return EnumerationUtil.contains(parameterNames, paramName);
@@ -381,16 +384,17 @@ public final class RequestUtil{
      *            the generic type
      * @param request
      *            the request
-     * @param name
-     *            the name
-     * @return the attribute
+     * @param attributeName
+     *            属性名称
+     * @return 如果 <code>attributeName</code> 是null,抛出 {@link NullPointerException}<br>
+     *         如果 <code>attributeName</code> 是blank,抛出 {@link IllegalArgumentException}<br>
      * @see javax.servlet.ServletRequest#getAttribute(String)
      * @since 1.3.0
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getAttribute(HttpServletRequest request,String name){
-        Validate.notEmpty(name, "name can't be null/empty!");
-        return (T) request.getAttribute(name);
+    public static <T> T getAttribute(HttpServletRequest request,String attributeName){
+        Validate.notBlank(attributeName, "attributeName can't be null/empty!");
+        return (T) request.getAttribute(attributeName);
     }
 
     /**

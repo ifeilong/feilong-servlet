@@ -301,6 +301,11 @@ public final class CookieUtil{
      * <p>
      * 注意:该方法创建的cookie,有效期是默认值 -1,即浏览器退出就删除
      * </p>
+     * 
+     * <p>
+     * 如果 <code>cookieName</code> 是null,抛出 {@link NullPointerException}<br>
+     * 如果 <code>cookieName</code> 是blank,抛出 {@link IllegalArgumentException}<br>
+     * </p>
      *
      * @param cookieName
      *            the cookie name
@@ -315,7 +320,7 @@ public final class CookieUtil{
      * @since 1.5.0
      */
     public static void addCookie(String cookieName,String value,HttpServletResponse response){
-        Validate.notEmpty(cookieName, "cookieName can't be null/empty!");
+        Validate.notBlank(cookieName, "cookieName can't be null/empty!");
 
         CookieEntity cookieEntity = new CookieEntity(cookieName, value);
         addCookie(cookieEntity, response);
@@ -323,6 +328,11 @@ public final class CookieUtil{
 
     /**
      * 创建cookie.
+     * 
+     * <p>
+     * 如果 <code>cookieName</code> 是null,抛出 {@link NullPointerException}<br>
+     * 如果 <code>cookieName</code> 是blank,抛出 {@link IllegalArgumentException}<br>
+     * </p>
      *
      * @param cookieName
      *            the cookie name
@@ -339,7 +349,7 @@ public final class CookieUtil{
      * @since 1.5.0
      */
     public static void addCookie(String cookieName,String value,int maxAge,HttpServletResponse response){
-        Validate.notEmpty(cookieName, "cookieName can't be null/empty!");
+        Validate.notBlank(cookieName, "cookieName can't be null/empty!");
 
         CookieEntity cookieEntity = new CookieEntity(cookieName, value, maxAge);
         addCookie(cookieEntity, response);
@@ -402,7 +412,7 @@ public final class CookieUtil{
         Validate.notNull(cookieEntity, "cookieEntity can't be null!");
 
         String cookieName = cookieEntity.getName();
-        Validate.notEmpty(cookieName, "cookieName can't be null/empty!");
+        Validate.notBlank(cookieName, "cookieName can't be null/empty!");
 
         String value = cookieEntity.getValue();
 
