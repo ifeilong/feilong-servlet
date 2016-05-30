@@ -171,7 +171,7 @@ import com.feilong.core.TimeInterval;
  * </p>
  * </blockquote>
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see <a href="http://tools.ietf.org/html/rfc6265">HTTP State Management Mechanism</a>
  * @see <a href="http://stackoverflow.com/questions/640938/what-is-the-maximum-size-of-a-web-browsers-cookies-key">What is the maximum size
  *      of a web browser cookie</a>

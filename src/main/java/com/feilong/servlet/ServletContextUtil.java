@@ -28,7 +28,7 @@ import com.feilong.core.Validator;
 /**
  * {@link javax.servlet.ServletContext} 工具类.
  * 
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.0.2
  */
 public final class ServletContextUtil{

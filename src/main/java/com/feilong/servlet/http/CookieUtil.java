@@ -151,7 +151,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 
  * </blockquote>
  * 
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see javax.servlet.http.Cookie
  * @see "org.springframework.web.util.CookieGenerator"
  * @see com.feilong.servlet.http.entity.CookieEntity

@@ -85,7 +85,7 @@ import com.feilong.io.MimeType;
  * </p>
  * </blockquote>
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see javax.servlet.http.HttpServletResponse
  * @since 1.0.0
  */

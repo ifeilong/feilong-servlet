@@ -18,7 +18,7 @@ package com.feilong.servlet.http;
 /**
  * Request 作用域中的属性.
  * 
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see "org.apache.catalina.Globals"
  * @see "org.springframework.web.util.WebUtils"
  * @since 1.0.4

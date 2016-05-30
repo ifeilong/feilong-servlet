@@ -50,7 +50,7 @@ import java.io.Serializable;
  * </p>
  * </blockquote>
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see org.apache.commons.lang3.builder.ToStringStyle
  * @since 1.4.0
  */

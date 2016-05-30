@@ -26,7 +26,7 @@ import com.feilong.core.net.ParamUtil;
 
 /**
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.4.0
  */
 public class RequestUtilTest{

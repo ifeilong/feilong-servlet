@@ -41,7 +41,7 @@ import com.feilong.io.MimeTypeUtil;
 /**
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see javax.servlet.http.HttpServletResponse
  * @since 1.5.1
  */

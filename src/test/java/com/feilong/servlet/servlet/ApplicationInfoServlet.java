@@ -33,7 +33,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
 /**
  * 应用信息(用于监控查看).
  * 
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.0.8
  * @deprecated 想个更好的办法
  */

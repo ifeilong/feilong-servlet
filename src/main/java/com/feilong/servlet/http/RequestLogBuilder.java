@@ -40,7 +40,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
 /**
  * The Class RequestLogBuilder.
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see org.apache.commons.lang3.builder.Builder
  * @see org.apache.commons.lang3.builder.HashCodeBuilder
  * @since 1.4.0

@@ -80,7 +80,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * 
  * </blockquote>
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see "org.apache.catalina.session.ManagerBase#generateSessionId()"
  * @see "org.apache.catalina.session.StandardSession#StandardSession(Manager)"
  * @see "org.apache.catalina.core.ApplicationSessionCookieConfig#createSessionCookie(Context, String, boolean)"

@@ -29,7 +29,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
 /**
  * 请求异常.
  *
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.4.0
  */
 public final class RequestException extends RuntimeException{

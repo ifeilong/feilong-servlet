@@ -205,7 +205,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * </table>
  * </blockquote>
  * 
- * @author feilong
+ * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see RequestAttributes
  * @see RequestLogSwitch
  * @since 1.0.0
