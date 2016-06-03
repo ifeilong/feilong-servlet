@@ -215,7 +215,7 @@ public final class CookieUtil{
         for (Cookie cookie : cookies){
             if (cookie.getName().equals(cookieName)){
                 if (LOGGER.isDebugEnabled()){
-                    LOGGER.debug("getCookie,cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie, 0, 0));
+                    LOGGER.debug("[getCookie],cookieName:[{}],cookie info:[{}]", cookieName, JsonUtil.format(cookie, 0, 0));
                 }
                 return cookie;
             }
@@ -290,7 +290,7 @@ public final class CookieUtil{
         cookieEntity.setMaxAge(0);// 设置为0为立即删除该Cookie
         addCookie(cookieEntity, response);
 
-        LOGGER.debug("deleteCookie,cookieName:[{}]", cookieEntity.getName());
+        LOGGER.debug("[deleteCookie],cookieName:[{}]", cookieEntity.getName());
     }
 
     //****************************************************************************************************
@@ -371,7 +371,7 @@ public final class CookieUtil{
         Cookie cookie = toCookie(cookieEntity);
 
         if (LOGGER.isDebugEnabled()){
-            LOGGER.debug("input cookieEntity info:[{}],response.addCookie", JsonUtil.format(cookieEntity, 0, 0));
+            LOGGER.debug("[addCookie],cookieEntity info:[{}]", JsonUtil.format(cookieEntity, 0, 0));
         }
         response.addCookie(cookie);
     }
