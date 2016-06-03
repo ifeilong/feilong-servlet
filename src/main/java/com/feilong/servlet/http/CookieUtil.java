@@ -36,6 +36,11 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * {@link javax.servlet.http.Cookie Cookie} 工具类.
  * 
  * <p>
+ * 更多,请参考 {@link <a href="https://github.com/venusdrogon/feilong-servlet/wiki/CookieUtil">
+ * https://github.com/venusdrogon/feilong-servlet/wiki/CookieUtil</a>}
+ * </p>
+ * 
+ * <p>
  * 注意:该类创建Cookie仅支持Servlet3以上的版本
  * </p>
  * 
