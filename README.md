@@ -30,12 +30,12 @@ Reduce development, Release ideas
 
 `封装了j2ee常用类,是feilong-platform web相关jar 的基础`
 
-#说明
 
-1. 基于`Apache2` 协议,您可以下载,代码用于闭源项目,但每个修改的过的文件必须放置版权说明;
-1. 基于`maven3.3`构建;
-1. 1.5.0及以上版本需要`jdk1.7`及以上环境(1.5.0以下版本需要`jdk1.6`及以上环境);
+# Javadoc:
+在此,我们提供在线的Javadoc,以便查阅,参见 [Javadoc](http://venusdrogon.github.io/feilong-platform/javadocs/1.5.6/feilong-servlet/)
 
+# wiki:
+更多内容,你可以参见 [WiKi](https://github.com/venusdrogon/feilong-servlet/wiki) 
 
 # Maven使用配置
 
@@ -73,14 +73,12 @@ Reduce development, Release ideas
 	</project>
 ```
 
-# feilong-platform module:
 
-Category |Name | Description | JDK编译版本
-----|------------ | ---------|------------
-commons |`feilong-servlet` | 封装了j2ee常用类,是feilong-platform web相关jar 的基础 | 1.7
+#说明
 
-# Javadoc:
-在此,我们提供在线的Javadoc,以便查阅,参见 [Javadoc](http://venusdrogon.github.io/feilong-platform/javadocs/1.5.6/feilong-servlet/)
+1. 基于`Apache2` 协议,您可以下载,代码用于闭源项目,但每个修改的过的文件必须放置版权说明;
+1. 基于`maven3.3`构建;
+1. 1.5.0及以上版本需要`jdk1.7`及以上环境(1.5.0以下版本需要`jdk1.6`及以上环境);
 
 
 # About
