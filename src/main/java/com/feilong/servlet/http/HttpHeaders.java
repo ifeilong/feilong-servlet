@@ -85,7 +85,7 @@ public final class HttpHeaders{
      * <h3>有用的 Cache-Control响应头信息包括:</h3>
      * 
      * <blockquote>
- * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     * <table border="1" cellspacing="0" cellpadding="4" summary="">
      * <tr style="background-color:#ccccff">
      * <th align="left">字段</th>
      * <th align="left">说明</th>
@@ -209,7 +209,7 @@ public final class HttpHeaders{
     public static final String CONTENT_RANGE               = "Content-Range";
 
     /**
-     * RFC 1945 (HTTP/1.0) Section 10.5, RFC 2616 (HTTP/1.1) Section 14.17 <code>{@value}</code><br>
+     * RFC 1945 (HTTP/1.0) Section 10.5, RFC 2616 (HTTP/1.1) Section 14.17 <code>{@value}</code>.
      * 
      * <pre class="code">
      * http://tools.ietf.org/html/rfc2616#section-7.2.1
