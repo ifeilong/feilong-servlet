@@ -239,7 +239,7 @@ public final class SessionUtil{
         return Slf4jUtil.format(
                         "[{}],format:[{}],intervalToNow:[{}]",
                         creationTime,
-                        DateUtil.date2String(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
+                        DateUtil.toString(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
                         DateExtensionUtil.getIntervalForView(creationTimeDate, now));
     }
 }
