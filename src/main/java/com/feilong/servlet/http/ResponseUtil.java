@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.feilong.core.CharsetType;
 import com.feilong.core.TimeInterval;
@@ -91,6 +93,9 @@ import com.feilong.io.MimeType;
  */
 public final class ResponseUtil{
 
+    /** The Constant log. */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtil.class);
+
     /** Don't let anyone instantiate this class. */
     private ResponseUtil(){
         //AssertionError不是必须的. 但它可以避免不小心在类的内部调用构造器. 保证该类在任何情况下都不会被实例化.
@@ -109,6 +114,11 @@ public final class ResponseUtil{
      * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作.<br>
      * 既然您已要做转向了,那么后的输出更有什么意义呢？而且有可能会因为后面的输出导致转向失败.
      * </p>
+     * 
+     * <p>
+     * 如果 <code>url</code> 是null,抛出 {@link NullPointerException}<br>
+     * 如果 <code>url</code> 是blank,抛出 {@link IllegalArgumentException}<br>
+     * </p>
      *
      * @param response
      *            the response
@@ -118,7 +128,9 @@ public final class ResponseUtil{
      * @since 1.2.2
      */
     public static void sendRedirect(HttpServletResponse response,String url){
+        Validate.notBlank(url, "url can't be blank!");
         try{
+            LOGGER.debug("response sendRedirect to:[{}]", url);
             response.sendRedirect(url);
         }catch (IOException e){
             throw new UncheckedIOException(e);
@@ -140,11 +152,11 @@ public final class ResponseUtil{
      * 仅仅设置 Cache-Control:no-cache,如
      * 
      * <pre class="code">
-    {@code
-    <meta http-equiv="Cache-Control" content="no-cache" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    }
+     * {@code
+     <meta http-equiv="Cache-Control" content="no-cache" />
+     <meta http-equiv="Pragma" content="no-cache" />
+     <meta http-equiv="Expires" content="0" />
+     }
      * </pre>
      * 
      * 
