@@ -16,6 +16,7 @@
 package com.feilong.servlet.http;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -786,16 +787,21 @@ public final class RequestUtil{
      * 遍历显示request的attribute,将 name /attributeValue 存入到map.
      * 
      * <p style="color:red">
-     * 目前如果直接 转json 如果属性有级联关系,会报错,
+     * 目前如果直接 转json 如果属性有级联关系,会报错
      * </p>
      * 
      * @param request
      *            the request
-     * @return the attribute map
+     * @return 如果{@link javax.servlet.ServletRequest#getAttributeNames()} 是null或者empty,返回{@link Collections#emptyMap()}<br>
      */
     public static Map<String, Object> getAttributeMap(HttpServletRequest request){
-        Map<String, Object> map = new HashMap<String, Object>();
         Enumeration<String> attributeNames = request.getAttributeNames();
+
+        if (Validator.isNullOrEmpty(attributeNames)){
+            return Collections.emptyMap();
+        }
+
+        Map<String, Object> map = new HashMap<String, Object>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
             Object attributeValue = getAttribute(request, name);

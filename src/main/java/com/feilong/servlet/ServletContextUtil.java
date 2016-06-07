@@ -65,11 +65,13 @@ public final class ServletContextUtil{
     }
 
     /**
-     * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getAttributeNames()},将 name/attributeValue 存入到map.
+     * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getAttributeNames() ServletContext.getAttributeNames()},将 name/attributeValue
+     * 存入到map.
      * 
      * @param servletContext
      *            the servlet context
-     * @return 如果 isNotNullOrEmpty(attributeNames),返回 {@link java.util.Collections#emptyMap()}
+     * @return 如果{@link javax.servlet.ServletContext#getAttributeNames() ServletContext.getAttributeNames()} 是null或者empty,返回
+     *         {@link Collections#emptyMap()}<br>
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
@@ -93,7 +95,8 @@ public final class ServletContextUtil{
      * 
      * @param servletContext
      *            the servlet context
-     * @return 如果 isNotNullOrEmpty(initParameterNames),返回 {@link java.util.Collections#emptyMap()}
+     * @return 如果 {@link javax.servlet.ServletContext#getInitParameterNames() ServletContext.getInitParameterNames()} 是null或者empty,返回
+     *         {@link Collections#emptyMap()}<br>
      * @see javax.servlet.ServletContext#getInitParameterNames()
      * @see "org.springframework.web.context.support#registerEnvironmentBeans(ConfigurableListableBeanFactory, ServletContext)"
      */
