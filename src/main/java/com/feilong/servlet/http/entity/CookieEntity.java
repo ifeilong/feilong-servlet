@@ -22,7 +22,7 @@ import com.feilong.core.TimeInterval;
 /**
  * cookie实体,用于 {@link com.feilong.servlet.http.CookieUtil CookieUtil}.
  * 
- * <h3>关于 {@link #name} && {@link #value}字符说明:</h3>
+ * <h3>关于 {@link #name} 和 {@link #value}字符说明:</h3>
  * 
  * <blockquote>
  * <table border="1" cellspacing="0" cellpadding="4" summary="">
@@ -235,7 +235,7 @@ public class CookieEntity implements Serializable{
     //*******************************************************************************************
 
     /**
-     * ;Comment=VALUE ... describes cookie's use ;Discard ... implied by maxAge < 0
+     * ;Comment=VALUE ... describes cookie's use ;Discard ... implied by maxAge {@code <} 0
      */
     private String            comment;
 

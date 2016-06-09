@@ -161,7 +161,7 @@ public final class ResponseUtil{
      * 
      * 
      * 在 chrome 浏览器下面不起作用, 需要设置成 Cache-Control:no-cache,no-store,参见
-     * {@link <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>}
+     * <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>
      * </p>
      * 
      * <p>
@@ -196,7 +196,7 @@ public final class ResponseUtil{
      * </p>
      * 
      * <p>
-     * if value <=0 表示不缓存<br>
+     * if value {@code <=0} 表示不缓存<br>
      * 默认:0 不缓存
      * </p>
      * 

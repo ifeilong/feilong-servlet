@@ -186,9 +186,8 @@ public final class RequestAttributes{
 
     /**
      * The ATTRIBUT e_ reques t_ ss l_ session
-     * {@link <a href="http://stackoverflow.com/questions/1422977/how-to-prevent-tomcat-session-hijacking">
-     * http://stackoverflow.com/questions/1422977/how-to-prevent-tomcat-session-hijacking</a>}
-     * .
+     * <a href="http://stackoverflow.com/questions/1422977/how-to-prevent-tomcat-session-hijacking">how-to-prevent-tomcat-session-hijacking
+     * </a>}.
      */
     public static final String REQUEST_SSL_SESSION     = "javax.servlet.request.ssl_session";
 

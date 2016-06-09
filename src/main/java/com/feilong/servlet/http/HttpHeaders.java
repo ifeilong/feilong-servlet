@@ -20,9 +20,9 @@ package com.feilong.servlet.http;
  * Constants enumerating the HTTP headers.
  * 
  * <p>
- * All headers defined in {@link <a href="http://tools.ietf.org/html/rfc1945">RFC 1945</a>} (HTTP/1.0),
- * {@link <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a>} (HTTP/1.1), and
- * {@link <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a>} (WebDAV) are listed.
+ * All headers defined in <a href="http://tools.ietf.org/html/rfc1945">RFC 1945</a> (HTTP/1.0),
+ * <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a> (HTTP/1.1), and
+ * <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a> (WebDAV) are listed.
  * </p>
  *
  * @see "org.apache.http.HttpHeaders"

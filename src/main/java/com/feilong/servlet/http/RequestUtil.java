@@ -49,7 +49,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
 /**
  * {@link javax.servlet.http.HttpServletRequest}工具类.
  * 
- * <h3>{@link HttpServletRequest#getRequestURI() getRequestURI()} && {@link HttpServletRequest#getRequestURL() getRequestURL()}:</h3>
+ * <h3>{@link HttpServletRequest#getRequestURI() getRequestURI()} 和 {@link HttpServletRequest#getRequestURL() getRequestURL()}:</h3>
  * 
  * <blockquote>
  * <table border="1" cellspacing="0" cellpadding="4" summary="">
@@ -120,7 +120,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * </blockquote>
  * 
  * 
- * <h3>{@link <a href="http://tomcat.apache.org/whichversion.html">Apache Tomcat Versions:</a>}</h3>
+ * <h3><a href="http://tomcat.apache.org/whichversion.html">Apache Tomcat Versions:</a></h3>
  * 
  * <p>
  * Apache Tomcat™ is an open source software implementation of the Java Servlet and JavaServer Pages technologies. <br>
@@ -348,7 +348,7 @@ public final class RequestUtil{
      * 
      * <pre class="code">
      * RequestLogSwitch requestLogSwitch = RequestLogSwitch.NORMAL;
-     * Map<String, Object> requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request, requestLogSwitch);
+     * Map{@code <String, Object>} requestInfoMapForLog = RequestUtil.getRequestInfoMapForLog(request, requestLogSwitch);
      * LOGGER.debug("class:[{}],request info:{}", getClass().getSimpleName(), JsonUtil.format(requestInfoMapForLog);
      * </pre>
      * 

@@ -45,7 +45,7 @@ public final class ServletContextUtil{
      *
      * @param servletContext
      *            the servlet context
-     * @return the map< string, object>
+     * @return the servlet context info map for log
      */
     public static Map<String, Object> getServletContextInfoMapForLog(ServletContext servletContext){
 
