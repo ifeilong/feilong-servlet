@@ -40,9 +40,9 @@ import com.feilong.core.CharsetType;
 import com.feilong.core.URIComponents;
 import com.feilong.core.Validator;
 import com.feilong.core.bean.ConvertUtil;
-import com.feilong.core.net.ParamUtil;
 import com.feilong.core.net.URIUtil;
 import com.feilong.core.util.EnumerationUtil;
+import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
@@ -295,12 +295,12 @@ public final class RequestUtil{
      *            the request
      * @return the parameter single value map
      * @see #getParameterMap(HttpServletRequest)
-     * @see ParamUtil#toSingleValueMap(Map)
+     * @see MapUtil#toSingleValueMap(Map)
      * @since 1.2.0
      */
     public static Map<String, String> getParameterSingleValueMap(HttpServletRequest request){
         Map<String, String[]> arrayValueMap = getParameterMap(request);
-        return ParamUtil.toSingleValueMap(arrayValueMap);
+        return MapUtil.toSingleValueMap(arrayValueMap);
     }
 
     /**
@@ -506,29 +506,20 @@ public final class RequestUtil{
      * @see javax.servlet.http.HttpUtils#getRequestURL(HttpServletRequest)
      */
     public static String getServerRootWithContextPath(HttpServletRequest request){
-
         String scheme = request.getScheme();
-        String serverName = request.getServerName();
-
-        int port = request.getServerPort();
-        if (port < 0){
-            port = 80; // Work around java.net.URL bug
-        }
-
-        String contextPath = request.getContextPath();
-
+        int port = request.getServerPort() < 0 ? 80 : request.getServerPort();// Work around java.net.URL bug
         //*************************************************************************************
         StringBuilder sb = new StringBuilder();
         sb.append(scheme);
         sb.append("://");
-        sb.append(serverName);
+        sb.append(request.getServerName());
 
         if ((scheme.equals(URIComponents.SCHEME_HTTP) && (port != 80)) || (scheme.equals(URIComponents.SCHEME_HTTPS) && (port != 443))){
             sb.append(':');
             sb.append(port);
         }
 
-        sb.append(contextPath);
+        sb.append(request.getContextPath());
         return sb.toString();
     }
 
