@@ -23,6 +23,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import com.feilong.core.CharsetType;
 import com.feilong.core.HttpMethodType;
 import com.feilong.core.Validator;
+import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
@@ -79,8 +81,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     @Override
     public Map<String, Object> build(){
-
-        RequestLogSwitch opRequestLogSwitch = null == this.requestLogSwitch ? RequestLogSwitch.NORMAL : this.requestLogSwitch;
+        RequestLogSwitch opRequestLogSwitch = ObjectUtils.defaultIfNull(this.requestLogSwitch, RequestLogSwitch.NORMAL);
 
         Map<String, Object> map = new LinkedHashMap<String, Object>();
 
@@ -98,11 +99,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             // 在3.0 是数组Map<String, String[]> getParameterMap
             // The keys in the parameter map are of type String.
             // The values in the parameter map are of type String array.
-            Map<String, String[]> parameterMap = RequestUtil.getParameterMap(request);
-
-            if (Validator.isNotNullOrEmpty(parameterMap)){
-                map.put("parameterMap", parameterMap);
-            }
+            MapUtil.putIfValueNotNullOrEmpty(map, "parameterMap", RequestUtil.getParameterMap(request));
         }
 
         //RequestIdentity
@@ -121,16 +118,12 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _cookieMap
         if (opRequestLogSwitch.getShowCookies()){
-            Map<String, String> cookieMap = CookieUtil.getCookieMap(request);
-            if (Validator.isNotNullOrEmpty(cookieMap)){
-                map.put("cookieInfoMap", cookieMap);
-            }
+            MapUtil.putIfValueNotNullOrEmpty(map, "cookieInfoMap", CookieUtil.getCookieMap(request));
         }
 
         // aboutURLMap
         if (opRequestLogSwitch.getShowURLs()){
-            Map<String, String> aboutURLMap = getAboutURLMapForLog();
-            map.put("about URL Info Map", aboutURLMap);
+            map.put("about URL Info Map", getAboutURLMapForLog());
         }
 
         // aboutElseMap
@@ -233,26 +226,16 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _errorInfos
         if (opRequestLogSwitch.getShowErrors()){
-            Map<String, String> errorMap = getErrorMap();
-            if (Validator.isNotNullOrEmpty(errorMap)){
-                map.put("errorInfos", errorMap);
-            }
+            MapUtil.putIfValueNotNullOrEmpty(map, "errorInfos", getErrorMap());
         }
         // _forwardInfos
         if (opRequestLogSwitch.getShowForwardInfos()){
-            Map<String, String> forwardMap = getForwardMap();
-            if (Validator.isNotNullOrEmpty(forwardMap)){
-                map.put("forwardInfos", forwardMap);
-            }
+            MapUtil.putIfValueNotNullOrEmpty(map, "forwardInfos", getForwardMap());
         }
         // _includeInfos
         if (opRequestLogSwitch.getShowIncludeInfos()){
-            Map<String, String> includeMap = getIncludeMap();
-            if (Validator.isNotNullOrEmpty(includeMap)){
-                map.put("includeInfos", includeMap);
-            }
+            MapUtil.putIfValueNotNullOrEmpty(map, "includeInfos", getIncludeMap());
         }
-
         return map;
     }
 
@@ -288,6 +271,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         }
     }
 
+    //*******************************************************************************
+
     /**
      * 获得 forward map.
      *
@@ -295,11 +280,13 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getForwardMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_CONTEXT_PATH);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_REQUEST_URI);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_SERVLET_PATH);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_PATH_INFO);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.FORWARD_QUERY_STRING);
+        String[] array = ConvertUtil.toArray(
+                        RequestAttributes.FORWARD_CONTEXT_PATH,
+                        RequestAttributes.FORWARD_REQUEST_URI,
+                        RequestAttributes.FORWARD_SERVLET_PATH,
+                        RequestAttributes.FORWARD_PATH_INFO,
+                        RequestAttributes.FORWARD_QUERY_STRING);
+        putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
 
@@ -310,11 +297,13 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getIncludeMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_CONTEXT_PATH);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_PATH_INFO);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_QUERY_STRING);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_REQUEST_URI);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.INCLUDE_SERVLET_PATH);
+        String[] array = ConvertUtil.toArray(
+                        RequestAttributes.INCLUDE_CONTEXT_PATH,
+                        RequestAttributes.INCLUDE_PATH_INFO,
+                        RequestAttributes.INCLUDE_QUERY_STRING,
+                        RequestAttributes.INCLUDE_REQUEST_URI,
+                        RequestAttributes.INCLUDE_SERVLET_PATH);
+        putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
 
@@ -327,12 +316,14 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getErrorMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_STATUS_CODE);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_REQUEST_URI);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_EXCEPTION);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_EXCEPTION_TYPE);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_MESSAGE);
-        putAttributeNameAndValueIfValueNotNull(map, request, RequestAttributes.ERROR_SERVLET_NAME);
+        String[] array = ConvertUtil.toArray(
+                        RequestAttributes.ERROR_STATUS_CODE,
+                        RequestAttributes.ERROR_REQUEST_URI,
+                        RequestAttributes.ERROR_EXCEPTION,
+                        RequestAttributes.ERROR_EXCEPTION_TYPE,
+                        RequestAttributes.ERROR_MESSAGE,
+                        RequestAttributes.ERROR_SERVLET_NAME);
+        putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
 
@@ -426,7 +417,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // 等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()
         aboutURLMap.put("request.getRequestURL()", "" + request.getRequestURL());
-
         return aboutURLMap;
     }
 
@@ -456,12 +446,14 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      *            the map
      * @param request
      *            the request
-     * @param attributeName
+     * @param attributeNames
      *            the attribute name
      * @since 1.4.0
      */
-    private static void putAttributeNameAndValueIfValueNotNull(Map<String, String> map,HttpServletRequest request,String attributeName){
-        MapUtil.putIfValueNotNull(map, attributeName, (String) RequestUtil.getAttribute(request, attributeName));
+    private static void putAttributeNameAndValueIfValueNotNull(Map<String, String> map,HttpServletRequest request,String...attributeNames){
+        for (String attributeName : attributeNames){
+            MapUtil.putIfValueNotNull(map, attributeName, RequestUtil.<String> getAttribute(request, attributeName));
+        }
     }
 
     /**
