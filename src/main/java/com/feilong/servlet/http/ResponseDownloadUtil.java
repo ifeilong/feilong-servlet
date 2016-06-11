@@ -70,8 +70,7 @@ public final class ResponseDownloadUtil{
      * @since 1.4.1
      */
     public static void download(String pathname,HttpServletRequest request,HttpServletResponse response){
-        File file = new File(pathname);
-        download(file, request, response);
+        download(new File(pathname), request, response);
     }
 
     /**
@@ -220,11 +219,8 @@ public final class ResponseDownloadUtil{
             final String exceptionName = e.getClass().getName();
 
             if (StringUtil.contains(exceptionName, "ClientAbortException") || StringUtil.contains(e.getMessage(), "ClientAbortException")){
-                LOGGER.warn(
-                                "[ClientAbortException],maybe user use Thunder soft or abort client soft download,exceptionName:[{}],exception message:[{}] ,request User-Agent:[{}]",
-                                exceptionName,
-                                e.getMessage(),
-                                RequestUtil.getHeaderUserAgent(request));
+                String pattern = "[ClientAbortException],maybe user use Thunder soft or abort client soft download,exceptionName:[{}],exception message:[{}] ,request User-Agent:[{}]";
+                LOGGER.warn(pattern, exceptionName, e.getMessage(), RequestUtil.getHeaderUserAgent(request));
             }else{
                 LOGGER.error("[download exception],exception name: " + exceptionName, e);
                 throw new UncheckedIOException(e);
@@ -339,5 +335,4 @@ public final class ResponseDownloadUtil{
         //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
         //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).
     }
-
 }

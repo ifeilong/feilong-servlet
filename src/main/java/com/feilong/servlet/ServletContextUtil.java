@@ -48,7 +48,6 @@ public final class ServletContextUtil{
      * @return the servlet context info map for log
      */
     public static Map<String, Object> getServletContextInfoMapForLog(ServletContext servletContext){
-
         Map<String, Object> map = new HashMap<String, Object>();
         // 返回servlet运行的servlet 容器的版本和名称.
         map.put("servletContext.getServerInfo()", servletContext.getServerInfo());
@@ -60,7 +59,6 @@ public final class ServletContextUtil{
         map.put("servletContext.getContextPath()", servletContext.getContextPath());
 
         map.put("servletContext.getServletContextName()", servletContext.getServletContextName());
-
         return map;
     }
 
@@ -75,7 +73,6 @@ public final class ServletContextUtil{
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
-
         if (Validator.isNullOrEmpty(attributeNames)){
             return Collections.emptyMap();
         }
@@ -83,9 +80,8 @@ public final class ServletContextUtil{
         Map<String, Object> map = new TreeMap<String, Object>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
-            Object attributeValue = servletContext.getAttribute(name);
 
-            map.put(name, attributeValue);
+            map.put(name, servletContext.getAttribute(name));
         }
         return map;
     }
@@ -102,7 +98,6 @@ public final class ServletContextUtil{
      */
     public static Map<String, String> getInitParameterMap(ServletContext servletContext){
         Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
-
         if (Validator.isNullOrEmpty(initParameterNames)){
             return Collections.emptyMap();
         }
@@ -110,8 +105,7 @@ public final class ServletContextUtil{
         Map<String, String> map = new TreeMap<String, String>();
         while (initParameterNames.hasMoreElements()){
             String name = initParameterNames.nextElement();
-            String value = servletContext.getInitParameter(name);
-            map.put(name, value);
+            map.put(name, servletContext.getInitParameter(name));
         }
         return map;
     }

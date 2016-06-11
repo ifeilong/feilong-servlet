@@ -159,8 +159,7 @@ public final class SessionUtil{
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
-            Serializable attributeValue = (Serializable) session.getAttribute(name);
-            map.put(name, attributeValue);
+            map.put(name, (Serializable) session.getAttribute(name));
         }
         return map;
     }
@@ -214,7 +213,6 @@ public final class SessionUtil{
         Map<String, Serializable> attributeMap = getAttributeMap(oldSession);
 
         //*************************************************************************************
-
         oldSession.invalidate();//老的session失效
 
         HttpSession newSession = request.getSession();

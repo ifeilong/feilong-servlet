@@ -239,9 +239,7 @@ public final class RequestUtil{
      */
     public static boolean containsParam(HttpServletRequest request,String paramName){
         Validate.notBlank(paramName, "paramName can't be null/empty!");
-
-        Enumeration<String> parameterNames = request.getParameterNames();
-        return EnumerationUtil.contains(parameterNames, paramName);
+        return EnumerationUtil.contains(request.getParameterNames(), paramName);
     }
 
     /**
@@ -278,10 +276,9 @@ public final class RequestUtil{
         // http://localhost:8888/s.htm?keyword&a=
         // 这种链接  map key 会是 keyword,a 值都是空
         // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
-        Map<String, String[]> map = request.getParameterMap();
 
         // 转成TreeMap ,这样log出现的key 是有顺序的
-        return new TreeMap<String, String[]>(map);
+        return new TreeMap<String, String[]>(request.getParameterMap());
     }
 
     /**
@@ -299,8 +296,7 @@ public final class RequestUtil{
      * @since 1.2.0
      */
     public static Map<String, String> getParameterSingleValueMap(HttpServletRequest request){
-        Map<String, String[]> arrayValueMap = getParameterMap(request);
-        return MapUtil.toSingleValueMap(arrayValueMap);
+        return MapUtil.toSingleValueMap(getParameterMap(request));
     }
 
     /**
@@ -612,19 +608,6 @@ public final class RequestUtil{
         }
     }
 
-    // ****************************LocalAddr*****************************************
-
-    /**
-     * 获得项目本地ip地址.
-     * 
-     * @param request
-     *            the request
-     * @return Returns the Internet Protocol (IP) address of the interface on which the request was received.
-     */
-    public static String getLocalAddr(HttpServletRequest request){
-        return request.getLocalAddr();
-    }
-
     // **************************Header*******************************************
 
     /**
@@ -794,8 +777,7 @@ public final class RequestUtil{
         Map<String, Object> map = new HashMap<String, Object>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
-            Object attributeValue = getAttribute(request, name);
-            map.put(name, attributeValue);
+            map.put(name, getAttribute(request, name));
         }
         return map;
     }

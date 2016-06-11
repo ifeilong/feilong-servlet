@@ -313,24 +313,29 @@ public final class ResponseUtil{
      * @since 1.5.4
      */
     public static Map<String, Object> getResponseInfoMapForLog(HttpServletResponse response){
-        Map<String, Object> object = new LinkedHashMap<String, Object>();
+        Map<String, Object> returnMap = new LinkedHashMap<String, Object>();
+        returnMap.put("response.getBufferSize()", response.getBufferSize());
+        returnMap.put("response.getCharacterEncoding()", response.getCharacterEncoding());
+        returnMap.put("response.getContentType()", response.getContentType());
+        returnMap.put("response headers", getResponseHeaderMap(response));
+        returnMap.put("response.getLocale()", "" + response.getLocale());
+        return returnMap;
+    }
 
-        object.put("response.getBufferSize()", response.getBufferSize());
-        object.put("response.getCharacterEncoding()", response.getCharacterEncoding());
-        object.put("response.getContentType()", response.getContentType());
-
-        //Servlet 3.0
-        Collection<String> headerNames = response.getHeaderNames();
+    /**
+     * 获得 response header map.
+     *
+     * @param response
+     *            the response
+     * @return the response header map
+     * @since 1.6.3
+     */
+    private static Map<String, Object> getResponseHeaderMap(HttpServletResponse response){
+        Collection<String> headerNames = response.getHeaderNames(); //Servlet 3.0
         Map<String, Object> map = new HashMap<String, Object>();
-
         for (String headerName : headerNames){
-            //Servlet 3.0
-            map.put(headerName, response.getHeader(headerName));
+            map.put(headerName, response.getHeader(headerName)); //Servlet 3.0
         }
-        object.put("response headers", map);
-
-        object.put("response.getHeaderNames()", headerNames);
-        object.put("response.getLocale()", "" + response.getLocale());
-        return object;
+        return map;
     }
 }

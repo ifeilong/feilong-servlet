@@ -193,7 +193,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             Map<String, String> aboutIPMap = new TreeMap<String, String>();
 
             //Returns the Internet Protocol (IP) address of the interface on which the request was received.
-            aboutIPMap.put("request.getLocalAddr()", request.getLocalAddr());
+            aboutIPMap.put("request.getLocalAddr()", request.getLocalAddr());//获得项目本地ip地址
 
             //Returns the fully qualified name of the client or the last proxy that sent the request. If the engine cannot or chooses not to resolve the hostname (to improve performance), this method returns the dotted-string form of the IP address. For HTTP servlets, same as the value of the CGI variable REMOTE_HOST.
             aboutIPMap.put("request.getRemoteAddr()", request.getRemoteAddr());

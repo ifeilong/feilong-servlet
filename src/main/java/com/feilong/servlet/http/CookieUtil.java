@@ -229,7 +229,7 @@ public final class CookieUtil{
     }
 
     /**
-     * 将cookie的 key 和value转成 map(TreeMap).
+     * 将{@link Cookie}的 key 和value转成 map({@link TreeMap}).
      *
      * @param request
      *            the request
@@ -241,7 +241,6 @@ public final class CookieUtil{
      */
     public static Map<String, String> getCookieMap(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-
         if (Validator.isNullOrEmpty(cookies)){
             return Collections.emptyMap();
         }
@@ -256,10 +255,10 @@ public final class CookieUtil{
     //*********************************************************************************
 
     /**
-     * 删除cookie.
+     * 删除{@link Cookie}.
      * 
      * <p style="color:red">
-     * 删除Cookie的时候,path必须保持一致;<br>
+     * 删除{@link Cookie}的时候,path必须保持一致;<br>
      * 如果path不一致,请使用 {@link CookieUtil#deleteCookie(CookieEntity, HttpServletResponse)}
      * </p>
      * 
@@ -270,8 +269,7 @@ public final class CookieUtil{
      * @see #deleteCookie(CookieEntity, HttpServletResponse)
      */
     public static void deleteCookie(String cookieName,HttpServletResponse response){
-        CookieEntity cookieEntity = new CookieEntity(cookieName, "");
-        deleteCookie(cookieEntity, response);
+        deleteCookie(new CookieEntity(cookieName, ""), response);
     }
 
     /**
@@ -325,9 +323,7 @@ public final class CookieUtil{
      */
     public static void addCookie(String cookieName,String value,HttpServletResponse response){
         Validate.notBlank(cookieName, "cookieName can't be null/empty!");
-
-        CookieEntity cookieEntity = new CookieEntity(cookieName, value);
-        addCookie(cookieEntity, response);
+        addCookie(new CookieEntity(cookieName, value), response);
     }
 
     /**
@@ -354,9 +350,7 @@ public final class CookieUtil{
      */
     public static void addCookie(String cookieName,String value,int maxAge,HttpServletResponse response){
         Validate.notBlank(cookieName, "cookieName can't be null/empty!");
-
-        CookieEntity cookieEntity = new CookieEntity(cookieName, value, maxAge);
-        addCookie(cookieEntity, response);
+        addCookie(new CookieEntity(cookieName, value, maxAge), response);
     }
 
     /**
@@ -369,15 +363,12 @@ public final class CookieUtil{
      * @see "org.apache.catalina.connector.Response#generateCookieString(Cookie, boolean)"
      */
     public static void addCookie(CookieEntity cookieEntity,HttpServletResponse response){
-        //校验
-        validateCookieEntity(cookieEntity);
-
-        Cookie cookie = toCookie(cookieEntity);
+        validateCookieEntity(cookieEntity);//校验
 
         if (LOGGER.isDebugEnabled()){
             LOGGER.debug("[addCookie],cookieEntity info:[{}]", JsonUtil.format(cookieEntity, 0, 0));
         }
-        response.addCookie(cookie);
+        response.addCookie(toCookie(cookieEntity));
     }
 
     /**
@@ -390,15 +381,9 @@ public final class CookieUtil{
      */
     private static Cookie toCookie(CookieEntity cookieEntity){
         Cookie cookie = new Cookie(cookieEntity.getName(), cookieEntity.getValue());
+        PropertyUtil.copyProperties(cookie, cookieEntity, "maxAge", "secure", "version", "httpOnly");
 
-        PropertyUtil.copyProperties(cookie, cookieEntity //
-                        , "maxAge"//设置以秒计的cookie的最大存活时间.
-                        , "secure"//指定是否cookie应该只通过安全协议,例如HTTPS或SSL,传送给浏览器.
-                        , "version"//设置本cookie遵循的cookie的协议的版本
-                        , "httpOnly"//@since Servlet 3.0
-        );
         PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "comment", cookieEntity.getComment());//指定一个注释来描述cookie的目的.
-
         //NullPointerException at javax.servlet.http.Cookie.setDomain(Cookie.java:213) ~[servlet-api-6.0.37.jar:na]
         PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "domain", cookieEntity.getDomain());// 指明cookie应当被声明的域.
         PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "path", cookieEntity.getPath());//指定客户端将cookie返回的cookie的路径.
@@ -414,19 +399,14 @@ public final class CookieUtil{
      */
     private static void validateCookieEntity(CookieEntity cookieEntity){
         Validate.notNull(cookieEntity, "cookieEntity can't be null!");
-
-        String cookieName = cookieEntity.getName();
-        Validate.notBlank(cookieName, "cookieName can't be null/empty!");
+        Validate.notBlank(cookieEntity.getName(), "cookieName can't be null/empty!");
 
         String value = cookieEntity.getValue();
 
         //如果长度超过4000,浏览器可能不支持
         if (Validator.isNotNullOrEmpty(value) && value.length() > 4000){
-            LOGGER.warn(
-                            "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}",
-                            value,
-                            value.length(),
-                            JsonUtil.format(cookieEntity, 0, 0));
+            String pattern = "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}";
+            LOGGER.warn(pattern, value, value.length(), JsonUtil.format(cookieEntity, 0, 0));
         }
     }
 }
