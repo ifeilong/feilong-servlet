@@ -656,8 +656,7 @@ public final class RequestUtil{
                                    HttpHeaders.WL_PROXY_CLIENT_IP };
 
         //先在代理里面找一找
-        for (int i = 0; i < ipHeaderNames.length; ++i){
-            String ipHeaderName = ipHeaderNames[i];
+        for (String ipHeaderName : ipHeaderNames){
             String ipHeaderValue = request.getHeader(ipHeaderName);//The header name is case insensitive (不区分大小写)
             map.put(ipHeaderName, ipHeaderValue);
             if (Validator.isNotNullOrEmpty(ipHeaderValue) && !"unknown".equalsIgnoreCase(ipHeaderValue)){
