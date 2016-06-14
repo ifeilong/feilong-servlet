@@ -32,7 +32,7 @@ Reduce development, Release ideas
 
 
 # Javadoc:
-在此,我们提供在线的Javadoc,以便查阅,参见 [Javadoc](http://venusdrogon.github.io/feilong-platform/javadocs/1.7.0/feilong-servlet/)
+在此,我们提供在线的Javadoc,以便查阅,参见 [Javadoc](http://venusdrogon.github.io/feilong-platform/javadocs/feilong-servlet/)
 
 # wiki:
 更多内容,你可以参见 [WiKi](https://github.com/venusdrogon/feilong-servlet/wiki) 
