@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import com.feilong.core.CharsetType;
 import com.feilong.core.HttpMethodType;
 import com.feilong.core.Validator;
-import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
@@ -274,12 +273,12 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getForwardMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        String[] array = ConvertUtil.toArray(
-                        RequestAttributes.FORWARD_CONTEXT_PATH,
-                        RequestAttributes.FORWARD_REQUEST_URI,
-                        RequestAttributes.FORWARD_SERVLET_PATH,
-                        RequestAttributes.FORWARD_PATH_INFO,
-                        RequestAttributes.FORWARD_QUERY_STRING);
+        String[] array = {
+                           RequestAttributes.FORWARD_CONTEXT_PATH,
+                           RequestAttributes.FORWARD_REQUEST_URI,
+                           RequestAttributes.FORWARD_SERVLET_PATH,
+                           RequestAttributes.FORWARD_PATH_INFO,
+                           RequestAttributes.FORWARD_QUERY_STRING };
         putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
@@ -291,12 +290,12 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getIncludeMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        String[] array = ConvertUtil.toArray(
-                        RequestAttributes.INCLUDE_CONTEXT_PATH,
-                        RequestAttributes.INCLUDE_PATH_INFO,
-                        RequestAttributes.INCLUDE_QUERY_STRING,
-                        RequestAttributes.INCLUDE_REQUEST_URI,
-                        RequestAttributes.INCLUDE_SERVLET_PATH);
+        String[] array = {
+                           RequestAttributes.INCLUDE_CONTEXT_PATH,
+                           RequestAttributes.INCLUDE_PATH_INFO,
+                           RequestAttributes.INCLUDE_QUERY_STRING,
+                           RequestAttributes.INCLUDE_REQUEST_URI,
+                           RequestAttributes.INCLUDE_SERVLET_PATH };
         putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
@@ -310,13 +309,13 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     public Map<String, String> getErrorMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        String[] array = ConvertUtil.toArray(
-                        RequestAttributes.ERROR_STATUS_CODE,
-                        RequestAttributes.ERROR_REQUEST_URI,
-                        RequestAttributes.ERROR_EXCEPTION,
-                        RequestAttributes.ERROR_EXCEPTION_TYPE,
-                        RequestAttributes.ERROR_MESSAGE,
-                        RequestAttributes.ERROR_SERVLET_NAME);
+        String[] array = {
+                           RequestAttributes.ERROR_STATUS_CODE,
+                           RequestAttributes.ERROR_REQUEST_URI,
+                           RequestAttributes.ERROR_EXCEPTION,
+                           RequestAttributes.ERROR_EXCEPTION_TYPE,
+                           RequestAttributes.ERROR_MESSAGE,
+                           RequestAttributes.ERROR_SERVLET_NAME };
         putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
@@ -382,36 +381,36 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null.
         // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分.
 
-        Map<String, String> aboutURLMap = new LinkedHashMap<String, String>();
+        Map<String, String> map = new LinkedHashMap<String, String>();
 
-        aboutURLMap.put("request.getContextPath()", request.getContextPath());
+        map.put("request.getContextPath()", request.getContextPath());
 
         // Returns any extra path information associated with the URL the client sent when it made this request.
         // Servlet访问路径之后,QueryString之前的中间部分
-        aboutURLMap.put("request.getPathInfo()", request.getPathInfo());
+        map.put("request.getPathInfo()", request.getPathInfo());
 
         // web.xml中定义的Servlet访问路径
-        aboutURLMap.put("request.getServletPath()", request.getServletPath());
+        map.put("request.getServletPath()", request.getServletPath());
 
         // 等于getServletContext().getRealPath("/") + getPathInfo()
-        aboutURLMap.put("request.getPathTranslated()", request.getPathTranslated());
+        map.put("request.getPathTranslated()", request.getPathTranslated());
 
         // ***********************************************************************
-        aboutURLMap.put("getQueryStringLog", getQueryStringLog());
+        map.put("getQueryStringLog", getQueryStringLog());
 
         // &之后GET方法的参数部分
         //Returns the query string that is contained in the request URL after the path. 
         //This method returns null if the URL does not have a query string. 
         //Same as the value of the CGI variable QUERY_STRING. 
-        aboutURLMap.put("request.getQueryString()", request.getQueryString());
+        map.put("request.getQueryString()", request.getQueryString());
 
         // ***********************************************************************
         // 等于getContextPath() + getServletPath() + getPathInfo()
-        aboutURLMap.put("request.getRequestURI()", request.getRequestURI());
+        map.put("request.getRequestURI()", request.getRequestURI());
 
         // 等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()
-        aboutURLMap.put("request.getRequestURL()", "" + request.getRequestURL());
-        return aboutURLMap;
+        map.put("request.getRequestURL()", "" + request.getRequestURL());
+        return map;
     }
 
     /**

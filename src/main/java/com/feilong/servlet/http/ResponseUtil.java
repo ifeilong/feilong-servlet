@@ -313,13 +313,13 @@ public final class ResponseUtil{
      * @since 1.5.4
      */
     public static Map<String, Object> getResponseInfoMapForLog(HttpServletResponse response){
-        Map<String, Object> returnMap = new LinkedHashMap<String, Object>();
-        returnMap.put("response.getBufferSize()", response.getBufferSize());
-        returnMap.put("response.getCharacterEncoding()", response.getCharacterEncoding());
-        returnMap.put("response.getContentType()", response.getContentType());
-        returnMap.put("response headers", getResponseHeaderMap(response));
-        returnMap.put("response.getLocale()", "" + response.getLocale());
-        return returnMap;
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("response.getBufferSize()", response.getBufferSize());
+        map.put("response.getCharacterEncoding()", response.getCharacterEncoding());
+        map.put("response.getContentType()", response.getContentType());
+        map.put("response headers", getResponseHeaderMap(response));
+        map.put("response.getLocale()", "" + response.getLocale());
+        return map;
     }
 
     /**
