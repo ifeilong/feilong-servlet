@@ -91,7 +91,7 @@ public final class ResponseDownloadUtil{
         String saveFileName = file.getName();
         // 以流的形式下载文件.
         InputStream inputStream = FileUtil.getFileInputStream(file);
-        Number contentLength = FileUtil.getFileSize(file);
+        long contentLength = FileUtil.getFileSize(file);
 
         download(saveFileName, inputStream, contentLength, request, response);
     }
@@ -189,24 +189,14 @@ public final class ResponseDownloadUtil{
                     HttpServletRequest request,
                     HttpServletResponse response){
         Date beginDate = new Date();
-
-        if (LOGGER.isInfoEnabled()){
-            LOGGER.info(
-                            "begin download~~,saveFileName:[{}],contentLength:[{}]",
-                            saveFileName,
-                            FileUtil.formatSize(contentLength.longValue()));
-        }
+        String length = FileUtil.formatSize(contentLength.longValue());
+        LOGGER.info("begin download~~,saveFileName:[{}],contentLength:[{}]", saveFileName, length);
         try{
             OutputStream outputStream = response.getOutputStream();
-
             IOWriteUtil.write(inputStream, outputStream);
             if (LOGGER.isInfoEnabled()){
-                Date endDate = new Date();
-                LOGGER.info(
-                                "end download,saveFileName:[{}],contentLength:[{}],time use:[{}]",
-                                saveFileName,
-                                FileUtil.formatSize(contentLength.longValue()),
-                                DateExtensionUtil.getIntervalForView(beginDate, endDate));
+                String pattern = "end download,saveFileName:[{}],contentLength:[{}],time use:[{}]";
+                LOGGER.info(pattern, saveFileName, length, DateExtensionUtil.getIntervalForView(beginDate, new Date()));
             }
         }catch (IOException e){
             /*
