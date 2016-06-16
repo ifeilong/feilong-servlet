@@ -24,6 +24,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,6 @@ import com.feilong.core.CharsetType;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
 import com.feilong.core.date.DateExtensionUtil;
-import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.URIUtil;
 import com.feilong.io.FileUtil;
 import com.feilong.io.IOWriteUtil;
@@ -208,7 +208,8 @@ public final class ResponseDownloadUtil{
             //ClientAbortException:  java.net.SocketException: Connection reset by peer: socket write error
             final String exceptionName = e.getClass().getName();
 
-            if (StringUtil.contains(exceptionName, "ClientAbortException") || StringUtil.contains(e.getMessage(), "ClientAbortException")){
+            if (StringUtils.contains(exceptionName, "ClientAbortException")
+                            || StringUtils.contains(e.getMessage(), "ClientAbortException")){
                 String pattern = "[ClientAbortException],maybe user use Thunder soft or abort client soft download,exceptionName:[{}],exception message:[{}] ,request User-Agent:[{}]";
                 LOGGER.warn(pattern, exceptionName, e.getMessage(), RequestUtil.getHeaderUserAgent(request));
             }else{

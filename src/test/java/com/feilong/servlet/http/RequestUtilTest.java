@@ -19,6 +19,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.feilong.core.URIComponents;
 import com.feilong.core.Validator;
 import com.feilong.core.lang.StringUtil;
@@ -93,7 +95,7 @@ public class RequestUtilTest{
     public static String getParameterWithoutSharp(HttpServletRequest request,String paramName){
         String returnValue = RequestUtil.getParameter(request, paramName);
         if (Validator.isNotNullOrEmpty(returnValue)){
-            if (StringUtil.contains(returnValue, URIComponents.FRAGMENT)){
+            if (StringUtils.contains(returnValue, URIComponents.FRAGMENT)){
                 returnValue = StringUtil.substring(returnValue, null, URIComponents.FRAGMENT);
             }
         }
