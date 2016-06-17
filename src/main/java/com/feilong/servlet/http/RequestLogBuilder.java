@@ -15,6 +15,23 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.servlet.http.RequestAttributes.ERROR_EXCEPTION;
+import static com.feilong.servlet.http.RequestAttributes.ERROR_EXCEPTION_TYPE;
+import static com.feilong.servlet.http.RequestAttributes.ERROR_MESSAGE;
+import static com.feilong.servlet.http.RequestAttributes.ERROR_REQUEST_URI;
+import static com.feilong.servlet.http.RequestAttributes.ERROR_SERVLET_NAME;
+import static com.feilong.servlet.http.RequestAttributes.ERROR_STATUS_CODE;
+import static com.feilong.servlet.http.RequestAttributes.FORWARD_CONTEXT_PATH;
+import static com.feilong.servlet.http.RequestAttributes.FORWARD_PATH_INFO;
+import static com.feilong.servlet.http.RequestAttributes.FORWARD_QUERY_STRING;
+import static com.feilong.servlet.http.RequestAttributes.FORWARD_REQUEST_URI;
+import static com.feilong.servlet.http.RequestAttributes.FORWARD_SERVLET_PATH;
+import static com.feilong.servlet.http.RequestAttributes.INCLUDE_CONTEXT_PATH;
+import static com.feilong.servlet.http.RequestAttributes.INCLUDE_PATH_INFO;
+import static com.feilong.servlet.http.RequestAttributes.INCLUDE_QUERY_STRING;
+import static com.feilong.servlet.http.RequestAttributes.INCLUDE_REQUEST_URI;
+import static com.feilong.servlet.http.RequestAttributes.INCLUDE_SERVLET_PATH;
+
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -271,14 +288,9 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      *
      * @return the forward map
      */
-    public Map<String, String> getForwardMap(){
+    private Map<String, String> getForwardMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        String[] array = {
-                           RequestAttributes.FORWARD_CONTEXT_PATH,
-                           RequestAttributes.FORWARD_REQUEST_URI,
-                           RequestAttributes.FORWARD_SERVLET_PATH,
-                           RequestAttributes.FORWARD_PATH_INFO,
-                           RequestAttributes.FORWARD_QUERY_STRING };
+        String[] array = { FORWARD_CONTEXT_PATH, FORWARD_REQUEST_URI, FORWARD_SERVLET_PATH, FORWARD_PATH_INFO, FORWARD_QUERY_STRING };
         putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
@@ -288,34 +300,22 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      *
      * @return the include map
      */
-    public Map<String, String> getIncludeMap(){
+    private Map<String, String> getIncludeMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        String[] array = {
-                           RequestAttributes.INCLUDE_CONTEXT_PATH,
-                           RequestAttributes.INCLUDE_PATH_INFO,
-                           RequestAttributes.INCLUDE_QUERY_STRING,
-                           RequestAttributes.INCLUDE_REQUEST_URI,
-                           RequestAttributes.INCLUDE_SERVLET_PATH };
+        String[] array = { INCLUDE_CONTEXT_PATH, INCLUDE_PATH_INFO, INCLUDE_QUERY_STRING, INCLUDE_REQUEST_URI, INCLUDE_SERVLET_PATH };
         putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
 
-    // ********************************************************************************************
     /**
      * 获得request error 相关参数 map.
      *
      * @return 如果request 有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,则返回error 相关属性 封装到map,<br>
      *         如果 request没有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,返回null
      */
-    public Map<String, String> getErrorMap(){
+    private Map<String, String> getErrorMap(){
         Map<String, String> map = new LinkedHashMap<String, String>();
-        String[] array = {
-                           RequestAttributes.ERROR_STATUS_CODE,
-                           RequestAttributes.ERROR_REQUEST_URI,
-                           RequestAttributes.ERROR_EXCEPTION,
-                           RequestAttributes.ERROR_EXCEPTION_TYPE,
-                           RequestAttributes.ERROR_MESSAGE,
-                           RequestAttributes.ERROR_SERVLET_NAME };
+        String[] array = { ERROR_STATUS_CODE, ERROR_REQUEST_URI, ERROR_EXCEPTION, ERROR_EXCEPTION_TYPE, ERROR_MESSAGE, ERROR_SERVLET_NAME };
         putAttributeNameAndValueIfValueNotNull(map, request, array);
         return map;
     }
@@ -421,7 +421,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * 
      * @return the header map
      */
-    public Map<String, String> getHeaderMap(){
+    private Map<String, String> getHeaderMap(){
         Map<String, String> map = new TreeMap<String, String>();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
