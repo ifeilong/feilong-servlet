@@ -34,7 +34,7 @@ import com.feilong.core.CharsetType;
 import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
-import com.feilong.io.MimeType;
+import com.feilong.io.entity.MimeType;
 
 /**
  * {@link javax.servlet.http.HttpServletResponse HttpServletResponse} 工具类.

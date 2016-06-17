@@ -35,8 +35,8 @@ import com.feilong.core.date.DateExtensionUtil;
 import com.feilong.core.net.URIUtil;
 import com.feilong.io.FileUtil;
 import com.feilong.io.IOWriteUtil;
-import com.feilong.io.MimeType;
 import com.feilong.io.MimeTypeUtil;
+import com.feilong.io.entity.MimeType;
 
 /**
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.
