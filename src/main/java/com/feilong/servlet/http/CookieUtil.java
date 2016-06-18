@@ -54,23 +54,29 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 1.创建一个name名字是shopName,value是feilong的 Cookie (通常出于安全起见,存放到Cookie的值需要加密或者混淆,此处为了举例方便使用原码)<br>
  * 可以调用{@link #addCookie(String, String, HttpServletResponse)}<br>
  * 如:
+ * </p>
+ * 
  * <p>
  * <code>CookieUtil.addCookie("shopName","feilong",response)</code>
  * </p>
+ * 
+ * <p>
  * 注意:该方法创建的cookie,有效期是默认值 -1,即浏览器退出就删除
  * </p>
  * 
  * <p>
  * 2.如果想给该cookie加个过期时间,有效期一天,可以调用 {@link #addCookie(String, String, int, HttpServletResponse)}<br>
  * 如:
+ * </p>
+ * 
  * <p>
  * <code>CookieUtil.addCookie("shopName","feilong", TimeInterval.SECONDS_PER_DAY,response)</code>
- * </p>
  * </p>
  * 
  * <p>
  * 3.如果还想给该cookie加上httpOnly等标识,可以调用 {@link #addCookie(CookieEntity, HttpServletResponse)}<br>
  * 如:
+ * </p>
  * 
  * <pre class="code">
  * CookieEntity cookieEntity = new CookieEntity("shopName", "feilong", TimeInterval.SECONDS_PER_DAY);
@@ -78,6 +84,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * CookieUtil.addCookie(cookieEntity, response);
  * </pre>
  * 
+ * <p>
  * 此外,如果有特殊需求,还可以对cookieEntity设置 path,domain等属性
  * </p>
  * </blockquote>
@@ -92,19 +99,23 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 1.可以使用 {@link #getCookie(HttpServletRequest, String)}来获得 {@link Cookie}对象
  * <br>
  * 如:
+ * </p>
+ * 
  * <p>
  * <code>CookieUtil.getCookie(request, "shopName")</code>
- * </p>
  * </p>
  * 
  * <p>
  * 2.更多的时候,可以使用 {@link #getCookieValue(HttpServletRequest, String)}来获得Cookie对象的值
  * <br>
  * 如:
+ * </p>
+ * 
  * <p>
  * <code>CookieUtil.getCookieValue(request, "shopName")</code>
  * </p>
  * 
+ * <p>
  * 返回 "feilong" 字符串
  * </p>
  * 
@@ -113,10 +124,13 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 3.当然,你也可以使用 {@link #getCookieMap(HttpServletRequest)}来获得 所有的Cookie name和value组成的map
  * <br>
  * 如:
+ * </p>
+ * 
  * <p>
  * <code>CookieUtil.getCookieMap(request)</code>
  * </p>
  * 
+ * <p>
  * 使用场景,如 {@link com.feilong.servlet.http.RequestLogBuilder#build()}
  * </p>
  * </blockquote>
@@ -132,26 +146,23 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 1.可以使用 {@link #deleteCookie(String, HttpServletResponse)}来删除Cookie
  * <br>
  * 如:
+ * </p>
+ * 
  * <p>
  * <code>CookieUtil.deleteCookie(request, "shopName")</code>
- * </p>
  * </p>
  * 
  * <p>
  * 2.特殊时候,由于Cookie原先保存时候设置了path属性,可以使用 {@link #deleteCookie(CookieEntity, HttpServletResponse)}来删除Cookie
  * <br>
  * 如:
- * 
- * <p>
+ * </p>
  * 
  * <pre class="code">
  * CookieEntity cookieEntity = new CookieEntity("shopName", "feilong");
  * cookieEntity.setPath("/member/account");
  * CookieUtil.deleteCookie(request, "shopName");
  * </pre>
- * </p>
- * 
- * </p>
  * 
  * </blockquote>
  * 

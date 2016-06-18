@@ -150,6 +150,7 @@ public final class ResponseUtil{
      * <blockquote>
      * <p>
      * 仅仅设置 Cache-Control:no-cache,如
+     * </p>
      * 
      * <pre class="code">
      * {@code
@@ -159,7 +160,7 @@ public final class ResponseUtil{
      }
      * </pre>
      * 
-     * 
+     * <p>
      * 在 chrome 浏览器下面不起作用, 需要设置成 Cache-Control:no-cache,no-store,参见
      * <a href="http://stackoverflow.com/questions/5918408/google-chrome-cache">google-chrome-cache</a>
      * </p>
@@ -168,7 +169,6 @@ public final class ResponseUtil{
      * We see the same here: Chrome no cache需要 明确指定 no-store.如果不设置,那么 must-revalidate+ETag 没有效果, 并且 页面都会被 cached
      * while they should not be since Chrome does not check for a 304 at all.
      * </p>
-     * 
      * 
      * </blockquote>
      * 
