@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.feilong.core.URIComponents;
 import com.feilong.core.Validator;
-import com.feilong.core.lang.StringUtil;
 import com.feilong.core.net.ParamUtil;
 
 /**
@@ -96,9 +95,31 @@ public class RequestUtilTest{
         String returnValue = RequestUtil.getParameter(request, paramName);
         if (Validator.isNotNullOrEmpty(returnValue)){
             if (StringUtils.contains(returnValue, URIComponents.FRAGMENT)){
-                returnValue = StringUtil.substring(returnValue, null, URIComponents.FRAGMENT);
+                returnValue = substring(returnValue, null, URIComponents.FRAGMENT);
             }
         }
         return returnValue;
+    }
+
+    /**
+     * [截取]:从开始的字符串 <code>startString</code> 到结束的字符串 <code>endString</code> 中间的字符串.
+     * 
+     * <p>
+     * 包含开始的字符串<code>startString</code>,不包含结束的<code>endString</code>.
+     * </p>
+     * 
+     * @param text
+     *            文字
+     * @param startString
+     *            开始的字符串,null表示从开头开始截取
+     * @param endString
+     *            结束的字符串
+     * @return 如果 <code>text</code> 是null或者empty,返回 {@link StringUtils#EMPTY}<br>
+     *         如果Validator.isNullOrEmpty(startString),返回 text.substring(0, text.indexOf(endString))
+     * @see org.apache.commons.lang3.StringUtils#substringBetween(String, String, String)
+     */
+    public static String substring(final String text,final String startString,final String endString){
+        return Validator.isNullOrEmpty(text) ? StringUtils.EMPTY
+                        : text.substring(Validator.isNullOrEmpty(startString) ? 0 : text.indexOf(startString), text.indexOf(endString));
     }
 }
