@@ -37,7 +37,7 @@ Reduce development, Release ideas
 # wiki:
 更多内容,你可以参见 [WiKi](https://github.com/venusdrogon/feilong-servlet/wiki) 
 
-# Maven使用配置
+# :dragon: Maven使用配置
 
 ```XML
 
@@ -74,16 +74,14 @@ Reduce development, Release ideas
 ```
 
 
-#说明
+# :memo: 说明
 
 1. 基于`Apache2` 协议,您可以下载,代码用于闭源项目,但每个修改的过的文件必须放置版权说明;
 1. 基于`maven3.3`构建;
 1. 1.5.0及以上版本需要`jdk1.7`及以上环境(1.5.0以下版本需要`jdk1.6`及以上环境);
 
+# :panda_face: About
 
-# About
+如果您对feilong core 有任何建议和批评,可以使用下面的联系方式：
 
-如果您对feilong platform 有任何建议，可以使用下面的联系方式：
-
-* 新浪微博:http://weibo.com/venusdrogon
 * iteye博客:http://feitianbenyue.iteye.com/
