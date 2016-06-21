@@ -232,12 +232,9 @@ public final class SessionUtil{
      * @since 1.5.2
      */
     private static String toPrettyMessage(long creationTime){
-        Date now = new Date();
         Date creationTimeDate = new Date(creationTime);
-        return Slf4jUtil.format(
-                        "[{}],format:[{}],intervalToNow:[{}]",
-                        creationTime,
-                        DateUtil.toString(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND),
-                        DateExtensionUtil.getIntervalForView(creationTimeDate, now));
+        String dateString = DateUtil.toString(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND);
+        String intervalForView = DateExtensionUtil.getIntervalForView(creationTimeDate, new Date());
+        return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, intervalForView);
     }
 }
