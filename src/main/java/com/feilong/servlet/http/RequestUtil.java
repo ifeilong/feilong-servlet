@@ -47,7 +47,7 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * {@link javax.servlet.http.HttpServletRequest}工具类.
+ * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.
  * 
  * <h3>{@link HttpServletRequest#getRequestURI() getRequestURI()} 和 {@link HttpServletRequest#getRequestURL() getRequestURL()}:</h3>
  * 
@@ -84,31 +84,38 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <th align="left">字段</th>
  * <th align="left">说明</th>
  * </tr>
+ * 
  * <tr valign="top">
  * <td>request.getContextPath()</td>
  * <td>request.getContextPath()</td>
  * </tr>
+ * 
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>request.getPathInfo()</td>
  * <td>Returns any extra path information associated with the URL the client sent when it made this request. <br>
  * Servlet访问路径之后,QueryString之前的中间部分</td>
  * </tr>
+ * 
  * <tr valign="top">
  * <td>request.getServletPath()</td>
  * <td>web.xml中定义的Servlet访问路径</td>
  * </tr>
+ * 
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>request.getPathTranslated()</td>
  * <td>等于getServletContext().getRealPath("/") + getPathInfo()</td>
  * </tr>
+ * 
  * <tr valign="top">
  * <td>request.getRequestURI()</td>
  * <td>等于getContextPath() + getServletPath() + getPathInfo()</td>
  * </tr>
+ * 
  * <tr valign="top">
  * <td>request.getRequestURL()</td>
  * <td>等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()</td>
  * </tr>
+ * 
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>request.getQueryString()</td>
  * <td>&之后GET方法的参数部分<br>
