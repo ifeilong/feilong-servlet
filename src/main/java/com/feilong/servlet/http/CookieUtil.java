@@ -249,6 +249,7 @@ public final class CookieUtil{
      * @see HttpServletRequest#getCookies()
      * @see javax.servlet.http.Cookie#getName()
      * @see javax.servlet.http.Cookie#getValue()
+     * @see javax.servlet.jsp.el.ImplicitObjectELResolver.ImplicitObjects#createCookieMap(javax.servlet.jsp.PageContext)
      */
     public static Map<String, String> getCookieMap(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
