@@ -139,44 +139,59 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <th align="left">Actual release revision</th>
  * <th align="left">Support Java Versions</th>
  * </tr>
+ * 
  * <tr valign="top">
  * <td>4.0</td>
  * <td>TBD (2.4?)</td>
  * <td>TBD (3.1?)</td>
  * <td>TBD (1.2?)</td>
  * <td>9.0.x</td>
- * <td>None</td>
+ * <td>9.0.0.M8 (alpha)</td>
  * <td>8 and later</td>
  * </tr>
+ * 
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>3.1</td>
  * <td>2.3</td>
  * <td>3.0</td>
  * <td>1.1</td>
- * <td>8.0.x</td>
- * <td>8.0.26</td>
+ * <td>8.5.x</td>
+ * <td>8.5.3</td>
  * <td>7 and later</td>
  * </tr>
+ * 
  * <tr valign="top">
+ * <td>3.1</td>
+ * <td>2.3</td>
+ * <td>3.0</td>
+ * <td>1.1</td>
+ * <td>8.0.x (superseded)</td>
+ * <td>8.0.35 (superseded)</td>
+ * <td>7 and later</td>
+ * </tr>
+ * 
+ * <tr valign="top" style="background-color:#eeeeff">
  * <td>3.0</td>
  * <td>2.2</td>
  * <td>2.2</td>
  * <td>1.1</td>
  * <td>7.0.x</td>
- * <td>7.0.64</td>
+ * <td>7.0.70</td>
  * <td>6 and later<br>
- * (WebSocket 1.1 requires 7 or later)</td>
+ * (7 and later for WebSocket)</td>
  * </tr>
- * <tr valign="top" style="background-color:#eeeeff">
+ * 
+ * <tr valign="top">
  * <td>2.5</td>
  * <td>2.1</td>
  * <td>2.1</td>
  * <td>N/A</td>
  * <td>6.0.x</td>
- * <td>6.0.44</td>
+ * <td>6.0.45</td>
  * <td>5 and later</td>
  * </tr>
- * <tr valign="top">
+ * 
+ * <tr valign="top" style="background-color:#eeeeff">
  * <td>2.4</td>
  * <td>2.0</td>
  * <td>N/A</td>
@@ -185,7 +200,8 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <td>5.5.36 (archived)</td>
  * <td>1.4 and later</td>
  * </tr>
- * <tr valign="top" style="background-color:#eeeeff">
+ * 
+ * <tr valign="top">
  * <td>2.3</td>
  * <td>1.2</td>
  * <td>N/A</td>
@@ -194,7 +210,8 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <td>4.1.40 (archived)</td>
  * <td>1.3 and later</td>
  * </tr>
- * <tr valign="top">
+ * 
+ * <tr valign="top" style="background-color:#eeeeff">
  * <td>2.2</td>
  * <td>1.1</td>
  * <td>N/A</td>
@@ -203,6 +220,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * <td>3.3.2 (archived)</td>
  * <td>1.1 and later</td>
  * </tr>
+ * 
  * </table>
  * </blockquote>
  * 
