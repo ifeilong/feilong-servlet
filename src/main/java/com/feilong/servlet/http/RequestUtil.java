@@ -23,7 +23,6 @@ import static com.feilong.servlet.http.HttpHeaders.X_REAL_IP;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -305,10 +304,8 @@ public final class RequestUtil{
     public static Map<String, String[]> getParameterMap(HttpServletRequest request){
         // http://localhost:8888/s.htm?keyword&a=
         // 这种链接  map key 会是 keyword,a 值都是空
-        // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
 
-        // 转成TreeMap ,这样log出现的key 是有顺序的
-        return new TreeMap<String, String[]>(request.getParameterMap());
+        return MapUtil.sortByKeyAsc(request.getParameterMap()); // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
     }
 
     /**
@@ -800,7 +797,7 @@ public final class RequestUtil{
             return Collections.emptyMap();
         }
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new TreeMap<String, Object>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
             map.put(name, getAttribute(request, name));
