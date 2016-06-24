@@ -780,11 +780,20 @@ public final class RequestUtil{
     // *********************************************************************
 
     /**
-     * 遍历显示request的attribute,将 name /attributeValue 存入到map.
+     * 遍历显示request的attribute,将 name /attributeValue 存入到map(TreeMap).
      * 
+     * 
+     * <h3>注意:</h3>
+     * 
+     * <blockquote>
      * <p style="color:red">
-     * 目前如果直接 转json 如果属性有级联关系,会报错
+     * 1.目前如果属性有级联关系,如果直接转json,可能会报错,此时建议使用 {@link JsonUtil#formatSimpleMap(Map, Class...) }
      * </p>
+     * 
+     * <p>
+     * 2.可以做返回的map进行remove操作,不会影响request的 Attribute
+     * </p>
+     * </blockquote>
      * 
      * @param request
      *            the request
@@ -792,7 +801,6 @@ public final class RequestUtil{
      */
     public static Map<String, Object> getAttributeMap(HttpServletRequest request){
         Enumeration<String> attributeNames = request.getAttributeNames();
-
         if (Validator.isNullOrEmpty(attributeNames)){
             return Collections.emptyMap();
         }
