@@ -15,6 +15,11 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.servlet.http.HttpHeaders.PROXY_CLIENT_IP;
+import static com.feilong.servlet.http.HttpHeaders.WL_PROXY_CLIENT_IP;
+import static com.feilong.servlet.http.HttpHeaders.X_FORWARDED_FOR;
+import static com.feilong.servlet.http.HttpHeaders.X_REAL_IP;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -657,11 +662,7 @@ public final class RequestUtil{
 
         //ip header可控制的, 以后如果有新增 加在这里(比如 多CDN 可能是cdn_real_ip),而不是通过传参的形式
         //这样做的好处是,对开发透明
-        String[] ipHeaderNames = {
-                                   HttpHeaders.X_FORWARDED_FOR,
-                                   HttpHeaders.X_REAL_IP,
-                                   HttpHeaders.PROXY_CLIENT_IP,
-                                   HttpHeaders.WL_PROXY_CLIENT_IP };
+        String[] ipHeaderNames = { X_FORWARDED_FOR, X_REAL_IP, PROXY_CLIENT_IP, WL_PROXY_CLIENT_IP };
 
         //先在代理里面找一找
         for (String ipHeaderName : ipHeaderNames){
