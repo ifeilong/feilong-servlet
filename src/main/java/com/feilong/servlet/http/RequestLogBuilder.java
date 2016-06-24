@@ -170,7 +170,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             //For HTTP servlets, same as the value of the CGI variable CONTENT_LENGTH.
             aboutElseMap.put("request.getContentLength()", "" + request.getContentLength());
 
-            //Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. If the client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
+            //Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. 
+            //If the client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
             aboutElseMap.put("request.getLocale()", "" + request.getLocale());
 
             //Returns the host name of the Internet Protocol (IP) interface on which the request was received.
