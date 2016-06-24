@@ -62,7 +62,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  * <h3>SessionId会重复吗?</h3>
  * 
  * <blockquote>
- * 不会,参见 {@link "org.apache.catalina.session.ManagerBase#generateSessionId()"} 实现, 使用 while循环再次确认判断
+ * 不会,参见 <code>org.apache.catalina.session.ManagerBase#generateSessionId()</code> 实现, 使用 while循环再次确认判断
  * 
  * <pre class="code">
  * 

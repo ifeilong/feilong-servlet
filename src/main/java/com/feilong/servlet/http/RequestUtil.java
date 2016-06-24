@@ -122,7 +122,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * 
  * <tr valign="top" style="background-color:#eeeeff">
  * <td>{@link HttpServletRequest#getQueryString()}</td>
- * <td>&之后GET方法的参数部分<br>
+ * <td>{@code &}之后GET方法的参数部分<br>
  * Returns the query string that is contained in the request URL after the path. <br>
  * This method returns null if the URL does not have a query string. <br>
  * Same as the value of the CGI variable QUERY_STRING.</td>
@@ -281,7 +281,7 @@ public final class RequestUtil{
      * <h3>tomcat getParameterMap() <span style="color:red">locked</span>(只能读):</h3>
      * 
      * <blockquote>
-     * 注意:tomcat 默认实现,返回的是 {@link "org.apache.catalina.util#ParameterMap<K, V>"},tomcat返回之前,会将此map的状态设置为locked,<br>
+     * 注意:tomcat 默认实现,返回的是 {@code org.apache.catalina.util#ParameterMap<K, V>},tomcat返回之前,会将此map的状态设置为locked,<br>
      * <p>
      * 不像普通的map数据一样可以修改.这是因为服务器为了实现一定的安全规范,所作的限制,WebLogic,Tomcat,Resin,JBoss等服务器均实现了此规范.
      * </p>
