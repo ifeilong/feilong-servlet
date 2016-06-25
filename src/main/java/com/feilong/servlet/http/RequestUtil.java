@@ -584,10 +584,7 @@ public final class RequestUtil{
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         try{
             requestDispatcher.forward(request, response);
-        }catch (ServletException e){
-            LOGGER.error("", e);
-            throw new RequestException(e);
-        }catch (IOException e){
+        }catch (ServletException | IOException e){
             LOGGER.error("", e);
             throw new RequestException(e);
         }
@@ -626,10 +623,7 @@ public final class RequestUtil{
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         try{
             requestDispatcher.include(request, response);
-        }catch (ServletException e){
-            LOGGER.error("", e);
-            throw new RequestException(e);
-        }catch (IOException e){
+        }catch (ServletException | IOException e){
             LOGGER.error("", e);
             throw new RequestException(e);
         }

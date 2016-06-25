@@ -15,17 +15,6 @@
  */
 package com.feilong.servlet.http;
 
-import com.feilong.tools.slf4j.Slf4jUtil;
-
-//Exception又分为两类:一种是CheckedException,一种是UncheckedException.
-//
-//这两种Exception的区别主要是CheckedException需要用try...catch...显示的捕获,
-//而UncheckedException不需要捕获. 通常UncheckedException又叫做RuntimeException.
-//  
-//《effective java》指出:
-//  对于可恢复的条件使用被检查的异常(CheckedException),
-//  对于程序错误(言外之意不可恢复,大错已经酿成)使用运行时异常(RuntimeException).
-
 /**
  * 请求异常.
  *
@@ -36,35 +25,6 @@ public final class RequestException extends RuntimeException{
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -1699987643831455524L;
-
-    /**
-     * The Constructor.
-     */
-    public RequestException(){
-        super();
-    }
-
-    /**
-     * The Constructor.
-     *
-     * @param message
-     *            the message
-     */
-    public RequestException(String message){
-        super(message);
-    }
-
-    /**
-     * The Constructor.
-     *
-     * @param messagePattern
-     *            the message pattern
-     * @param args
-     *            the args
-     */
-    public RequestException(String messagePattern, Object...args){
-        super(Slf4jUtil.format(messagePattern, args));
-    }
 
     /**
      * The Constructor.
