@@ -47,7 +47,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.CharsetType;
-import com.feilong.core.HttpMethodType;
 import com.feilong.core.Validator;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
@@ -290,10 +289,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return the forward map
      */
     private Map<String, String> getForwardMap(){
-        Map<String, String> map = new LinkedHashMap<String, String>();
         String[] array = { FORWARD_CONTEXT_PATH, FORWARD_REQUEST_URI, FORWARD_SERVLET_PATH, FORWARD_PATH_INFO, FORWARD_QUERY_STRING };
-        putAttributeNameAndValueIfValueNotNull(map, request, array);
-        return map;
+        return getAttributeMapIfValueNotNull(array);
     }
 
     /**
@@ -302,10 +299,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return the include map
      */
     private Map<String, String> getIncludeMap(){
-        Map<String, String> map = new LinkedHashMap<String, String>();
         String[] array = { INCLUDE_CONTEXT_PATH, INCLUDE_PATH_INFO, INCLUDE_QUERY_STRING, INCLUDE_REQUEST_URI, INCLUDE_SERVLET_PATH };
-        putAttributeNameAndValueIfValueNotNull(map, request, array);
-        return map;
+        return getAttributeMapIfValueNotNull(array);
     }
 
     /**
@@ -315,9 +310,23 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      *         如果 request没有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,返回null
      */
     private Map<String, String> getErrorMap(){
-        Map<String, String> map = new LinkedHashMap<String, String>();
         String[] array = { ERROR_STATUS_CODE, ERROR_REQUEST_URI, ERROR_EXCEPTION, ERROR_EXCEPTION_TYPE, ERROR_MESSAGE, ERROR_SERVLET_NAME };
-        putAttributeNameAndValueIfValueNotNull(map, request, array);
+        return getAttributeMapIfValueNotNull(array);
+    }
+
+    /**
+     * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当 <code>null != map && null != value </code>才将key/value put到map中).
+     *
+     * @param attributeNames
+     *            the attribute names
+     * @return the attribute map if value not null
+     * @since 1.7.3
+     */
+    private Map<String, String> getAttributeMapIfValueNotNull(String...attributeNames){
+        Map<String, String> map = MapUtil.newLinkedHashMap(attributeNames.length);
+        for (String attributeName : attributeNames){
+            MapUtil.putIfValueNotNull(map, attributeName, RequestUtil.<String> getAttribute(request, attributeName));
+        }
         return map;
     }
 
@@ -427,27 +436,9 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
             String name = headerNames.nextElement();
-            String value = request.getHeader(name);
-            map.put(name, value);
+            map.put(name, request.getHeader(name));
         }
         return map;
-    }
-
-    /**
-     * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当 <code>null != map && null != value </code>才将key/value put到map中).
-     *
-     * @param map
-     *            the map
-     * @param request
-     *            the request
-     * @param attributeNames
-     *            the attribute name
-     * @since 1.4.0
-     */
-    private static void putAttributeNameAndValueIfValueNotNull(Map<String, String> map,HttpServletRequest request,String...attributeNames){
-        for (String attributeName : attributeNames){
-            MapUtil.putIfValueNotNull(map, attributeName, RequestUtil.<String> getAttribute(request, attributeName));
-        }
     }
 
     /**
@@ -463,7 +454,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         // Same as the value of the CGI variable REQUEST_METHOD.
         String method = request.getMethod();
 
-        if (HttpMethodType.POST.getMethod().equalsIgnoreCase(method)){
+        if ("post".equalsIgnoreCase(method)){
             Map<String, String[]> map = RequestUtil.getParameterMap(request);
             if (Validator.isNotNullOrEmpty(map)){
                 return ParamUtil.toSafeQueryString(map, null);
