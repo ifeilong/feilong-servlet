@@ -15,111 +15,31 @@
  */
 package com.feilong.servlet.http;
 
-import java.util.Map;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.feilong.core.URIComponents;
-import com.feilong.core.Validator;
-import com.feilong.core.net.ParamUtil;
+import com.feilong.core.CharsetType;
+import com.feilong.core.lang.reflect.MethodUtil;
 
 /**
- *
+ * 
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
- * @since 1.4.0
+ * @since 1.7.3
  */
 public class RequestUtilTest{
 
-    /**
-     * 原样获得参数值.
-     * 
-     * <p>
-     * <span style="color:red">注:url参数是什么,取到的就是什么,不经过处理</span>
-     * </p>
-     * 
-     * <p>
-     * 注:({@link javax.servlet.ServletRequest#getParameter(String)}函数时,会自动进行一次URI的解码过程,调用时内置的解码过程会导致乱码出现)
-     * </p>
-     * 
-     * @param request
-     *            请求
-     * @param paramName
-     *            参数名称
-     * @return 原样获得参数值
-     * @deprecated 有使用场景吗?
-     */
-    @Deprecated
-    public static String getParameterAsItIsDecode(HttpServletRequest request,String paramName){
-        String returnValue = null;
-        String queryString = request.getQueryString();
-        if (Validator.isNotNullOrEmpty(queryString)){
-            Map<String, String> map = ParamUtil.toSingleValueMap(queryString, null);
-            return map.get(paramName);
-        }
-        return returnValue;
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtilTest.class);
 
     /**
-     * 取到参数值,没有返回null,有去除空格返回.
-     * 
-     * @param request
-     *            当前请求
-     * @param paramName
-     *            the param name
-     * @return 取到参数值,没有返回null,有去除空格返回
-     * @deprecated 不推荐使用
+     * @since 1.7.3
+     * @see com.feilong.servlet.http.RequestUtil#decodeISO88591String(String, String)
      */
-    @Deprecated
-    public static String getParameterWithTrim(HttpServletRequest request,String paramName){
-        String returnValue = RequestUtil.getParameter(request, paramName);
-        if (Validator.isNotNullOrEmpty(returnValue)){
-            return returnValue.trim();
-        }
-        return returnValue;
-    }
-
-    /**
-     * 参数值去除井号,一般用于sendDirect 跳转中带有#标签,参数值取不准确的问题.
-     * 
-     * @param request
-     *            the request
-     * @param paramName
-     *            the param name
-     * @return 参数值去除井号,一般用于sendDirect 跳转中带有#标签,参数值取不准确的问题
-     * @deprecated 将来会重构
-     */
-    @Deprecated
-    public static String getParameterWithoutSharp(HttpServletRequest request,String paramName){
-        String returnValue = RequestUtil.getParameter(request, paramName);
-        if (Validator.isNotNullOrEmpty(returnValue)){
-            if (StringUtils.contains(returnValue, URIComponents.FRAGMENT)){
-                returnValue = substring(returnValue, null, URIComponents.FRAGMENT);
-            }
-        }
-        return returnValue;
-    }
-
-    /**
-     * [截取]:从开始的字符串 <code>startString</code> 到结束的字符串 <code>endString</code> 中间的字符串.
-     * 
-     * <p>
-     * 包含开始的字符串<code>startString</code>,不包含结束的<code>endString</code>.
-     * </p>
-     * 
-     * @param text
-     *            文字
-     * @param startString
-     *            开始的字符串,null表示从开头开始截取
-     * @param endString
-     *            结束的字符串
-     * @return 如果 <code>text</code> 是null或者empty,返回 {@link StringUtils#EMPTY}<br>
-     *         如果Validator.isNullOrEmpty(startString),返回 text.substring(0, text.indexOf(endString))
-     * @see org.apache.commons.lang3.StringUtils#substringBetween(String, String, String)
-     */
-    public static String substring(final String text,final String startString,final String endString){
-        return Validator.isNullOrEmpty(text) ? StringUtils.EMPTY
-                        : text.substring(Validator.isNullOrEmpty(startString) ? 0 : text.indexOf(startString), text.indexOf(endString));
+    @Test
+    public final void test(){
+        String str = "https://github.com/venusdrogon/feilong-core/search?utf8=%E2%9C%93&q=%E4%B8%AD%E5%9B%BD";
+        str = "https://github.com/venusdrogon/feilong-core/search?utf8=%E2%9C%93&q=中国";
+        String result = MethodUtil.invokeStaticMethod(RequestUtil.class, "decodeISO88591String", str, CharsetType.UTF8);
+        LOGGER.debug(result);
     }
 }

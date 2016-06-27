@@ -36,6 +36,7 @@ import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ import com.feilong.core.CharsetType;
 import com.feilong.core.URIComponents;
 import com.feilong.core.Validator;
 import com.feilong.core.bean.ConvertUtil;
-import com.feilong.core.net.URIUtil;
+import com.feilong.core.lang.StringUtil;
 import com.feilong.core.util.EnumerationUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
@@ -445,7 +446,7 @@ public final class RequestUtil{
     /**
      * 获得请求的?部分前面的地址.
      * <p>
-     * <span style="color:red">自动识别 request 是否 forword</span>,如果是forword过来的,那么 取 {@link RequestAttributes#FORWARD_REQUEST_URI}变量
+     * <span style="color:red">自动识别 request 是否 forword</span>,如果是forword过来的,那么取 {@link RequestAttributes#FORWARD_REQUEST_URI}变量
      * </p>
      * 
      * <pre class="code">
@@ -511,7 +512,39 @@ public final class RequestUtil{
         String requestURL = getRequestURL(request);
         String queryString = request.getQueryString();
         return Validator.isNullOrEmpty(queryString) ? requestURL
-                        : requestURL + URIComponents.QUESTIONMARK + URIUtil.decodeISO88591String(queryString, charsetType);
+                        : requestURL + URIComponents.QUESTIONMARK + decodeISO88591String(queryString, charsetType);
+    }
+
+    /**
+     * {@link CharsetType#ISO_8859_1} 的方式去除乱码.
+     * 
+     * <p>
+     * {@link CharsetType#ISO_8859_1} 是JAVA网络传输使用的标准 字符集
+     * </p>
+     * 
+     * <h3>关于URI Encoding</h3>
+     * 
+     * <blockquote>
+     * <ul>
+     * <li>tomcat server.xml Connector URIEncoding="UTF-8"</li>
+     * <li>{@code <fmt:requestEncoding value="UTF-8"/>}</li>
+     * </ul>
+     * </blockquote>
+     *
+     * @param str
+     *            字符串
+     * @param charsetType
+     *            使用的编码,see {@link CharsetType}
+     * @return 如果 <code>str</code> 是null或者empty,返回 {@link StringUtils#EMPTY}<br>
+     * @see "org.apache.commons.codec.net.URLCodec#encode(String, String)"
+     * @see "org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport"
+     * @see "org.apache.catalina.filters.SetCharacterEncodingFilter"
+     * @since 1.7.3 move from feilong-core
+     * @deprecated may delete
+     */
+    @Deprecated
+    public static String decodeISO88591String(String str,String charsetType){
+        return StringUtil.newString(StringUtil.getBytes(str, CharsetType.ISO_8859_1), charsetType);
     }
 
     /**
