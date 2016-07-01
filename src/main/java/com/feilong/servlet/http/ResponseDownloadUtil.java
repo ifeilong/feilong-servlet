@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import com.feilong.core.CharsetType;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
-import com.feilong.core.date.DateExtensionUtil;
 import com.feilong.core.net.URIUtil;
 import com.feilong.io.FileUtil;
 import com.feilong.io.IOWriteUtil;
@@ -196,7 +197,7 @@ public final class ResponseDownloadUtil{
             IOWriteUtil.write(inputStream, outputStream);
             if (LOGGER.isInfoEnabled()){
                 String pattern = "end download,saveFileName:[{}],contentLength:[{}],time use:[{}]";
-                LOGGER.info(pattern, saveFileName, length, DateExtensionUtil.getIntervalForView(beginDate, new Date()));
+                LOGGER.info(pattern, saveFileName, length, getIntervalForView(beginDate, new Date()));
             }
         }catch (IOException e){
             /*

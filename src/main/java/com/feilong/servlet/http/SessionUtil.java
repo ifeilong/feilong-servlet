@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
@@ -234,7 +236,7 @@ public final class SessionUtil{
     private static String toPrettyMessage(long creationTime){
         Date creationTimeDate = new Date(creationTime);
         String dateString = DateUtil.toString(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND);
-        String intervalForView = DateExtensionUtil.getIntervalForView(creationTimeDate, new Date());
+        String intervalForView = getIntervalForView(creationTimeDate, new Date());
         return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, intervalForView);
     }
 }
