@@ -446,7 +446,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      *
      * @return the query string
      * @see javax.servlet.http.HttpServletRequest#getMethod()
-     * @see ParamUtil#toSafeQueryString(Map, String)
      */
     private String getQueryStringLog(){
         // Returns the name of the HTTP method with which this request was made,
