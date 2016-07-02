@@ -46,9 +46,7 @@ public class CookieUtilTest{
                         , "httpOnly"//@since Servlet 3.0
         );
 
-        if (LOGGER.isDebugEnabled()){
-            LOGGER.debug(JsonUtil.format(cookie));
-        }
+        LOGGER.debug(JsonUtil.format(cookie));
     }
 
     @Test
