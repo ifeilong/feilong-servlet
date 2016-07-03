@@ -61,8 +61,8 @@ public class ApplicationInfoServlet extends HttpServlet{
         map.put("ServletContext initParameter Map", ServletContextUtil.getInitParameterMap(servletContext));
         //      map.put("ServletContext attributeNames", CollectionsUtil.toList(servletContext.getAttributeNames()));
         //map.put("ServletContext Attribute String Map", ServletContextUtil.getAttributeStringMapForLog(servletContext));
-        map.put("System Env Map", SystemUtil.getEnvMapForLog());
-        map.put("System Properties Map", SystemUtil.getPropertiesMapForLog());
+        map.put("System Env Map", SystemUtil.getEnvMap());
+        map.put("System Properties Map", SystemUtil.getPropertiesMap());
 
         if (LOGGER.isInfoEnabled()){
             LOGGER.info("ApplicationInfoServlet:{}", JsonUtil.format(map));
