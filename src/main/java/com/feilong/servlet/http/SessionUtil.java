@@ -15,6 +15,7 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND;
 import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
 
 import java.io.Serializable;
@@ -31,7 +32,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.DatePattern;
 import com.feilong.core.Validator;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.date.DateExtensionUtil;
@@ -235,8 +235,7 @@ public final class SessionUtil{
      */
     private static String toPrettyMessage(long creationTime){
         Date creationTimeDate = new Date(creationTime);
-        String dateString = DateUtil.toString(creationTimeDate, DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND);
-        String intervalForView = getIntervalForView(creationTimeDate, new Date());
-        return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, intervalForView);
+        String dateString = DateUtil.toString(creationTimeDate, COMMON_DATE_AND_TIME_WITH_MILLISECOND);
+        return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, getIntervalForView(creationTimeDate));
     }
 }

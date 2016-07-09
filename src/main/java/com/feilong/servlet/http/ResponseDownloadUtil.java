@@ -197,7 +197,7 @@ public final class ResponseDownloadUtil{
             IOWriteUtil.write(inputStream, outputStream);
             if (LOGGER.isInfoEnabled()){
                 String pattern = "end download,saveFileName:[{}],contentLength:[{}],time use:[{}]";
-                LOGGER.info(pattern, saveFileName, length, getIntervalForView(beginDate, new Date()));
+                LOGGER.info(pattern, saveFileName, length, getIntervalForView(beginDate));
             }
         }catch (IOException e){
             /*
