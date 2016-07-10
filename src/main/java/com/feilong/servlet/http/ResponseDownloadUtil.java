@@ -15,8 +15,6 @@
  */
 package com.feilong.servlet.http;
 
-import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.CharsetType;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
 import com.feilong.core.net.URIUtil;
@@ -38,6 +35,10 @@ import com.feilong.io.FileUtil;
 import com.feilong.io.IOWriteUtil;
 import com.feilong.io.MimeTypeUtil;
 import com.feilong.io.entity.MimeType;
+
+import static com.feilong.core.CharsetType.UTF8;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
 
 /**
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.
@@ -295,8 +296,7 @@ public final class ResponseDownloadUtil{
      * @since 1.4.0
      */
     private static String resolverContentDisposition(String saveFileName,String contentDisposition){
-        return Validator.isNotNullOrEmpty(contentDisposition) ? contentDisposition
-                        : "attachment; filename=" + URIUtil.encode(saveFileName, CharsetType.UTF8);
+        return isNotNullOrEmpty(contentDisposition) ? contentDisposition : "attachment; filename=" + URIUtil.encode(saveFileName, UTF8);
     }
 
     /**

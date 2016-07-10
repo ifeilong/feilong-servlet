@@ -46,13 +46,14 @@ import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.CharsetType;
 import com.feilong.core.Validator;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.slf4j.Slf4jUtil;
+
+import static com.feilong.core.CharsetType.UTF8;
 
 /**
  * The Class RequestLogBuilder.
@@ -102,7 +103,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // requestFullURL
         if (opRequestLogSwitch.getShowFullURL()){
-            map.put("requestFullURL", RequestUtil.getRequestFullURL(request, CharsetType.UTF8));
+            map.put("requestFullURL", RequestUtil.getRequestFullURL(request, UTF8));
         }
         // Method
         if (opRequestLogSwitch.getShowMethod()){

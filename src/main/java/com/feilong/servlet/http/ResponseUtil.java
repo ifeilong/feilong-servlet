@@ -30,11 +30,12 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.CharsetType;
 import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.core.Validator;
 import com.feilong.io.entity.MimeType;
+
+import static com.feilong.core.CharsetType.UTF8;
 
 /**
  * {@link javax.servlet.http.HttpServletResponse HttpServletResponse} 工具类.
@@ -227,7 +228,7 @@ public final class ResponseUtil{
      * @since 1.0.9
      */
     public static void writeJson(HttpServletResponse response,Object json){
-        writeJson(response, json, CharsetType.UTF8);
+        writeJson(response, json, UTF8);
     }
 
     /**

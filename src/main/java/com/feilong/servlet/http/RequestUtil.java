@@ -51,6 +51,8 @@ import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
+import static com.feilong.core.CharsetType.ISO_8859_1;
+
 /**
  * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.
  * 
@@ -544,7 +546,7 @@ public final class RequestUtil{
      */
     @Deprecated
     public static String decodeISO88591String(String str,String charsetType){
-        return StringUtil.newString(StringUtil.getBytes(str, CharsetType.ISO_8859_1), charsetType);
+        return StringUtil.newString(StringUtil.getBytes(str, ISO_8859_1), charsetType);
     }
 
     /**

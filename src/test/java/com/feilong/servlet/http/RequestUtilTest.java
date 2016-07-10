@@ -19,8 +19,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.CharsetType;
 import com.feilong.core.lang.reflect.MethodUtil;
+
+import static com.feilong.core.CharsetType.UTF8;
 
 /**
  * 
@@ -39,7 +40,7 @@ public class RequestUtilTest{
     public final void test(){
         String str = "https://github.com/venusdrogon/feilong-core/search?utf8=%E2%9C%93&q=%E4%B8%AD%E5%9B%BD";
         str = "https://github.com/venusdrogon/feilong-core/search?utf8=%E2%9C%93&q=中国";
-        String result = MethodUtil.invokeStaticMethod(RequestUtil.class, "decodeISO88591String", str, CharsetType.UTF8);
+        String result = MethodUtil.invokeStaticMethod(RequestUtil.class, "decodeISO88591String", str, UTF8);
         LOGGER.debug(result);
     }
 }
