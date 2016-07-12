@@ -72,7 +72,7 @@ import static com.feilong.core.Validator.isNullOrEmpty;
  * </p>
  * 
  * <p>
- * <code>CookieUtil.addCookie("shopName","feilong", TimeInterval.SECONDS_PER_DAY,response)</code>
+ * <code>CookieUtil.addCookie("shopName","feilong", SECONDS_PER_DAY,response)</code>
  * </p>
  * 
  * <p>
@@ -81,7 +81,7 @@ import static com.feilong.core.Validator.isNullOrEmpty;
  * </p>
  * 
  * <pre class="code">
- * CookieEntity cookieEntity = new CookieEntity("shopName", "feilong", TimeInterval.SECONDS_PER_DAY);
+ * CookieEntity cookieEntity = new CookieEntity("shopName", "feilong", SECONDS_PER_DAY);
  * cookieEntity.setHttpOnly(true);
  * CookieUtil.addCookie(cookieEntity, response);
  * </pre>
