@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
 
 import com.feilong.core.CharsetType;
 import com.feilong.core.URIComponents;
-import com.feilong.core.Validator;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.lang.StringUtil;
 import com.feilong.core.util.EnumerationUtil;
@@ -52,6 +51,8 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 import static com.feilong.core.CharsetType.ISO_8859_1;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.Validator.isNullOrEmpty;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.
@@ -481,7 +482,7 @@ public final class RequestUtil{
      */
     public static String getRequestURL(HttpServletRequest request){
         String forwardRequestUri = getAttribute(request, RequestAttributes.FORWARD_REQUEST_URI);
-        return Validator.isNotNullOrEmpty(forwardRequestUri) ? forwardRequestUri : request.getRequestURL().toString();
+        return isNotNullOrEmpty(forwardRequestUri) ? forwardRequestUri : request.getRequestURL().toString();
     }
 
     /**
@@ -493,7 +494,7 @@ public final class RequestUtil{
      */
     public static String getOriginatingServletPath(HttpServletRequest request){
         String servletPath = getAttribute(request, RequestAttributes.FORWARD_SERVLET_PATH);
-        return Validator.isNotNullOrEmpty(servletPath) ? servletPath : request.getServletPath();
+        return isNotNullOrEmpty(servletPath) ? servletPath : request.getServletPath();
     }
 
     /**
@@ -513,7 +514,7 @@ public final class RequestUtil{
     public static String getRequestFullURL(HttpServletRequest request,String charsetType){
         String requestURL = getRequestURL(request);
         String queryString = request.getQueryString();
-        return Validator.isNullOrEmpty(queryString) ? requestURL
+        return isNullOrEmpty(queryString) ? requestURL
                         : requestURL + URIComponents.QUESTIONMARK + decodeISO88591String(queryString, charsetType);
     }
 
@@ -694,14 +695,14 @@ public final class RequestUtil{
         for (String ipHeaderName : ipHeaderNames){
             String ipHeaderValue = request.getHeader(ipHeaderName);//The header name is case insensitive (不区分大小写)
             map.put(ipHeaderName, ipHeaderValue);
-            if (Validator.isNotNullOrEmpty(ipHeaderValue) && !"unknown".equalsIgnoreCase(ipHeaderValue)){
+            if (isNotNullOrEmpty(ipHeaderValue) && !"unknown".equalsIgnoreCase(ipHeaderValue)){
                 ipAddress = ipHeaderValue;
                 break;
             }
         }
 
         //如果都没有,那么读取 request.getRemoteAddr()
-        if (Validator.isNullOrEmpty(ipAddress)){
+        if (isNullOrEmpty(ipAddress)){
             ipAddress = request.getRemoteAddr();
             map.put("request.getRemoteAddr()", ipAddress);
         }
@@ -792,7 +793,7 @@ public final class RequestUtil{
      */
     public static boolean isAjaxRequest(HttpServletRequest request){
         String header = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
-        return Validator.isNotNullOrEmpty(header) && header.equalsIgnoreCase(HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX);
+        return isNotNullOrEmpty(header) && header.equalsIgnoreCase(HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX);
     }
 
     /**
@@ -830,7 +831,7 @@ public final class RequestUtil{
      */
     public static Map<String, Object> getAttributeMap(HttpServletRequest request){
         Enumeration<String> attributeNames = request.getAttributeNames();
-        if (Validator.isNullOrEmpty(attributeNames)){
+        if (isNullOrEmpty(attributeNames)){
             return Collections.emptyMap();
         }
 

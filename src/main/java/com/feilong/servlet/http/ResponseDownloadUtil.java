@@ -255,7 +255,7 @@ public final class ResponseDownloadUtil{
         //浏览器接收到文件后,会进入插件系统进行查找,查找出哪种插件可以识别读取接收到的文件.如果浏览器不清楚调用哪种插件系统,它可能会告诉用户缺少某插件,
         response.setContentType(resolverContentType(saveFileName, contentType));
 
-        if (Validator.isNotNullOrEmpty(contentLength)){
+        if (isNotNullOrEmpty(contentLength)){
             response.setContentLength(contentLength.intValue());
         }
 
@@ -314,7 +314,7 @@ public final class ResponseDownloadUtil{
         //When serving static resources, Tomcat will automatically generate a "Content-Type" header based on the resource's filename extension, based on these mappings.  
         //Additional mappings can be added here (to apply to all web applications), or in your own application's web.xml deployment descriptor.                                               -->
 
-        if (Validator.isNotNullOrEmpty(inputContentType)){
+        if (isNotNullOrEmpty(inputContentType)){
             return inputContentType;
         }
         String contentTypeByFileName = MimeTypeUtil.getContentTypeByFileName(saveFileName);
@@ -323,7 +323,7 @@ public final class ResponseDownloadUtil{
         //application/x-download
 
         //.*( 二进制流,不知道下载文件类型)   application/octet-stream
-        return Validator.isNotNullOrEmpty(contentTypeByFileName) ? contentTypeByFileName : MimeType.BIN.getMime();
+        return isNotNullOrEmpty(contentTypeByFileName) ? contentTypeByFileName : MimeType.BIN.getMime();
         //The HTTP specification recommends setting the Content-Type to application/octet-stream. 
         //Unfortunately, this causes problems with Opera 6 on Windows (which will display the raw bytes for any file whose extension it doesn't recognize) and on Internet Explorer 5.1 on the Mac (which will display inline content that would be downloaded if sent with an unrecognized type).
     }

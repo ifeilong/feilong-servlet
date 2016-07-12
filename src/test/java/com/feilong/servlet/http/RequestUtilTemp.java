@@ -22,8 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import com.feilong.core.URIComponents;
-import com.feilong.core.Validator;
 import com.feilong.core.net.ParamUtil;
+
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.Validator.isNullOrEmpty;
 
 /**
  *
@@ -54,7 +56,7 @@ public class RequestUtilTemp{
     public static String getParameterAsItIsDecode(HttpServletRequest request,String paramName){
         String returnValue = null;
         String queryString = request.getQueryString();
-        if (Validator.isNotNullOrEmpty(queryString)){
+        if (isNotNullOrEmpty(queryString)){
             Map<String, String> map = ParamUtil.toSingleValueMap(queryString, null);
             return map.get(paramName);
         }
@@ -74,7 +76,7 @@ public class RequestUtilTemp{
     @Deprecated
     public static String getParameterWithTrim(HttpServletRequest request,String paramName){
         String returnValue = RequestUtil.getParameter(request, paramName);
-        if (Validator.isNotNullOrEmpty(returnValue)){
+        if (isNotNullOrEmpty(returnValue)){
             return returnValue.trim();
         }
         return returnValue;
@@ -93,7 +95,7 @@ public class RequestUtilTemp{
     @Deprecated
     public static String getParameterWithoutSharp(HttpServletRequest request,String paramName){
         String returnValue = RequestUtil.getParameter(request, paramName);
-        if (Validator.isNotNullOrEmpty(returnValue)){
+        if (isNotNullOrEmpty(returnValue)){
             if (StringUtils.contains(returnValue, URIComponents.FRAGMENT)){
                 returnValue = substring(returnValue, null, URIComponents.FRAGMENT);
             }
@@ -115,11 +117,11 @@ public class RequestUtilTemp{
      * @param endString
      *            结束的字符串
      * @return 如果 <code>text</code> 是null或者empty,返回 {@link StringUtils#EMPTY}<br>
-     *         如果Validator.isNullOrEmpty(startString),返回 text.substring(0, text.indexOf(endString))
+     *         如果isNullOrEmpty(startString),返回 text.substring(0, text.indexOf(endString))
      * @see org.apache.commons.lang3.StringUtils#substringBetween(String, String, String)
      */
     public static String substring(final String text,final String startString,final String endString){
-        return Validator.isNullOrEmpty(text) ? StringUtils.EMPTY
-                        : text.substring(Validator.isNullOrEmpty(startString) ? 0 : text.indexOf(startString), text.indexOf(endString));
+        return isNullOrEmpty(text) ? StringUtils.EMPTY
+                        : text.substring(isNullOrEmpty(startString) ? 0 : text.indexOf(startString), text.indexOf(endString));
     }
 }

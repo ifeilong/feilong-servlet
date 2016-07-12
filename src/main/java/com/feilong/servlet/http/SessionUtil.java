@@ -15,9 +15,6 @@
  */
 package com.feilong.servlet.http;
 
-import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND;
-import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
@@ -32,11 +29,15 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.Validator;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.date.DateExtensionUtil;
 import com.feilong.core.date.DateUtil;
 import com.feilong.tools.slf4j.Slf4jUtil;
+
+import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
+
+import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND;
 
 /**
  * {@link javax.servlet.http.HttpSession HttpSession} 工具类.
@@ -114,7 +115,7 @@ public final class SessionUtil{
      * @see HttpSession#isNew()
      */
     public static Map<String, Object> getSessionInfoMapForLog(HttpSession session){
-        if (Validator.isNullOrEmpty(session)){
+        if (isNullOrEmpty(session)){
             return Collections.emptyMap();
         }
 

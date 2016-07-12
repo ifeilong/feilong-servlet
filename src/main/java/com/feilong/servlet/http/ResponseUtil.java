@@ -32,10 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
-import com.feilong.core.Validator;
 import com.feilong.io.entity.MimeType;
 
 import static com.feilong.core.CharsetType.UTF8;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
 
 /**
  * {@link javax.servlet.http.HttpServletResponse HttpServletResponse} 工具类.
@@ -284,10 +284,10 @@ public final class ResponseUtil{
      */
     public static void write(HttpServletResponse response,Object content,String contentType,String characterEncoding){
         //编码 需要在 getWriter之前设置
-        if (Validator.isNotNullOrEmpty(contentType)){
+        if (isNotNullOrEmpty(contentType)){
             response.setContentType(contentType);
         }
-        if (Validator.isNotNullOrEmpty(characterEncoding)){
+        if (isNotNullOrEmpty(characterEncoding)){
             response.setCharacterEncoding(characterEncoding);
         }
 

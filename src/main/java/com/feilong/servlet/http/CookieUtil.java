@@ -27,10 +27,12 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.Validator;
 import com.feilong.core.bean.PropertyUtil;
 import com.feilong.servlet.http.entity.CookieEntity;
 import com.feilong.tools.jsonlib.JsonUtil;
+
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.Validator.isNullOrEmpty;
 
 /**
  * {@link javax.servlet.http.Cookie Cookie} 工具类.
@@ -222,7 +224,7 @@ public final class CookieUtil{
     public static Cookie getCookie(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
 
-        if (Validator.isNullOrEmpty(cookies)){
+        if (isNullOrEmpty(cookies)){
             LOGGER.info("request's cookies is null or empty!!");
             return null;
         }
@@ -253,7 +255,7 @@ public final class CookieUtil{
      */
     public static Map<String, String> getCookieMap(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
-        if (Validator.isNullOrEmpty(cookies)){
+        if (isNullOrEmpty(cookies)){
             return Collections.emptyMap();
         }
 
@@ -416,7 +418,7 @@ public final class CookieUtil{
         String value = cookieEntity.getValue();
 
         //如果长度超过4000,浏览器可能不支持
-        if (Validator.isNotNullOrEmpty(value) && value.length() > 4000){
+        if (isNotNullOrEmpty(value) && value.length() > 4000){
             String pattern = "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}";
             LOGGER.warn(pattern, value, value.length(), JsonUtil.format(cookieEntity, 0, 0));
         }

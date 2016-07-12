@@ -23,7 +23,7 @@ import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
-import com.feilong.core.Validator;
+import static com.feilong.core.Validator.isNullOrEmpty;
 
 /**
  * {@link javax.servlet.ServletContext} 工具类.
@@ -73,7 +73,7 @@ public final class ServletContextUtil{
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
-        if (Validator.isNullOrEmpty(attributeNames)){
+        if (isNullOrEmpty(attributeNames)){
             return Collections.emptyMap();
         }
 
@@ -98,7 +98,7 @@ public final class ServletContextUtil{
      */
     public static Map<String, String> getInitParameterMap(ServletContext servletContext){
         Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
-        if (Validator.isNullOrEmpty(initParameterNames)){
+        if (isNullOrEmpty(initParameterNames)){
             return Collections.emptyMap();
         }
 

@@ -46,7 +46,6 @@ import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.Validator;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
@@ -54,6 +53,7 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.slf4j.Slf4jUtil;
 
 import static com.feilong.core.CharsetType.UTF8;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
 
 /**
  * The Class RequestLogBuilder.
@@ -456,7 +456,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         if ("post".equalsIgnoreCase(method)){
             Map<String, String[]> map = RequestUtil.getParameterMap(request);
-            if (Validator.isNotNullOrEmpty(map)){
+            if (isNotNullOrEmpty(map)){
                 return ParamUtil.toSafeQueryString(map, null);
             }
         }
