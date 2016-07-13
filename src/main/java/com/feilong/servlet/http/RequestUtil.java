@@ -53,6 +53,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
 import static com.feilong.core.CharsetType.ISO_8859_1;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.util.SortUtil.sortByKeyAsc;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.
@@ -309,7 +310,7 @@ public final class RequestUtil{
         // http://localhost:8888/s.htm?keyword&a=
         // 这种链接  map key 会是 keyword,a 值都是空
 
-        return MapUtil.sortByKeyAsc(request.getParameterMap()); // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
+        return sortByKeyAsc(request.getParameterMap()); // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
     }
 
     /**
