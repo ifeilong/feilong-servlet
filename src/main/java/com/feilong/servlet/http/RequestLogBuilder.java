@@ -54,6 +54,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
 
 import static com.feilong.core.CharsetType.UTF8;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 
 /**
  * The Class RequestLogBuilder.
@@ -324,7 +325,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @since 1.7.3
      */
     private Map<String, String> getAttributeMapIfValueNotNull(String...attributeNames){
-        Map<String, String> map = MapUtil.newLinkedHashMap(attributeNames.length);
+        Map<String, String> map = newLinkedHashMap(attributeNames.length);
         for (String attributeName : attributeNames){
             MapUtil.putIfValueNotNull(map, attributeName, RequestUtil.<String> getAttribute(request, attributeName));
         }
