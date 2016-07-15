@@ -455,7 +455,7 @@ public final class RequestUtil{
      * 
      * <pre class="code">
      * 如:http://localhost:8080/feilong/requestdemo.jsp?id=2
-     * 返回:http://localhost:8080/feilong/requestdemo.jsp
+     * <b>返回:</b>http://localhost:8080/feilong/requestdemo.jsp
      * </pre>
      * 
      * 注:
