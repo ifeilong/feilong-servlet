@@ -21,9 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.feilong.core.URIComponents;
 import com.feilong.core.net.ParamUtil;
 
+import static com.feilong.core.URIComponents.FRAGMENT;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.Validator.isNullOrEmpty;
 
@@ -96,8 +96,8 @@ public class RequestUtilTemp{
     public static String getParameterWithoutSharp(HttpServletRequest request,String paramName){
         String returnValue = RequestUtil.getParameter(request, paramName);
         if (isNotNullOrEmpty(returnValue)){
-            if (StringUtils.contains(returnValue, URIComponents.FRAGMENT)){
-                returnValue = substring(returnValue, null, URIComponents.FRAGMENT);
+            if (StringUtils.contains(returnValue, FRAGMENT)){
+                returnValue = substring(returnValue, null, FRAGMENT);
             }
         }
         return returnValue;

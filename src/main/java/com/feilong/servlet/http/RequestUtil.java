@@ -42,7 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.CharsetType;
-import com.feilong.core.URIComponents;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.lang.StringUtil;
 import com.feilong.core.util.EnumerationUtil;
@@ -51,6 +50,9 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 import static com.feilong.core.CharsetType.ISO_8859_1;
+import static com.feilong.core.URIComponents.QUESTIONMARK;
+import static com.feilong.core.URIComponents.SCHEME_HTTP;
+import static com.feilong.core.URIComponents.SCHEME_HTTPS;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.Validator.isNullOrEmpty;
 import static com.feilong.core.util.SortUtil.sortByKeyAsc;
@@ -515,8 +517,7 @@ public final class RequestUtil{
     public static String getRequestFullURL(HttpServletRequest request,String charsetType){
         String requestURL = getRequestURL(request);
         String queryString = request.getQueryString();
-        return isNullOrEmpty(queryString) ? requestURL
-                        : requestURL + URIComponents.QUESTIONMARK + decodeISO88591String(queryString, charsetType);
+        return isNullOrEmpty(queryString) ? requestURL : requestURL + QUESTIONMARK + decodeISO88591String(queryString, charsetType);
     }
 
     /**
@@ -574,7 +575,7 @@ public final class RequestUtil{
         sb.append("://");
         sb.append(request.getServerName());
 
-        if ((scheme.equals(URIComponents.SCHEME_HTTP) && (port != 80)) || (scheme.equals(URIComponents.SCHEME_HTTPS) && (port != 443))){
+        if ((scheme.equals(SCHEME_HTTP) && (port != 80)) || (scheme.equals(SCHEME_HTTPS) && (port != 443))){
             sb.append(':');
             sb.append(port);
         }
