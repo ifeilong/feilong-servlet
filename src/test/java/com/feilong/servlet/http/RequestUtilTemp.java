@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet.http;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -121,7 +123,7 @@ public class RequestUtilTemp{
      * @see org.apache.commons.lang3.StringUtils#substringBetween(String, String, String)
      */
     public static String substring(final String text,final String startString,final String endString){
-        return isNullOrEmpty(text) ? StringUtils.EMPTY
+        return isNullOrEmpty(text) ? EMPTY
                         : text.substring(isNullOrEmpty(startString) ? 0 : text.indexOf(startString), text.indexOf(endString));
     }
 }

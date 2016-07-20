@@ -31,6 +31,7 @@ import static com.feilong.servlet.http.RequestAttributes.INCLUDE_PATH_INFO;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_QUERY_STRING;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_REQUEST_URI;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_SERVLET_PATH;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
@@ -41,7 +42,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -275,7 +275,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     private String getSessionId(){
         try{
             HttpSession session = request.getSession(false);
-            return null == session ? StringUtils.EMPTY : session.getId();
+            return null == session ? EMPTY : session.getId();
         }catch (IllegalStateException e){//Cannot create a session after the response has been committed 
             String msg = Slf4jUtil.format("uri:[{}],paramMap:{}", request.getRequestURI(), request.getParameterMap());
             LOGGER.error(msg, e);
