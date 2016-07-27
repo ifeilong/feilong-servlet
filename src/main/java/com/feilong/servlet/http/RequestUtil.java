@@ -16,6 +16,7 @@
 package com.feilong.servlet.http;
 
 import static com.feilong.servlet.http.HttpHeaders.PROXY_CLIENT_IP;
+import static com.feilong.servlet.http.HttpHeaders.USER_AGENT;
 import static com.feilong.servlet.http.HttpHeaders.WL_PROXY_CLIENT_IP;
 import static com.feilong.servlet.http.HttpHeaders.X_FORWARDED_FOR;
 import static com.feilong.servlet.http.HttpHeaders.X_REAL_IP;
@@ -733,10 +734,11 @@ public final class RequestUtil{
      * 
      * @param request
      *            the request
-     * @return the user agent
+     * @return 如果request没有指定名称 {@link HttpHeaders#USER_AGENT} 的header,那么返回null
+     * @see HttpHeaders#USER_AGENT
      */
     public static String getHeaderUserAgent(HttpServletRequest request){
-        return request.getHeader(HttpHeaders.USER_AGENT);
+        return request.getHeader(USER_AGENT);
     }
 
     /**
@@ -756,7 +758,8 @@ public final class RequestUtil{
      * 
      * @param request
      *            the request
-     * @return 上个请求的URL
+     * @return 如果request没有指定名称 {@link HttpHeaders#REFERER} 的header,那么返回null
+     * @see HttpHeaders#REFERER
      */
     public static String getHeaderReferer(HttpServletRequest request){
         return request.getHeader(HttpHeaders.REFERER);
@@ -769,7 +772,8 @@ public final class RequestUtil{
      * 
      * @param request
      *            the request
-     * @return the header origin
+     * @return 如果request没有指定名称 {@link HttpHeaders#ORIGIN} 的header,那么返回null
+     * @see HttpHeaders#ORIGIN
      */
     public static String getHeaderOrigin(HttpServletRequest request){
         return request.getHeader(HttpHeaders.ORIGIN);
