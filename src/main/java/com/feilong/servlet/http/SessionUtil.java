@@ -29,7 +29,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.feilong.core.date.DateExtensionUtil;
 import com.feilong.core.date.DateUtil;
 import com.feilong.tools.slf4j.Slf4jUtil;
 
@@ -137,9 +136,7 @@ public final class SessionUtil{
 
         //A negative time indicates the session should never timeout.
         int maxInactiveInterval = session.getMaxInactiveInterval();
-        map.put(
-                        "session.getMaxInactiveInterval()",
-                        maxInactiveInterval + "s,format:" + DateExtensionUtil.getIntervalForView(1000L * maxInactiveInterval));
+        map.put("session.getMaxInactiveInterval()", maxInactiveInterval + "s,format:" + getIntervalForView(1000L * maxInactiveInterval));
 
         // 返回服务器创建的一个SESSION,客户端是否已经加入 
         map.put("session.isNew()", session.isNew());
