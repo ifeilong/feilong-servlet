@@ -31,6 +31,8 @@ import static com.feilong.servlet.http.RequestAttributes.INCLUDE_PATH_INFO;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_QUERY_STRING;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_REQUEST_URI;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_SERVLET_PATH;
+import static com.feilong.servlet.http.entity.RequestLogSwitch.NORMAL;
+import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.util.Enumeration;
@@ -41,7 +43,6 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +99,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     @Override
     public Map<String, Object> build(){
-        RequestLogSwitch opRequestLogSwitch = ObjectUtils.defaultIfNull(this.requestLogSwitch, RequestLogSwitch.NORMAL);
+        RequestLogSwitch opRequestLogSwitch = defaultIfNull(this.requestLogSwitch, NORMAL);
 
         Map<String, Object> map = new LinkedHashMap<String, Object>();
 
@@ -145,7 +146,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // aboutElseMap
         if (opRequestLogSwitch.getShowElses()){
-            Map<String, Object> aboutElseMap = new LinkedHashMap<String, Object>();
+            Map<String, Object> aboutElseMap = new LinkedHashMap<>();
 
             //Returns the name of the scheme used to make this request, for example, http, https, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
             aboutElseMap.put("request.getScheme()", request.getScheme());
@@ -202,7 +203,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // aboutIPMap
         if (opRequestLogSwitch.getShowIPs()){
-            Map<String, String> aboutIPMap = new TreeMap<String, String>();
+            Map<String, String> aboutIPMap = new TreeMap<>();
 
             //Returns the Internet Protocol (IP) address of the interface on which the request was received.
             aboutIPMap.put("request.getLocalAddr()", request.getLocalAddr());//获得项目本地ip地址
@@ -222,7 +223,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // aboutPortMap
         if (opRequestLogSwitch.getShowPorts()){
-            Map<String, String> aboutPortMap = new TreeMap<String, String>();
+            Map<String, String> aboutPortMap = new TreeMap<>();
 
             //Returns the Internet Protocol (IP) port number of the interface on which the request was received.
             aboutPortMap.put("request.getLocalPort()", "" + request.getLocalPort());
