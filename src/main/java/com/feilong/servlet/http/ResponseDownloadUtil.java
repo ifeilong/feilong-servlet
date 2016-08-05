@@ -37,7 +37,7 @@ import com.feilong.io.entity.MimeType;
 
 import static com.feilong.core.CharsetType.UTF8;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
-import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
+import static com.feilong.core.date.DateExtensionUtil.formatDuration;
 
 /**
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.
@@ -197,7 +197,7 @@ public final class ResponseDownloadUtil{
             IOWriteUtil.write(inputStream, outputStream);
             if (LOGGER.isInfoEnabled()){
                 String pattern = "end download,saveFileName:[{}],contentLength:[{}],time use:[{}]";
-                LOGGER.info(pattern, saveFileName, length, getIntervalForView(beginDate));
+                LOGGER.info(pattern, saveFileName, length, formatDuration(beginDate));
             }
         }catch (IOException e){
             /*

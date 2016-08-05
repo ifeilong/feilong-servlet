@@ -34,7 +34,7 @@ import com.feilong.tools.slf4j.Slf4jUtil;
 
 import static com.feilong.core.Validator.isNullOrEmpty;
 import static com.feilong.core.bean.ConvertUtil.toList;
-import static com.feilong.core.date.DateExtensionUtil.getIntervalForView;
+import static com.feilong.core.date.DateExtensionUtil.formatDuration;
 
 import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND;
 
@@ -136,7 +136,7 @@ public final class SessionUtil{
 
         //A negative time indicates the session should never timeout.
         int maxInactiveInterval = session.getMaxInactiveInterval();
-        map.put("session.getMaxInactiveInterval()", maxInactiveInterval + "s,format:" + getIntervalForView(1000L * maxInactiveInterval));
+        map.put("session.getMaxInactiveInterval()", maxInactiveInterval + "s,format:" + formatDuration(1000L * maxInactiveInterval));
 
         // 返回服务器创建的一个SESSION,客户端是否已经加入 
         map.put("session.isNew()", session.isNew());
@@ -234,6 +234,6 @@ public final class SessionUtil{
     private static String toPrettyMessage(long creationTime){
         Date creationTimeDate = new Date(creationTime);
         String dateString = DateUtil.toString(creationTimeDate, COMMON_DATE_AND_TIME_WITH_MILLISECOND);
-        return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, getIntervalForView(creationTimeDate));
+        return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, formatDuration(creationTimeDate));
     }
 }
