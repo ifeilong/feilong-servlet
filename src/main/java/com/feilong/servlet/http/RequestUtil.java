@@ -20,6 +20,7 @@ import static com.feilong.servlet.http.HttpHeaders.USER_AGENT;
 import static com.feilong.servlet.http.HttpHeaders.WL_PROXY_CLIENT_IP;
 import static com.feilong.servlet.http.HttpHeaders.X_FORWARDED_FOR;
 import static com.feilong.servlet.http.HttpHeaders.X_REAL_IP;
+import static java.util.Collections.emptyMap;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -838,7 +839,7 @@ public final class RequestUtil{
     public static Map<String, Object> getAttributeMap(HttpServletRequest request){
         Enumeration<String> attributeNames = request.getAttributeNames();
         if (isNullOrEmpty(attributeNames)){
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         Map<String, Object> map = new TreeMap<String, Object>();

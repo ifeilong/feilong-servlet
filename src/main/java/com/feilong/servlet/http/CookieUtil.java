@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet.http;
 
+import static java.util.Collections.emptyMap;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -256,7 +258,7 @@ public final class CookieUtil{
     public static Map<String, String> getCookieMap(HttpServletRequest request){
         Cookie[] cookies = request.getCookies();
         if (isNullOrEmpty(cookies)){
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         Map<String, String> map = new TreeMap<String, String>();

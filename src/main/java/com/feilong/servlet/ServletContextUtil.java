@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet;
 
+import static java.util.Collections.emptyMap;
+
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -74,7 +76,7 @@ public final class ServletContextUtil{
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
         if (isNullOrEmpty(attributeNames)){
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         Map<String, Object> map = new TreeMap<String, Object>();
@@ -99,7 +101,7 @@ public final class ServletContextUtil{
     public static Map<String, String> getInitParameterMap(ServletContext servletContext){
         Enumeration<String> initParameterNames = servletContext.getInitParameterNames();
         if (isNullOrEmpty(initParameterNames)){
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         Map<String, String> map = new TreeMap<String, String>();

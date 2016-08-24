@@ -15,8 +15,9 @@
  */
 package com.feilong.servlet.http;
 
+import static java.util.Collections.emptyMap;
+
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -115,7 +116,7 @@ public final class SessionUtil{
      */
     public static Map<String, Object> getSessionInfoMapForLog(HttpSession session){
         if (isNullOrEmpty(session)){
-            return Collections.emptyMap();
+            return emptyMap();
         }
 
         Map<String, Object> map = new LinkedHashMap<String, Object>();
