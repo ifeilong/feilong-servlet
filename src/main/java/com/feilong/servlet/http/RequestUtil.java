@@ -57,7 +57,7 @@ import static com.feilong.core.URIComponents.SCHEME_HTTP;
 import static com.feilong.core.URIComponents.SCHEME_HTTPS;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.Validator.isNullOrEmpty;
-import static com.feilong.core.util.SortUtil.sortByKeyAsc;
+import static com.feilong.core.util.SortUtil.sortMapByKeyAsc;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.
@@ -314,7 +314,7 @@ public final class RequestUtil{
         // http://localhost:8888/s.htm?keyword&a=
         // 这种链接  map key 会是 keyword,a 值都是空
 
-        return sortByKeyAsc(request.getParameterMap()); // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
+        return sortMapByKeyAsc(request.getParameterMap()); // servlet 3.0 此处返回类型的是 泛型数组 Map<String, String[]>
     }
 
     /**
