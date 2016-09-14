@@ -513,7 +513,7 @@ public final class RequestUtil{
      * @param request
      *            the request
      * @param charsetType
-     *            编码集 {@link CharsetType}
+     *            字符编码,建议使用 {@link CharsetType} 定义好的常量
      * @return 如:http://localhost:8080/feilong/requestdemo.jsp?id=2
      */
     public static String getRequestFullURL(HttpServletRequest request,String charsetType){
@@ -541,7 +541,7 @@ public final class RequestUtil{
      * @param str
      *            字符串
      * @param charsetType
-     *            使用的编码,see {@link CharsetType}
+     *            字符编码,建议使用 {@link CharsetType} 定义好的常量
      * @return 如果 <code>str</code> 是null或者empty,返回 {@link StringUtils#EMPTY}<br>
      * @see "org.apache.commons.codec.net.URLCodec#encode(String, String)"
      * @see "org.apache.taglibs.standard.tag.common.fmt.RequestEncodingSupport"
