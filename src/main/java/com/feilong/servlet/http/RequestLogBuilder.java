@@ -459,7 +459,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         if ("post".equalsIgnoreCase(method)){
             Map<String, String[]> map = RequestUtil.getParameterMap(request);
             if (isNotNullOrEmpty(map)){
-                return ParamUtil.toSafeQueryString(map, null);
+                return ParamUtil.toQueryStringUseArrayValueMap(map);
             }
         }
         // Returns the query string that is contained in the request URL after the path.
