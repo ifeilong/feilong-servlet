@@ -55,7 +55,7 @@ public class ApplicationInfoServlet extends HttpServlet{
     public void init() throws ServletException{
         ServletContext servletContext = getServletContext();
 
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("Charset defaultCharset", Charset.defaultCharset().name());
         map.put("ServletContext Info", ServletContextUtil.getServletContextInfoMapForLog(servletContext));
         map.put("ServletContext initParameter Map", ServletContextUtil.getInitParameterMap(servletContext));

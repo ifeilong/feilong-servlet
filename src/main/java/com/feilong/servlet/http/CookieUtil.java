@@ -261,7 +261,7 @@ public final class CookieUtil{
             return emptyMap();
         }
 
-        Map<String, String> map = new TreeMap<String, String>();
+        Map<String, String> map = new TreeMap<>();
         for (Cookie cookie : cookies){
             map.put(cookie.getName(), cookie.getValue());
         }

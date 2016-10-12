@@ -101,7 +101,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     public Map<String, Object> build(){
         RequestLogSwitch opRequestLogSwitch = defaultIfNull(this.requestLogSwitch, NORMAL);
 
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<>();
 
         // requestFullURL
         if (opRequestLogSwitch.getShowFullURL()){
@@ -394,7 +394,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null.
         // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分.
 
-        Map<String, String> map = new LinkedHashMap<String, String>();
+        Map<String, String> map = new LinkedHashMap<>();
 
         map.put("request.getContextPath()", request.getContextPath());
 
@@ -435,7 +435,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return the header map
      */
     private Map<String, String> getHeaderMap(){
-        Map<String, String> map = new TreeMap<String, String>();
+        Map<String, String> map = new TreeMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
             String name = headerNames.nextElement();

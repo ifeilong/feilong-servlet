@@ -50,7 +50,7 @@ public final class ServletContextUtil{
      * @return the servlet context info map for log
      */
     public static Map<String, Object> getServletContextInfoMapForLog(ServletContext servletContext){
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         // 返回servlet运行的servlet 容器的版本和名称.
         map.put("servletContext.getServerInfo()", servletContext.getServerInfo());
 
@@ -79,7 +79,7 @@ public final class ServletContextUtil{
             return emptyMap();
         }
 
-        Map<String, Object> map = new TreeMap<String, Object>();
+        Map<String, Object> map = new TreeMap<>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
 
@@ -104,7 +104,7 @@ public final class ServletContextUtil{
             return emptyMap();
         }
 
-        Map<String, String> map = new TreeMap<String, String>();
+        Map<String, String> map = new TreeMap<>();
         while (initParameterNames.hasMoreElements()){
             String name = initParameterNames.nextElement();
             map.put(name, servletContext.getInitParameter(name));

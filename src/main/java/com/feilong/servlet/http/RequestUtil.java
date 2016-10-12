@@ -687,7 +687,7 @@ public final class RequestUtil{
         // Proxy-Client-IP=215.4.1.29
         // X-Forwarded-For=215.4.1.29
 
-        Map<String, String> map = new LinkedHashMap<String, String>();
+        Map<String, String> map = new LinkedHashMap<>();
 
         String ipAddress = "";
 
@@ -842,7 +842,7 @@ public final class RequestUtil{
             return emptyMap();
         }
 
-        Map<String, Object> map = new TreeMap<String, Object>();
+        Map<String, Object> map = new TreeMap<>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
             map.put(name, getAttribute(request, name));

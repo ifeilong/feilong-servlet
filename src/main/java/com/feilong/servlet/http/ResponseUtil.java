@@ -314,7 +314,7 @@ public final class ResponseUtil{
      * @since 1.5.4
      */
     public static Map<String, Object> getResponseInfoMapForLog(HttpServletResponse response){
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("response.getBufferSize()", response.getBufferSize());
         map.put("response.getCharacterEncoding()", response.getCharacterEncoding());
         map.put("response.getContentType()", response.getContentType());
@@ -333,7 +333,7 @@ public final class ResponseUtil{
      */
     private static Map<String, Object> getResponseHeaderMap(HttpServletResponse response){
         Collection<String> headerNames = response.getHeaderNames(); //Servlet 3.0
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         for (String headerName : headerNames){
             map.put(headerName, response.getHeader(headerName)); //Servlet 3.0
         }

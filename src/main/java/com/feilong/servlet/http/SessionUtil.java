@@ -119,7 +119,7 @@ public final class SessionUtil{
             return emptyMap();
         }
 
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<>();
         // 返回SESSION创建时JSP引擎为它设的惟一ID号 
         map.put("session.getId()", session.getId());
 
@@ -155,7 +155,7 @@ public final class SessionUtil{
      * @see javax.servlet.http.HttpSession#getAttribute(String)
      */
     public static Map<String, Serializable> getAttributeMap(HttpSession session){
-        Map<String, Serializable> map = new HashMap<String, Serializable>();
+        Map<String, Serializable> map = new HashMap<>();
 
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()){
