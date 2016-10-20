@@ -551,7 +551,24 @@ public final class HttpHeaders{
     /** <code>{@value}</code> 这个应该是WebLogic前置HttpClusterServlet提供的属性,一般不需要自己处理,在WebLogic控制台中已经可以指定使用这个属性来覆盖. */
     public static final String WL_PROXY_CLIENT_IP          = "WL-Proxy-Client-IP";
 
-    /** <code>{@value}</code>. */
+    //******************************************************************************************
+
+    /**
+     * <code>{@value}</code> 用于在服务器端判断request来自Ajax请求还是传统请求.
+     * 
+     * <p>
+     * 以X打头的头域作为非HTTP标准协议，一般是某种技术的出现而产生或者某个组织指定的,<br>
+     * The <code>X-Requested-With</code> is a non-standard HTTP header which is mainly used to identify Ajax requests. <br>
+     * Most JavaScript frameworks send this header with value of XMLHttpRequest.
+     * </p>
+     * 
+     * <p>
+     * 注:<code>x-requested-with</code>这个头是某些JS类库给加上去的,直接写AJAX是没有这个头的,<br>
+     * jquery/ext 确定添加,暂时可以使用这个来判断
+     * </p>
+     * 
+     * @see <a href="http://blog.csdn.net/javajiawei/article/details/50563154">HTTP之X-Requested-With分析和思考</a>
+     */
     public static final String X_REQUESTED_WITH            = "X-Requested-With";
 
     /** <code>{@value}</code>. */

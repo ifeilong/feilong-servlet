@@ -15,11 +15,15 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.servlet.http.HttpHeaders.ORIGIN;
 import static com.feilong.servlet.http.HttpHeaders.PROXY_CLIENT_IP;
+import static com.feilong.servlet.http.HttpHeaders.REFERER;
 import static com.feilong.servlet.http.HttpHeaders.USER_AGENT;
 import static com.feilong.servlet.http.HttpHeaders.WL_PROXY_CLIENT_IP;
 import static com.feilong.servlet.http.HttpHeaders.X_FORWARDED_FOR;
 import static com.feilong.servlet.http.HttpHeaders.X_REAL_IP;
+import static com.feilong.servlet.http.HttpHeaders.X_REQUESTED_WITH;
+import static com.feilong.servlet.http.HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX;
 import static java.util.Collections.emptyMap;
 
 import java.io.IOException;
@@ -763,7 +767,7 @@ public final class RequestUtil{
      * @see HttpHeaders#REFERER
      */
     public static String getHeaderReferer(HttpServletRequest request){
-        return request.getHeader(HttpHeaders.REFERER);
+        return request.getHeader(REFERER);
     }
 
     /**
@@ -777,21 +781,11 @@ public final class RequestUtil{
      * @see HttpHeaders#ORIGIN
      */
     public static String getHeaderOrigin(HttpServletRequest request){
-        return request.getHeader(HttpHeaders.ORIGIN);
+        return request.getHeader(ORIGIN);
     }
 
     /**
      * 判断一个请求是否是ajax请求.
-     * 
-     * <p>
-     * 注:x-requested-with这个头是某些JS类库给加上去的,直接写AJAX是没有这个头的,<br>
-     * jquery/ext 确定添加,暂时可以使用这个来判断
-     * </p>
-     * 
-     * <p>
-     * The X-Requested-With is a non-standard HTTP header which is mainly used to identify Ajax requests. <br>
-     * Most JavaScript frameworks send this header with value of XMLHttpRequest.
-     * </p>
      * 
      * @param request
      *            the request
@@ -799,8 +793,8 @@ public final class RequestUtil{
      * @see "http://en.wikipedia.org/wiki/X-Requested-With#Requested-With"
      */
     public static boolean isAjaxRequest(HttpServletRequest request){
-        String header = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
-        return isNotNullOrEmpty(header) && header.equalsIgnoreCase(HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX);
+        String header = request.getHeader(X_REQUESTED_WITH);
+        return isNotNullOrEmpty(header) && header.equalsIgnoreCase(X_REQUESTED_WITH_VALUE_AJAX);
     }
 
     /**
@@ -809,6 +803,7 @@ public final class RequestUtil{
      * @param request
      *            the request
      * @return 如果不是ajax 返回true
+     * @see #isAjaxRequest(HttpServletRequest)
      */
     public static boolean isNotAjaxRequest(HttpServletRequest request){
         return !isAjaxRequest(request);
