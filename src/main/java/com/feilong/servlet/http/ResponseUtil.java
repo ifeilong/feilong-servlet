@@ -30,6 +30,7 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.CharsetType;
 import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.io.entity.MimeType;
@@ -276,7 +277,7 @@ public final class ResponseUtil{
      * @param contentType
      *            the content type
      * @param characterEncoding
-     *            the character encoding
+     *            字符编码,建议使用 {@link CharsetType} 定义好的常量
      * @see javax.servlet.ServletResponse#getWriter()
      * @see java.io.PrintWriter#print(Object)
      * @see java.io.PrintWriter#flush()
