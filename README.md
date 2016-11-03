@@ -4,7 +4,7 @@ feilong-platform feilong-servlet
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 ![build](https://img.shields.io/jenkins/s/https/jenkins.qa.ubuntu.com/precise-desktop-amd64_default.svg "build") 
 ![JDK 1.7](https://img.shields.io/badge/JDK-1.7-green.svg "JDK 1.7")
-[![jar size 33K](https://img.shields.io/badge/size-33K-green.svg "size 33K")](https://github.com/venusdrogon/feilong-platform/tree/repository/com/feilong/platform/feilong-servlet/1.9.3)
+[![jar size 33K](https://img.shields.io/badge/size-33K-green.svg "size 33K")](https://github.com/venusdrogon/feilong-platform/tree/repository/com/feilong/platform/feilong-servlet/1.9.4)
 
 > Reduce development, Release ideas (减少开发,释放思想)
 
@@ -31,7 +31,7 @@ feilong-servlet jar你可以直接在 [仓库](https://github.com/venusdrogon/fe
 	
 		....
 		<properties>
-			<version.feilong-platform>1.9.3</version.feilong-platform>
+			<version.feilong-platform>1.9.4</version.feilong-platform>
 			....
 		</properties>
 		
