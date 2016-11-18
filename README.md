@@ -9,8 +9,7 @@ feilong-platform feilong-servlet
 
 #Welcome to feilong-platform feilong-servlet
 
-`封装了j2ee常用类,是feilong-platform web相关jar 的基础`
-
+focus on J2EE,是 [feilong platform](https://github.com/venusdrogon/feilong-platform) 项目重要组成部分,是 web相关项目的基础
 
 # Javadoc:
 在此,我们提供在线的Javadoc,以便查阅,参见 [Javadoc](http://venusdrogon.github.io/feilong-platform/javadocs/feilong-servlet/)
