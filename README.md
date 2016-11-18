@@ -1,4 +1,4 @@
-feilong-platform feilong-servlet
+feilong-servlet
 ================
 
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -7,7 +7,7 @@ feilong-platform feilong-servlet
 
 > Reduce development, Release ideas (减少开发,释放思想)
 
-#Welcome to feilong-platform feilong-servlet
+#Welcome to feilong-servlet
 
 focus on J2EE,是 [feilong platform](https://github.com/venusdrogon/feilong-platform) 项目重要组成部分,是 web相关项目的基础
 
