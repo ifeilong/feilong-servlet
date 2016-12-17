@@ -298,7 +298,7 @@ public final class ResponseUtil{
             printWriter.flush();
 
             //http://www.iteye.com/problems/56543
-            //你是用了tomcat,jetty这样的容器,就不需要 printWriter.close();
+            //你是用了tomcat,jetty这样的容器,就不需要 printWriter.close()
         }catch (IOException e){
             throw new UncheckedIOException(e);
         }
