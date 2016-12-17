@@ -217,8 +217,9 @@ public final class SessionUtil{
         oldSession.invalidate();//老的session失效
 
         HttpSession newSession = request.getSession();
-        for (String key : attributeMap.keySet()){
-            newSession.setAttribute(key, attributeMap.get(key));
+        //When only the keys from a map are needed in a loop, iterating the keySet makes sense. But when both the key and the value are needed, it's more efficient to iterate the entrySet, which will give access to both the key and value, instead.
+        for (Map.Entry<String, Serializable> entry : attributeMap.entrySet()){
+            newSession.setAttribute(entry.getKey(), entry.getValue());
         }
         LOGGER.debug("old sessionId:[{}],invalidate it!new session:[{}],and put all attributes", oldSessionId, newSession.getId());
         return newSession;
