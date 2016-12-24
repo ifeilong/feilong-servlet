@@ -716,9 +716,9 @@ public final class RequestUtil{
         }
 
         // 对于通过多个代理的情况,第一个IP为客户端真实IP,多个IP按照','分割
-        if (ipAddress != null && ipAddress.indexOf(",") > 0){
+        if (ipAddress != null && ipAddress.indexOf(',') > 0){
             //如果通过了多级反向代理的话,X-Forwarded-For的值并不止一个,而是一串ip值,取第一个非unknown的有效IP字符串. 
-            ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+            ipAddress = ipAddress.substring(0, ipAddress.indexOf(','));
             map.put("firstIp", ipAddress);
         }
 
