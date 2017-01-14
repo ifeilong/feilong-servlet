@@ -557,7 +557,7 @@ public final class HttpHeaders{
      * <code>{@value}</code> 用于在服务器端判断request来自Ajax请求还是传统请求.
      * 
      * <p>
-     * 以X打头的头域作为非HTTP标准协议，一般是某种技术的出现而产生或者某个组织指定的,<br>
+     * 以X打头的头域作为非HTTP标准协议,一般是某种技术的出现而产生或者某个组织指定的,<br>
      * The <code>X-Requested-With</code> is a non-standard HTTP header which is mainly used to identify Ajax requests. <br>
      * Most JavaScript frameworks send this header with value of XMLHttpRequest.
      * </p>
