@@ -15,6 +15,8 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.Validator.isNullOrEmpty;
 import static java.util.Collections.emptyMap;
 
 import java.util.Collections;
@@ -33,9 +35,6 @@ import com.feilong.core.bean.PropertyUtil;
 import com.feilong.servlet.http.entity.CookieEntity;
 import com.feilong.tools.jsonlib.JsonUtil;
 
-import static com.feilong.core.Validator.isNotNullOrEmpty;
-import static com.feilong.core.Validator.isNullOrEmpty;
-
 /**
  * {@link javax.servlet.http.Cookie Cookie} 工具类.
  * 
@@ -43,8 +42,8 @@ import static com.feilong.core.Validator.isNullOrEmpty;
  * 更多,请参考 <a href="https://github.com/venusdrogon/feilong-servlet/wiki/CookieUtil">CookieUtil wiki</a>
  * </p>
  * 
- * <p>
- * 注意:该类创建Cookie仅支持Servlet3以上的版本
+ * <p style="color:red">
+ * 注意:该类创建Cookie仅支持 <b>Servlet3</b> 以上的版本
  * </p>
  * 
  * <h3>使用说明:</h3>
@@ -239,7 +238,8 @@ public final class CookieUtil{
                 return cookie;
             }
         }
-        LOGGER.info("can't find the cookie:[{}]", cookieName);
+
+        LOGGER.debug("can't find the cookie:[{}]", cookieName);
         return null;
     }
 
@@ -419,10 +419,14 @@ public final class CookieUtil{
 
         String value = cookieEntity.getValue();
 
-        //如果长度超过4000,浏览器可能不支持
-        if (isNotNullOrEmpty(value) && value.length() > 4000){
-            String pattern = "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}";
-            LOGGER.warn(pattern, value, value.length(), JsonUtil.format(cookieEntity, 0, 0));
+        //---------------------------------------------------------------
+
+        if (LOGGER.isWarnEnabled()){
+            //如果长度超过4000,浏览器可能不支持
+            if (isNotNullOrEmpty(value) && value.length() > 4000){
+                String pattern = "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}";
+                LOGGER.warn(pattern, value, value.length(), JsonUtil.format(cookieEntity, 0, 0));
+            }
         }
     }
 }
