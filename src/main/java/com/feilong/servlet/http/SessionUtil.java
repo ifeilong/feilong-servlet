@@ -15,6 +15,11 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND;
+import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.bean.ConvertUtil.toList;
+import static com.feilong.core.date.DateExtensionUtil.formatDuration;
+import static com.feilong.core.util.SortUtil.sortList;
 import static java.util.Collections.emptyMap;
 
 import java.io.Serializable;
@@ -32,12 +37,6 @@ import org.slf4j.LoggerFactory;
 
 import com.feilong.core.date.DateUtil;
 import com.feilong.tools.slf4j.Slf4jUtil;
-
-import static com.feilong.core.Validator.isNullOrEmpty;
-import static com.feilong.core.bean.ConvertUtil.toList;
-import static com.feilong.core.date.DateExtensionUtil.formatDuration;
-
-import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND;
 
 /**
  * {@link javax.servlet.http.HttpSession HttpSession} 工具类.
@@ -101,6 +100,8 @@ public final class SessionUtil{
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
 
+    //---------------------------------------------------------------
+
     /**
      * Gets the session map for log(仅仅用于log和debug使用).
      * 
@@ -118,6 +119,8 @@ public final class SessionUtil{
         if (isNullOrEmpty(session)){
             return emptyMap();
         }
+
+        //---------------------------------------------------------------
 
         Map<String, Object> map = new LinkedHashMap<>();
         // 返回SESSION创建时JSP引擎为它设的惟一ID号 
@@ -141,9 +144,11 @@ public final class SessionUtil{
 
         // 返回服务器创建的一个SESSION,客户端是否已经加入 
         map.put("session.isNew()", session.isNew());
-        map.put("session.getAttributeNames()", toList(session.getAttributeNames()));
+        map.put("session.getAttributeNames()", sortList(toList(session.getAttributeNames())));
         return map;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 遍历session的attribute,将 name /attributeValue 存入到map里.
@@ -205,25 +210,36 @@ public final class SessionUtil{
         // getSession()/getSession(true):当session存在时返回该session,否则新建一个session并返回该对象
         HttpSession oldSession = request.getSession(false);
 
+        //---------------------------------------------------------------
+
         if (null == oldSession){// 是null 新建一个并直接返回
             LOGGER.debug("oldSession is null,return a new session~~");
             return request.getSession();
         }
 
+        //---------------------------------------------------------------
+
         String oldSessionId = oldSession.getId();
         Map<String, Serializable> attributeMap = getAttributeMap(oldSession);
 
-        //*************************************************************************************
+        //---------------------------------------------------------------
+
         oldSession.invalidate();//老的session失效
+
+        //---------------------------------------------------------------
 
         HttpSession newSession = request.getSession();
         //When only the keys from a map are needed in a loop, iterating the keySet makes sense. But when both the key and the value are needed, it's more efficient to iterate the entrySet, which will give access to both the key and value, instead.
         for (Map.Entry<String, Serializable> entry : attributeMap.entrySet()){
             newSession.setAttribute(entry.getKey(), entry.getValue());
         }
+
+        //---------------------------------------------------------------
         LOGGER.debug("old sessionId:[{}],invalidate it!new session:[{}],and put all attributes", oldSessionId, newSession.getId());
         return newSession;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * To pretty message.
