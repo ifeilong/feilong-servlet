@@ -382,10 +382,12 @@ public final class CookieUtil{
         validateCookieEntity(cookieEntity);//校验
 
         if (LOGGER.isDebugEnabled()){
-            LOGGER.debug("[addCookie],cookieEntity info:[{}]", JsonUtil.format(cookieEntity, 0, 0));
+            LOGGER.debug("[addCookie],cookieName:[{}],cookieEntity info:[{}]", cookieEntity.getName(), JsonUtil.format(cookieEntity, 0, 0));
         }
         response.addCookie(toCookie(cookieEntity));
     }
+
+    //---------------------------------------------------------------
 
     /**
      * To cookie.
