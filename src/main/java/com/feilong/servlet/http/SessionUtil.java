@@ -103,11 +103,11 @@ public final class SessionUtil{
     //---------------------------------------------------------------
 
     /**
-     * Gets the session map for log(仅仅用于log和debug使用).
+     * 获得常用的session 属性值 map(仅仅用于log和debug使用).
      * 
      * @param session
      *            the session
-     * @return the session map for log,如果session 是 null,则返回 empty的{@link LinkedHashMap}
+     * @return 如果session 是 null,则返回 empty的{@link LinkedHashMap}
      * @see HttpSession#getId()
      * @see HttpSession#getCreationTime()
      * @see HttpSession#getLastAccessedTime()
@@ -124,27 +124,29 @@ public final class SessionUtil{
 
         Map<String, Object> map = new LinkedHashMap<>();
         // 返回SESSION创建时JSP引擎为它设的惟一ID号 
-        map.put("session.getId()", session.getId());
+        map.put("id", session.getId());
+
+        // 返回服务器创建的一个SESSION,客户端是否已经加入 
+        map.put("isNew", session.isNew());
 
         //返回SESSION创建时间
-        map.put("session.getCreationTime()", toPrettyMessage(session.getCreationTime()));
+        map.put("creationTime", toPrettyMessage(session.getCreationTime()));
 
         //返回此SESSION里客户端最近一次请求时间 
-        map.put("session.getLastAccessedTime()", toPrettyMessage(session.getLastAccessedTime()));
+        map.put("lastAccessedTime", toPrettyMessage(session.getLastAccessedTime()));
 
         //返回两次请求间隔多长时间此SESSION被取消(in seconds) 
         //Returns the maximum time interval, in seconds, 
         //that the servlet container will keep this session open between client accesses. 
         //After this interval, the servlet container will invalidate the session. 
+
         //The maximum time interval can be set with the setMaxInactiveInterval method.
 
         //A negative time indicates the session should never timeout.
-        int maxInactiveInterval = session.getMaxInactiveInterval();
-        map.put("session.getMaxInactiveInterval()", maxInactiveInterval + "s,format:" + formatDuration(1000L * maxInactiveInterval));
+        int maxInactiveInterval = session.getMaxInactiveInterval(); //单位 秒
+        map.put("maxInactiveInterval", formatDuration(1000L * maxInactiveInterval));
 
-        // 返回服务器创建的一个SESSION,客户端是否已经加入 
-        map.put("session.isNew()", session.isNew());
-        map.put("session.getAttributeNames()", sortList(toList(session.getAttributeNames())));
+        map.put("attributeNames", sortList(toList(session.getAttributeNames())));
         return map;
     }
 
@@ -252,6 +254,6 @@ public final class SessionUtil{
     private static String toPrettyMessage(long creationTime){
         Date creationTimeDate = new Date(creationTime);
         String dateString = DateUtil.toString(creationTimeDate, COMMON_DATE_AND_TIME_WITH_MILLISECOND);
-        return Slf4jUtil.format("[{}],format:[{}],intervalToNow:[{}]", creationTime, dateString, formatDuration(creationTimeDate));
+        return Slf4jUtil.format("[{}],intervalToNow:[{}]", dateString, formatDuration(creationTimeDate));
     }
 }
