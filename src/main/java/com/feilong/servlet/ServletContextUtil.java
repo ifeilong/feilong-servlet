@@ -15,17 +15,18 @@
  */
 package com.feilong.servlet;
 
+import static com.feilong.core.Validator.isNullOrEmpty;
 import static java.util.Collections.emptyMap;
 
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 
-import static com.feilong.core.Validator.isNullOrEmpty;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * {@link javax.servlet.ServletContext} 工具类.
@@ -35,12 +36,26 @@ import static com.feilong.core.Validator.isNullOrEmpty;
  */
 public final class ServletContextUtil{
 
+    /** The Constant EXCLUDE_KEYS. */
+    public static final String[] EXCLUDE_KEYS = {
+                                                  "org.apache.catalina.jsp_classpath",
+                                                  "org.apache.catalina.resources",
+                                                  "org.apache.jasper.compiler.ELInterpreter",
+                                                  "org.apache.jasper.compiler.TldLocationsCache",
+                                                  "org.apache.jasper.runtime.JspApplicationContextImpl",
+                                                  "org.apache.tomcat.InstanceManager",
+                                                  "org.apache.tomcat.JarScanner",
+                                                  "org.apache.tomcat.util.scan.MergedWebXml" };
+
+    //---------------------------------------------------------------
+
     /** Don't let anyone instantiate this class. */
     private ServletContextUtil(){
         //AssertionError不是必须的. 但它可以避免不小心在类的内部调用构造器. 保证该类在任何情况下都不会被实例化.
         //see 《Effective Java》 2nd
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
+    //---------------------------------------------------------------
 
     /**
      * servletContext.log servletContext相关信息,一般启动时调用.
@@ -50,19 +65,21 @@ public final class ServletContextUtil{
      * @return the servlet context info map for log
      */
     public static Map<String, Object> getServletContextInfoMapForLog(ServletContext servletContext){
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         // 返回servlet运行的servlet 容器的版本和名称.
-        map.put("servletContext.getServerInfo()", servletContext.getServerInfo());
+        map.put("serverInfo", servletContext.getServerInfo());
 
         // 返回这个servlet容器支持的Java Servlet API的主要版本.所有符合2.5版本的实现,必须有这个方法返回的整数2.
         // 返回这个servlet容器支持的Servlet API的次要版本.所有符合2.5版本的实现,必须有这个方法返回整数5.
-        map.put("servlet version:", servletContext.getMajorVersion() + "." + servletContext.getMinorVersion());
+        map.put("version", servletContext.getMajorVersion() + "." + servletContext.getMinorVersion());
 
-        map.put("servletContext.getContextPath()", servletContext.getContextPath());
+        map.put("contextPath", servletContext.getContextPath());
 
-        map.put("servletContext.getServletContextName()", servletContext.getServletContextName());
+        map.put("servletContextName", servletContext.getServletContextName());
         return map;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getAttributeNames() ServletContext.getAttributeNames()},将 name/attributeValue
@@ -74,19 +91,40 @@ public final class ServletContextUtil{
      *         {@link Collections#emptyMap()}<br>
      */
     public static Map<String, Object> getAttributeMap(ServletContext servletContext){
+        return getAttributeMap(servletContext, true);
+    }
+
+    /**
+     * 遍历显示servletContext的 {@link javax.servlet.ServletContext#getAttributeNames() ServletContext.getAttributeNames()},将 name/attributeValue
+     * 存入到map.
+     *
+     * @param servletContext
+     *            the servlet context
+     * @param ignoreContainerAttribute
+     *            忽略容器自带的属性, 如果是true 那么将忽略
+     * @return 如果{@link javax.servlet.ServletContext#getAttributeNames() ServletContext.getAttributeNames()} 是null或者empty,返回
+     *         {@link Collections#emptyMap()}<br>
+     * @since 1.10.4
+     */
+    public static Map<String, Object> getAttributeMap(ServletContext servletContext,boolean ignoreContainerAttribute){
         Enumeration<String> attributeNames = servletContext.getAttributeNames();
         if (isNullOrEmpty(attributeNames)){
             return emptyMap();
         }
 
+        //---------------------------------------------------------------
         Map<String, Object> map = new TreeMap<>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
-
+            if (ignoreContainerAttribute && ArrayUtils.contains(EXCLUDE_KEYS, name)){
+                continue;
+            }
             map.put(name, servletContext.getAttribute(name));
         }
         return map;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 遍历显示servletContext的 {@link ServletContext#getInitParameterNames()},将 name /attributeValue 存入到map返回.
