@@ -15,6 +15,9 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.CharsetType.UTF8;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
@@ -34,9 +37,6 @@ import com.feilong.core.CharsetType;
 import com.feilong.core.TimeInterval;
 import com.feilong.core.UncheckedIOException;
 import com.feilong.io.entity.MimeType;
-
-import static com.feilong.core.CharsetType.UTF8;
-import static com.feilong.core.Validator.isNotNullOrEmpty;
 
 /**
  * {@link javax.servlet.http.HttpServletResponse HttpServletResponse} 工具类.

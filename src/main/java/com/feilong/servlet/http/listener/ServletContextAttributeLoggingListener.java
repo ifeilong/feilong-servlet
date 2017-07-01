@@ -79,9 +79,8 @@ public class ServletContextAttributeLoggingListener implements ServletContextAtt
      *            the servlet context
      * @return the string
      */
-    private String buildAttributesLogMessage(ServletContext servletContext){
+    private static String buildAttributesLogMessage(ServletContext servletContext){
         Map<String, Object> attributeMap = ServletContextUtil.getAttributeMap(servletContext);
-        // return JsonUtil.formatSimpleMap(MapUtil.removeKeys(attributeMap, EXCLUDE_KEYS));
         return JsonUtil.formatSimpleMap(attributeMap);
     }
 

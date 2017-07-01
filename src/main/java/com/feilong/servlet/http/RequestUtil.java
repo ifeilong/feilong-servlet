@@ -15,6 +15,13 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.CharsetType.ISO_8859_1;
+import static com.feilong.core.URIComponents.QUESTIONMARK;
+import static com.feilong.core.URIComponents.SCHEME_HTTP;
+import static com.feilong.core.URIComponents.SCHEME_HTTPS;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.util.SortUtil.sortMapByKeyAsc;
 import static com.feilong.servlet.http.HttpHeaders.ORIGIN;
 import static com.feilong.servlet.http.HttpHeaders.PROXY_CLIENT_IP;
 import static com.feilong.servlet.http.HttpHeaders.REFERER;
@@ -54,14 +61,6 @@ import com.feilong.core.util.EnumerationUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
-
-import static com.feilong.core.CharsetType.ISO_8859_1;
-import static com.feilong.core.URIComponents.QUESTIONMARK;
-import static com.feilong.core.URIComponents.SCHEME_HTTP;
-import static com.feilong.core.URIComponents.SCHEME_HTTPS;
-import static com.feilong.core.Validator.isNotNullOrEmpty;
-import static com.feilong.core.Validator.isNullOrEmpty;
-import static com.feilong.core.util.SortUtil.sortMapByKeyAsc;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.

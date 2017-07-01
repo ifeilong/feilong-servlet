@@ -15,6 +15,10 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.CharsetType.UTF8;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.date.DateExtensionUtil.formatDuration;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,10 +38,6 @@ import com.feilong.io.FileUtil;
 import com.feilong.io.IOWriteUtil;
 import com.feilong.io.MimeTypeUtil;
 import com.feilong.io.entity.MimeType;
-
-import static com.feilong.core.CharsetType.UTF8;
-import static com.feilong.core.Validator.isNotNullOrEmpty;
-import static com.feilong.core.date.DateExtensionUtil.formatDuration;
 
 /**
  * 关于 {@link javax.servlet.http.HttpServletResponse}下载的工具类.

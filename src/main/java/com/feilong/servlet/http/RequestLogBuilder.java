@@ -15,6 +15,9 @@
  */
 package com.feilong.servlet.http;
 
+import static com.feilong.core.CharsetType.UTF8;
+import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 import static com.feilong.servlet.http.RequestAttributes.ERROR_EXCEPTION;
 import static com.feilong.servlet.http.RequestAttributes.ERROR_EXCEPTION_TYPE;
 import static com.feilong.servlet.http.RequestAttributes.ERROR_MESSAGE;
@@ -52,10 +55,6 @@ import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.slf4j.Slf4jUtil;
-
-import static com.feilong.core.CharsetType.UTF8;
-import static com.feilong.core.Validator.isNotNullOrEmpty;
-import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 
 /**
  * The Class RequestLogBuilder.

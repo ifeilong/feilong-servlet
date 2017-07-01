@@ -157,7 +157,8 @@ public final class HttpHeaders{
      * <p>
      * Quote:<br>
      * 
-     * "If the no-cache directive does not specify a field-name, then a cache MUST NOT use the response to satisfy a subsequent request without successful revalidation with the origin server."
+     * "If the no-cache directive does not specify a field-name, then a cache MUST NOT use the response to satisfy a subsequent request
+     * without successful revalidation with the origin server."
      * </p>
      * 
      * <p>
