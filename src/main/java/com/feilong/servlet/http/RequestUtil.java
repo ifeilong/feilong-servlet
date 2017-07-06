@@ -783,6 +783,42 @@ public final class RequestUtil{
         return request.getHeader(ORIGIN);
     }
 
+    //---------------------------------------------------------------
+
+    /**
+     * 判断一个请求是否是微信浏览器的请求.
+     * 
+     * <h3>说明:</h3>
+     * 
+     * <blockquote>
+     * <ol>
+     * <li>在iPhone下，返回<br>
+     * Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B176 MicroMessenger/4.3.2</li>
+     * 
+     * <li>在Android下，返回<br>
+     * Mozilla/5.0 (Linux; U; Android 2.3.6; zh-cn; GT-S5660 Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile
+     * Safari/533.1 MicroMessenger/4.5.255
+     * </li>
+     * </ol>
+     * 不难发现微信浏览器为 MicroMessenger,并且有版本号,也可以判断手机类型为iPhone还是Android
+     * </blockquote>
+     *
+     * @param request
+     *            the request
+     * @return 如果没有ua,那么返回false;否则判断ua 里面是否包含 micromessenger 值
+     * @see <a href="http://www.cnblogs.com/dengxinglin/archive/2013/05/29/3106004.html">微信浏览器的HTTP_USER_AGENT</a>
+     * @see <a href="https://www.zhihu.com/question/21507953">如何在服务器端判断请求的客户端是微信调用的浏览器？</a>
+     * @since 1.10.4
+     */
+    public static boolean isWechatRequest(HttpServletRequest request){
+        String userAgent = getHeaderUserAgent(request);
+        if (isNullOrEmpty(userAgent)){
+            return false;
+        }
+
+        return (userAgent.toLowerCase()).contains("micromessenger");
+    }
+
     /**
      * 判断一个请求是否是ajax请求.
      * 
