@@ -62,10 +62,10 @@ feilong-servlet jar你可以直接在 [仓库](https://github.com/venusdrogon/fe
 
 ```bat
 git clone https://github.com/venusdrogon/feilong-platform.git --depth 1
-mvn install -f feilong-platform
+mvn install -f feilong-platform/pom.xml
 
 git clone https://github.com/venusdrogon/feilong-servlet.git --depth 1
-mvn install -f feilong-servlet
+mvn install -f feilong-servlet/pom.xml
 ```
 
 ## :memo: 说明

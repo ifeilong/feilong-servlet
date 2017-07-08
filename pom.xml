@@ -27,7 +27,7 @@
 	</issueManagement>
 
 	<dependencies>
-
+		<!-- 下载要使用 -->
 		<dependency>
 			<groupId>com.feilong.platform</groupId>
 			<artifactId>feilong-io</artifactId>
