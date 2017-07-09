@@ -184,6 +184,8 @@ public class CookieEntity implements Serializable{
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -5580364261848277853L;
 
+    //---------------------------------------------------------------
+
     /** name名称,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号. */
     private String            name;
 
@@ -193,6 +195,34 @@ public class CookieEntity implements Serializable{
      * <p style="color:red">
      * 注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
      * </p>
+     * 
+     * <h3>关于 non-ASCII (Unicode) characters:</h3>
+     * <blockquote>
+     * 
+     * What isn't mentioned and browsers are totally inconsistent about, is non-ASCII (Unicode) characters:
+     * 
+     * <ol>
+     * <li>in <b>Opera</b> and <b>Google Chrome</b>, they are encoded to Cookie headers with UTF-8;</li>
+     * 
+     * <li>in <b>IE</b>, the machine's default code page is used (locale-specific and never UTF-8);</li>
+     * 
+     * <li>
+     * <b>Firefox</b> (and other Mozilla-based browsers) use the low byte of each UTF-16 code point on its own (so ISO-8859-1 is OK but
+     * anything else is mangled);
+     * </li>
+     * 
+     * <li><b>Safari</b> simply refuses to send any cookie containing non-ASCII characters.</li>
+     * 
+     * </ol>
+     * 
+     * <p>
+     * so in practice you cannot use non-ASCII characters in cookies at all. <br>
+     * If you want to use Unicode, control codes or other arbitrary byte sequences, <br>
+     * the cookie_spec demands you use an ad-hoc encoding scheme of your own choosing and suggest URL-encoding (as produced
+     * by JavaScript's encodeURIComponent) as a reasonable choice.
+     * </p>
+     * 
+     * </blockquote>
      */
     private String            value;
 
@@ -320,13 +350,16 @@ public class CookieEntity implements Serializable{
     private boolean           secure;
 
     /**
-     * This class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
+     * supports both the <b>Version 0 (by Netscape)</b> and <b>Version 1 (by RFC 2109)</b> cookie specifications.
      * 
-     * By default, cookies are created using Version 0 to ensure the best interoperability.
+     * <p>
+     * By default, cookies are created using <b>Version 0</b> to ensure the best interoperability.
+     * </p>
      * 
      * <p>
      * ;Version=1 ... means RFC 2109++ style
      * </p>
+     * 
      */
     private int               version          = 0;
 
@@ -411,6 +444,8 @@ public class CookieEntity implements Serializable{
         this.maxAge = maxAge;
     }
 
+    //---------------------------------------------------------------
+
     /**
      * Gets the name名称,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号.
      * 
@@ -431,10 +466,39 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * Gets the value,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号.
+     * value,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号.
+     * 
      * <p style="color:red">
      * 注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
      * </p>
+     * 
+     * <h3>关于 non-ASCII (Unicode) characters:</h3>
+     * <blockquote>
+     * 
+     * What isn't mentioned and browsers are totally inconsistent about, is non-ASCII (Unicode) characters:
+     * 
+     * <ol>
+     * <li>in <b>Opera</b> and <b>Google Chrome</b>, they are encoded to Cookie headers with UTF-8;</li>
+     * 
+     * <li>in <b>IE</b>, the machine's default code page is used (locale-specific and never UTF-8);</li>
+     * 
+     * <li>
+     * <b>Firefox</b> (and other Mozilla-based browsers) use the low byte of each UTF-16 code point on its own (so ISO-8859-1 is OK but
+     * anything else is mangled);
+     * </li>
+     * 
+     * <li><b>Safari</b> simply refuses to send any cookie containing non-ASCII characters.</li>
+     * 
+     * </ol>
+     * 
+     * <p>
+     * so in practice you cannot use non-ASCII characters in cookies at all. <br>
+     * If you want to use Unicode, control codes or other arbitrary byte sequences, <br>
+     * the cookie_spec demands you use an ad-hoc encoding scheme of your own choosing and suggest URL-encoding (as produced
+     * by JavaScript's encodeURIComponent) as a reasonable choice.
+     * </p>
+     * 
+     * </blockquote>
      * 
      * @return the value,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号
      */
@@ -443,10 +507,39 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * Sets the value,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号.
+     * value,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号.
+     * 
      * <p style="color:red">
      * 注意:如果值长度超过4K,浏览器会忽略,不会执行记录的操作
      * </p>
+     * 
+     * <h3>关于 non-ASCII (Unicode) characters:</h3>
+     * <blockquote>
+     * 
+     * What isn't mentioned and browsers are totally inconsistent about, is non-ASCII (Unicode) characters:
+     * 
+     * <ol>
+     * <li>in <b>Opera</b> and <b>Google Chrome</b>, they are encoded to Cookie headers with UTF-8;</li>
+     * 
+     * <li>in <b>IE</b>, the machine's default code page is used (locale-specific and never UTF-8);</li>
+     * 
+     * <li>
+     * <b>Firefox</b> (and other Mozilla-based browsers) use the low byte of each UTF-16 code point on its own (so ISO-8859-1 is OK but
+     * anything else is mangled);
+     * </li>
+     * 
+     * <li><b>Safari</b> simply refuses to send any cookie containing non-ASCII characters.</li>
+     * 
+     * </ol>
+     * 
+     * <p>
+     * so in practice you cannot use non-ASCII characters in cookies at all. <br>
+     * If you want to use Unicode, control codes or other arbitrary byte sequences, <br>
+     * the cookie_spec demands you use an ad-hoc encoding scheme of your own choosing and suggest URL-encoding (as produced
+     * by JavaScript's encodeURIComponent) as a reasonable choice.
+     * </p>
+     * 
+     * </blockquote>
      * 
      * @param value
      *            the new value,名字和值都不能包含空白字符以及下列字符: @ : ;? , " / [ ] ( ) = 这些符号
@@ -723,9 +816,11 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * This class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
+     * supports both the <b>Version 0 (by Netscape)</b> and <b>Version 1 (by RFC 2109)</b> cookie specifications.
      * 
-     * By default, cookies are created using Version 0 to ensure the best interoperability.
+     * <p>
+     * By default, cookies are created using <b>Version 0</b> to ensure the best interoperability.
+     * </p>
      * 
      * <p>
      * ;Version=1 ... means RFC 2109++ style
@@ -738,9 +833,11 @@ public class CookieEntity implements Serializable{
     }
 
     /**
-     * This class supports both the Version 0 (by Netscape) and Version 1 (by RFC 2109) cookie specifications.
+     * supports both the <b>Version 0 (by Netscape)</b> and <b>Version 1 (by RFC 2109)</b> cookie specifications.
      * 
-     * By default, cookies are created using Version 0 to ensure the best interoperability.
+     * <p>
+     * By default, cookies are created using <b>Version 0</b> to ensure the best interoperability.
+     * </p>
      * 
      * <p>
      * ;Version=1 ... means RFC 2109++ style

@@ -172,7 +172,10 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see javax.servlet.http.Cookie
  * @see "org.springframework.web.util.CookieGenerator"
+ * @see "org.springframework.session.web.http.CookieSerializer"
  * @see com.feilong.servlet.http.entity.CookieEntity
+ * @see <a href="http://tools.ietf.org/html/rfc6265">HTTP State Management Mechanism</a>
+ * @see <a href="http://www.ietf.org/rfc/rfc2109.txt">HTTP State Management Mechanism (废弃 被rfc6265取代)</a>
  * @since 1.0.0
  */
 public final class CookieUtil{
@@ -203,7 +206,7 @@ public final class CookieUtil{
      */
     public static String getCookieValue(HttpServletRequest request,String cookieName){
         Cookie cookie = getCookie(request, cookieName);
-        return null == cookie ? null : cookie.getValue();
+        return null == cookie ? null : getReadValue(cookie);
     }
 
     /**
@@ -263,7 +266,7 @@ public final class CookieUtil{
 
         Map<String, String> map = new TreeMap<>();
         for (Cookie cookie : cookies){
-            map.put(cookie.getName(), cookie.getValue());
+            map.put(cookie.getName(), getReadValue(cookie));
         }
         return map;
     }
@@ -372,6 +375,12 @@ public final class CookieUtil{
     /**
      * 创建cookie.
      * 
+     * <p>
+     * 如果 <code>cookieEntity</code> 是null,抛出 {@link NullPointerException}<br>
+     * 如果 <code>cookieEntity.cookieName</code> 是null,抛出 {@link NullPointerException}<br>
+     * 如果 <code>cookieEntity.cookieName</code> 是blank,抛出 {@link IllegalArgumentException}<br>
+     * </p>
+     * 
      * @param cookieEntity
      *            cookieEntity
      * @param response
@@ -398,7 +407,7 @@ public final class CookieUtil{
      * @since 1.5.3
      */
     private static Cookie toCookie(CookieEntity cookieEntity){
-        Cookie cookie = new Cookie(cookieEntity.getName(), cookieEntity.getValue());
+        Cookie cookie = new Cookie(cookieEntity.getName(), resolveWriteValue(cookieEntity));
         PropertyUtil.copyProperties(cookie, cookieEntity, "maxAge", "secure", "version", "httpOnly");
 
         PropertyUtil.setPropertyIfValueNotNullOrEmpty(cookie, "comment", cookieEntity.getComment());//指定一个注释来描述cookie的目的.
@@ -419,16 +428,48 @@ public final class CookieUtil{
         Validate.notNull(cookieEntity, "cookieEntity can't be null!");
         Validate.notBlank(cookieEntity.getName(), "cookieName can't be null/empty!");
 
-        String value = cookieEntity.getValue();
-
         //---------------------------------------------------------------
 
         if (LOGGER.isWarnEnabled()){
+
+            String value = resolveWriteValue(cookieEntity);
+
             //如果长度超过4000,浏览器可能不支持
             if (isNotNullOrEmpty(value) && value.length() > 4000){
-                String pattern = "cookie value:{},length:{},more than 4000!!!some browser may be not support!!!!!,cookieEntity info :{}";
+                String pattern = "cookie value:{},length:{},more than [4000]!!!some browser may be not support!!!!!,cookieEntity info :{}";
                 LOGGER.warn(pattern, value, value.length(), JsonUtil.format(cookieEntity, 0, 0));
             }
         }
+    }
+
+    //---------------------------------------------------------------
+
+    /**
+     * Resolve write value.
+     *
+     * @param cookieEntity
+     *            the cookie entity
+     * @return the string
+     * @see "org.springframework.session.web.http.DefaultCookieSerializer#writeCookieValue(CookieValue)"
+     * @since 1.10.4
+     */
+    private static String resolveWriteValue(CookieEntity cookieEntity){
+        //保持兼容,暂不encode  see https://github.com/venusdrogon/feilong-servlet/issues/7
+        //com.feilong.accessor.cookie.CookieAccessor 支持
+        return cookieEntity.getValue();
+    }
+
+    /**
+     * 获得value.
+     *
+     * @param cookie
+     *            the cookie
+     * @return the read value
+     * @since 1.10.4
+     */
+    private static String getReadValue(Cookie cookie){
+        //保持兼容,暂不encode  see https://github.com/venusdrogon/feilong-servlet/issues/7
+        //com.feilong.accessor.cookie.CookieAccessor 支持
+        return cookie.getValue();
     }
 }
