@@ -31,7 +31,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * The class that is interested in processing a servletRequestLogging
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>addServletRequestLoggingListener<code> method. When
+ * component's <code>addServletRequestLoggingListener</code> method. When
  * the servletRequestLogging event occurs, that object's appropriate
  * method is invoked.
  *

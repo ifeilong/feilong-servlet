@@ -26,12 +26,20 @@ import com.feilong.servlet.http.SessionUtil;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * 
+ * The listener interface for receiving httpSessionAttributeLogging events.
+ * The class that is interested in processing a httpSessionAttributeLogging
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addHttpSessionAttributeLoggingListener</code> method. When
+ * the httpSessionAttributeLogging event occurs, that object's appropriate
+ * method is invoked.
+ *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.10.4
  */
 public class HttpSessionAttributeLoggingListener implements HttpSessionAttributeListener{
 
+    /** The Constant LOGGER. */
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpSessionAttributeLoggingListener.class);
 
     /*

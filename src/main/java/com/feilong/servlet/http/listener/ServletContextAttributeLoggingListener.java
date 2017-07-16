@@ -35,7 +35,7 @@ import com.feilong.tools.jsonlib.JsonUtil;
  * The class that is interested in processing a servletContextAttributeLogging
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * component's <code>addServletContextAttributeLoggingListener<code> method. When
+ * component's <code>addServletContextAttributeLoggingListener</code> method. When
  * the servletContextAttributeLogging event occurs, that object's appropriate
  * method is invoked.
  *
