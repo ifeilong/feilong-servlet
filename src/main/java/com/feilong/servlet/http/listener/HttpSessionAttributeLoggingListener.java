@@ -69,13 +69,10 @@ public class HttpSessionAttributeLoggingListener implements HttpSessionAttribute
     @Override
     public void attributeRemoved(HttpSessionBindingEvent httpSessionBindingEvent){
         if (LOGGER.isDebugEnabled()){
-            HttpSession session = httpSessionBindingEvent.getSession();
-
             LOGGER.debug(
-                            "name:[{}],value:[{}] removed from [session],now session info:[{}] ",
+                            "name:[{}],value:[{}] removed from [session]",
                             httpSessionBindingEvent.getName(),
-                            httpSessionBindingEvent.getValue(),
-                            JsonUtil.format(SessionUtil.getSessionInfoMapForLog(session)));
+                            httpSessionBindingEvent.getValue());
 
         }
     }
