@@ -59,6 +59,8 @@ public abstract class RequestLogSwitch implements Serializable{
     /** The Constant serialVersionUID. */
     private static final long            serialVersionUID                     = 288232184048495608L;
 
+    //---------------------------------------------------------------
+
     /**
      * 正常的的RequestLogSwitch.
      * 
@@ -121,6 +123,8 @@ public abstract class RequestLogSwitch implements Serializable{
      */
     public static final RequestLogSwitch FULL                                 = new FullRequestLogSwitch();
 
+    //---------------------------------------------------------------
+
     /** 显示和FullURL相关. */
     private boolean                      showFullURL                          = true;
 
@@ -130,7 +134,7 @@ public abstract class RequestLogSwitch implements Serializable{
     /** 显示参数. */
     private boolean                      showParams                           = true;
 
-    // ****************************************************************************
+    //---------------------------------------------------------------
     /** 显示IDENTITY(包含ip以及UA). */
     private boolean                      showIdentity;
 
@@ -160,6 +164,8 @@ public abstract class RequestLogSwitch implements Serializable{
 
     /** 显示和include相关信息. */
     private boolean                      showIncludeInfos;
+
+    //---------------------------------------------------------------
 
     /**
      * Gets the 显示参数.
