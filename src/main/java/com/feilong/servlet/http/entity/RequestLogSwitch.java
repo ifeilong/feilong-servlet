@@ -123,6 +123,29 @@ public abstract class RequestLogSwitch implements Serializable{
      */
     public static final RequestLogSwitch FULL                                 = new FullRequestLogSwitch();
 
+    /**
+     * 当错误发生时候的显示.
+     * 
+     * <h3>以下值会为true:</h3>
+     * 
+     * <blockquote>
+     * <ul>
+     * <li>{@link #showFullURL} 请求路径</li>
+     * <li>{@link #showMethod} 提交方法</li>
+     * <li>{@link #showParams} 参数</li>
+     * <li>{@link #setShowErrors} 错误</li>
+     * <li>{@link #setShowIdentity(boolean)}设置 显示IDENTITY(包含ip以及UA)..</li>
+     * <li>{@link #setShowForwardInfos} 设置 显示和forward相关.</li>
+     * <li>{@link #setShowIncludeInfos} 设置 显示和include相关信息.</li>
+     * </ul>
+     * </blockquote>
+     * 
+     * @see ErrorRequestLogSwitch
+     * 
+     * @since 1.10.5
+     */
+    public static final RequestLogSwitch ERROR                                = new ErrorRequestLogSwitch();
+
     //---------------------------------------------------------------
 
     /** 显示和FullURL相关. */
@@ -156,7 +179,20 @@ public abstract class RequestLogSwitch implements Serializable{
     /** 显示和Header相关. */
     private boolean                      showHeaders;
 
-    /** 显示和Error相关. */
+    /**
+     * 显示和Error相关.
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <pre class="code">
+    "errorInfos":         {
+                "javax.servlet.error.status_code": "404",
+                "javax.servlet.error.request_uri": "/jsp11/captcha/botdetect/botdetect",
+                "javax.servlet.error.message": "/jsp11/captcha/botdetect/botdetect",
+                "javax.servlet.error.servlet_name": "springmvc"
+            },
+     * </pre>
+     */
     private boolean                      showErrors;
 
     /** 显示和forward相关. */
@@ -301,7 +337,18 @@ public abstract class RequestLogSwitch implements Serializable{
     }
 
     /**
-     * Gets the 显示和Error相关.
+     * 显示和Error相关.
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <pre class="code">
+    "errorInfos":         {
+                "javax.servlet.error.status_code": "404",
+                "javax.servlet.error.request_uri": "/jsp11/captcha/botdetect/botdetect",
+                "javax.servlet.error.message": "/jsp11/captcha/botdetect/botdetect",
+                "javax.servlet.error.servlet_name": "springmvc"
+            },
+     * </pre>
      * 
      * @return the showErrors
      */
@@ -310,7 +357,18 @@ public abstract class RequestLogSwitch implements Serializable{
     }
 
     /**
-     * Sets the 显示和Error相关.
+     * 显示和Error相关.
+     * 
+     * <h3>示例:</h3>
+     * 
+     * <pre class="code">
+    "errorInfos":         {
+                "javax.servlet.error.status_code": "404",
+                "javax.servlet.error.request_uri": "/jsp11/captcha/botdetect/botdetect",
+                "javax.servlet.error.message": "/jsp11/captcha/botdetect/botdetect",
+                "javax.servlet.error.servlet_name": "springmvc"
+            },
+     * </pre>
      * 
      * @param showErrors
      *            the showErrors to set
@@ -418,6 +476,43 @@ public abstract class RequestLogSwitch implements Serializable{
 
     /**
      * This is an inner class to ensure its immutability.
+     * 
+     * @since 1.10.5
+     */
+    private static final class ErrorRequestLogSwitch extends RequestLogSwitch{
+
+        /** The Constant serialVersionUID. */
+        private static final long serialVersionUID = 4824997202393095960L;
+
+        /**
+         * Use the static constant rather than instantiating.
+         */
+        ErrorRequestLogSwitch(){
+            this.setShowErrors(true);
+            this.setShowFullURL(true);
+            this.setShowMethod(true);
+            this.setShowParams(true);
+            this.setShowForwardInfos(true);
+            this.setShowIdentity(true);
+            this.setShowIncludeInfos(true);
+        }
+
+        /**
+         * Ensure <code>Singleton</code> after serialization.
+         *
+         * @return the singleton
+         */
+        @SuppressWarnings("static-method")
+        //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
+        private Object readResolve(){
+            return RequestLogSwitch.ERROR;
+        }
+    }
+
+    //---------------------------------------------------------------
+
+    /**
+     * This is an inner class to ensure its immutability.
      */
     private static final class FullRequestLogSwitch extends RequestLogSwitch{
 
@@ -455,6 +550,8 @@ public abstract class RequestLogSwitch implements Serializable{
         }
     }
 
+    //---------------------------------------------------------------
+
     /**
      * This is an inner class to ensure its immutability.
      */
@@ -484,6 +581,7 @@ public abstract class RequestLogSwitch implements Serializable{
         }
     }
 
+    //---------------------------------------------------------------
     /**
      * This is an inner class to ensure its immutability.
      */
@@ -514,6 +612,7 @@ public abstract class RequestLogSwitch implements Serializable{
         }
     }
 
+    //---------------------------------------------------------------
     /**
      * This is an inner class to ensure its immutability.
      */
