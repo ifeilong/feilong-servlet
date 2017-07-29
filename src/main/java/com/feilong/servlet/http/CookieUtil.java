@@ -210,15 +210,15 @@ public final class CookieUtil{
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
 
-    //********************************************************************
+    //----------------------get-----------------------------------------
 
     /**
-     * 取到Cookie值.
-     * 
+     * 取指定<code>cookieName</code>的 {@link Cookie}值.
+     *
      * @param request
-     *            HttpServletRequest
+     *            the request
      * @param cookieName
-     *            cookie名字,{@link Cookie#getName()}
+     *            cookie名字,{@link Cookie#getName()},名称区分大小写,比如 JSESSIONID 如果改成 jsessionid 将取不到值
      * @return 如果取不到cookie,返回 <code>null</code>;<br>
      *         否则,返回 {@link Cookie#getValue()}
      * @see #getCookie(HttpServletRequest, String)
@@ -239,7 +239,7 @@ public final class CookieUtil{
      * @param request
      *            the request
      * @param cookieName
-     *            the cookie name
+     *            cookie名字,{@link Cookie#getName()},名称区分大小写,比如 JSESSIONID 如果改成 jsessionid 将取不到值
      * @return 如果 {@link HttpServletRequest#getCookies()}是 null,则返回null;<br>
      *         如果通过 <code>cookieName</code> 找不到指定的 {@link Cookie},也返回null
      * @see javax.servlet.http.HttpServletRequest#getCookies()
@@ -291,7 +291,7 @@ public final class CookieUtil{
         return map;
     }
 
-    //*********************************************************************************
+    //--------------------delete-------------------------------------------
 
     /**
      * 删除{@link Cookie}.
@@ -302,7 +302,7 @@ public final class CookieUtil{
      * </p>
      * 
      * @param cookieName
-     *            the cookie name
+     *            cookie名字,{@link Cookie#getName()},名称区分大小写,比如 JSESSIONID 如果改成 jsessionid 将取不到值
      * @param response
      *            the response
      * @see #deleteCookie(CookieEntity, HttpServletResponse)
@@ -334,7 +334,7 @@ public final class CookieUtil{
         LOGGER.debug("[deleteCookie],cookieName:[{}]", cookieEntity.getName());
     }
 
-    //****************************************************************************************************
+    //-------------------------add--------------------------------------
 
     /**
      * 创建cookie.
@@ -349,7 +349,7 @@ public final class CookieUtil{
      * </p>
      *
      * @param cookieName
-     *            the cookie name
+     *            cookie名字,{@link Cookie#getName()},名称区分大小写,比如 JSESSIONID 如果改成 jsessionid 将取不到值
      * @param value
      *            cookie的值,更多说明,参见 {@link CookieEntity#getValue()}
      *            <p style="color:red">
@@ -374,7 +374,7 @@ public final class CookieUtil{
      * </p>
      *
      * @param cookieName
-     *            the cookie name
+     *            cookie名字,{@link Cookie#getName()},名称区分大小写,比如 JSESSIONID 如果改成 jsessionid 将取不到值
      * @param value
      *            cookie的值,更多说明,参见 {@link CookieEntity#getValue()}
      *            <p style="color:red">
