@@ -50,6 +50,7 @@ import org.apache.commons.lang3.builder.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
@@ -238,15 +239,15 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _errorInfos
         if (opRequestLogSwitch.getShowErrors()){
-            MapUtil.putIfValueNotNullOrEmpty(map, "errorInfos", getErrorMap());
+            MapUtil.putIfValueNotNullOrEmpty(map, "errorInfos", getErrorMap(request));
         }
         // _forwardInfos
         if (opRequestLogSwitch.getShowForwardInfos()){
-            MapUtil.putIfValueNotNullOrEmpty(map, "forwardInfos", getForwardMap());
+            MapUtil.putIfValueNotNullOrEmpty(map, "forwardInfos", getForwardMap(request));
         }
         // _includeInfos
         if (opRequestLogSwitch.getShowIncludeInfos()){
-            MapUtil.putIfValueNotNullOrEmpty(map, "includeInfos", getIncludeMap());
+            MapUtil.putIfValueNotNullOrEmpty(map, "includeInfos", getIncludeMap(request));
         }
         return map;
     }
@@ -283,16 +284,16 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         }
     }
 
-    //*******************************************************************************
+    //---------------------------------------------------------------
 
     /**
      * 获得 forward map.
      *
      * @return the forward map
      */
-    private Map<String, String> getForwardMap(){
+    private static Map<String, String> getForwardMap(HttpServletRequest request){
         String[] array = { FORWARD_CONTEXT_PATH, FORWARD_REQUEST_URI, FORWARD_SERVLET_PATH, FORWARD_PATH_INFO, FORWARD_QUERY_STRING };
-        return getAttributeMapIfValueNotNull(array);
+        return getAttributeMapIfValueNotNull(request, array);
     }
 
     /**
@@ -300,9 +301,9 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      *
      * @return the include map
      */
-    private Map<String, String> getIncludeMap(){
+    private static Map<String, String> getIncludeMap(HttpServletRequest request){
         String[] array = { INCLUDE_CONTEXT_PATH, INCLUDE_PATH_INFO, INCLUDE_QUERY_STRING, INCLUDE_REQUEST_URI, INCLUDE_SERVLET_PATH };
-        return getAttributeMapIfValueNotNull(array);
+        return getAttributeMapIfValueNotNull(request, array);
     }
 
     /**
@@ -311,10 +312,12 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return 如果request 有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,则返回error 相关属性 封装到map,<br>
      *         如果 request没有 {@link RequestAttributes#ERROR_STATUS_CODE}属性,返回null
      */
-    private Map<String, String> getErrorMap(){
+    private static Map<String, String> getErrorMap(HttpServletRequest request){
         String[] array = { ERROR_STATUS_CODE, ERROR_REQUEST_URI, ERROR_EXCEPTION, ERROR_EXCEPTION_TYPE, ERROR_MESSAGE, ERROR_SERVLET_NAME };
-        return getAttributeMapIfValueNotNull(array);
+        return getAttributeMapIfValueNotNull(request, array);
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 将指定的attributeName当作key,request找到属性值,设置到map中(当且仅当 <code>null != map && null != value </code>才将key/value put到map中).
@@ -324,13 +327,16 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return the attribute map if value not null
      * @since 1.7.3
      */
-    private Map<String, String> getAttributeMapIfValueNotNull(String...attributeNames){
+    private static Map<String, String> getAttributeMapIfValueNotNull(HttpServletRequest request,String...attributeNames){
         Map<String, String> map = newLinkedHashMap(attributeNames.length);
         for (String attributeName : attributeNames){
-            MapUtil.putIfValueNotNull(map, attributeName, RequestUtil.<String> getAttribute(request, attributeName));
+            //有的request value 可能是 其他类型, 比如 ERROR_STATUS_CODE
+            MapUtil.putIfValueNotNull(map, attributeName, ConvertUtil.toString(RequestUtil.getAttribute(request, attributeName)));
         }
         return map;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 获得 about url map.
