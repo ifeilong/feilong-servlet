@@ -36,7 +36,6 @@ import static com.feilong.servlet.http.RequestAttributes.INCLUDE_REQUEST_URI;
 import static com.feilong.servlet.http.RequestAttributes.INCLUDE_SERVLET_PATH;
 import static com.feilong.servlet.http.entity.RequestLogSwitch.NORMAL;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
@@ -44,21 +43,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.builder.Builder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.net.ParamUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.servlet.http.entity.RequestIdentity;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
-import com.feilong.tools.slf4j.Slf4jUtil;
 
 /**
- * The Class RequestLogBuilder.
+ * request log 的构造器.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see org.apache.commons.lang3.builder.Builder
@@ -67,14 +62,13 @@ import com.feilong.tools.slf4j.Slf4jUtil;
  */
 public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
-    /** The Constant log. */
-    private static final Logger      LOGGER = LoggerFactory.getLogger(RequestLogBuilder.class);
-
     /** The request. */
     private final HttpServletRequest request;
 
     /** The request log switch. */
     private final RequestLogSwitch   requestLogSwitch;
+
+    //---------------------------------------------------------------
 
     /**
      * The Constructor.
@@ -90,6 +84,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         this.requestLogSwitch = requestLogSwitch;
     }
 
+    //---------------------------------------------------------------
+
     /**
      * 将request 相关属性,数据转成json格式 以便log显示(目前仅作log使用).
      * 
@@ -103,45 +99,49 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         Map<String, Object> map = new LinkedHashMap<>();
 
+        //---------------------------------------------------------------
+
         // requestFullURL
         if (opRequestLogSwitch.getShowFullURL()){
             map.put("requestFullURL", RequestUtil.getRequestFullURL(request, UTF8));
         }
         // Method
         if (opRequestLogSwitch.getShowMethod()){
-            map.put("request.getMethod", request.getMethod());
+            map.put("request method", request.getMethod());
         }
 
-        // _parameterMap
+        // parameterMap
         if (opRequestLogSwitch.getShowParams()){
             // 在3.0 是数组Map<String, String[]> getParameterMap
             // The keys in the parameter map are of type String.
             // The values in the parameter map are of type String array.
-            MapUtil.putIfValueNotNullOrEmpty(map, "parameterMap", RequestUtil.getParameterMap(request));
+            MapUtil.putIfValueNotNullOrEmpty(map, "parameters", RequestUtil.getParameterMap(request));
         }
+
+        //---------------------------------------------------------------
 
         //RequestIdentity
         if (opRequestLogSwitch.getShowIdentity()){
             RequestIdentity requestIdentity = new RequestIdentity();
             requestIdentity.setClientIP(RequestUtil.getClientIp(request));
             requestIdentity.setUserAgent(RequestUtil.getHeaderUserAgent(request));
-            requestIdentity.setSessionId(getSessionId());
+            requestIdentity.setSessionId(getSessionId(request));
             map.put("requestIdentity", requestIdentity);
         }
 
         // _headerMap
         if (opRequestLogSwitch.getShowHeaders()){
-            map.put("headerInfoMap", getHeaderMap());
+            map.put("headerInfo", getHeaderMap());
         }
 
         // _cookieMap
         if (opRequestLogSwitch.getShowCookies()){
-            MapUtil.putIfValueNotNullOrEmpty(map, "cookieInfoMap", CookieUtil.getCookieMap(request));
+            MapUtil.putIfValueNotNullOrEmpty(map, "cookieInfo", CookieUtil.getCookieMap(request));
         }
 
         // aboutURLMap
         if (opRequestLogSwitch.getShowURLs()){
-            map.put("about URL Info Map", getAboutURLMapForLog());
+            map.put("about URL Info", getAboutURLMapForLog());
         }
 
         // aboutElseMap
@@ -201,6 +201,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             map.put("about Else Map", aboutElseMap);
         }
 
+        //-------------------ip--------------------------------------------
+
         // aboutIPMap
         if (opRequestLogSwitch.getShowIPs()){
             Map<String, String> aboutIPMap = new TreeMap<>();
@@ -221,6 +223,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             map.put("about IP Info Map", aboutIPMap);
         }
 
+        //-----------------------ports----------------------------------------
+
         // aboutPortMap
         if (opRequestLogSwitch.getShowPorts()){
             Map<String, String> aboutPortMap = new TreeMap<>();
@@ -237,18 +241,22 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
             map.put("about Port Info Map", aboutPortMap);
         }
 
+        //------------------------errorInfos---------------------------------------
+
         // _errorInfos
         if (opRequestLogSwitch.getShowErrors()){
             MapUtil.putIfValueNotNullOrEmpty(map, "errorInfos", getErrorMap(request));
         }
-        // _forwardInfos
+        // forwardInfos
         if (opRequestLogSwitch.getShowForwardInfos()){
             MapUtil.putIfValueNotNullOrEmpty(map, "forwardInfos", getForwardMap(request));
         }
-        // _includeInfos
+        // includeInfos
         if (opRequestLogSwitch.getShowIncludeInfos()){
             MapUtil.putIfValueNotNullOrEmpty(map, "includeInfos", getIncludeMap(request));
         }
+
+        //---------------------------------------------------------------
         return map;
     }
 
@@ -273,15 +281,17 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return the session id,如果有异常, 返回 {@link java.lang.Throwable#getMessage()}
      * @since 1.4.1
      */
-    private String getSessionId(){
-        try{
-            HttpSession session = request.getSession(false);
-            return null == session ? EMPTY : session.getId();
-        }catch (IllegalStateException e){//Cannot create a session after the response has been committed 
-            String msg = Slf4jUtil.format("uri:[{}],paramMap:{}", request.getRequestURI(), request.getParameterMap());
-            LOGGER.error(msg, e);
-            return e.getMessage();
-        }
+    private static String getSessionId(HttpServletRequest request){
+        return CookieUtil.getCookieValue(request, "JSESSIONID");
+
+        //        try{
+        //            HttpSession session = request.getSession(false);
+        //            return null == session ? EMPTY : session.getId();
+        //        }catch (IllegalStateException e){//Cannot create a session after the response has been committed 
+        //            String msg = Slf4jUtil.format("uri:[{}],paramMap:{}", request.getRequestURI(), request.getParameterMap());
+        //            LOGGER.error(msg, e);
+        //            return e.getMessage();
+        //        }
     }
 
     //---------------------------------------------------------------
