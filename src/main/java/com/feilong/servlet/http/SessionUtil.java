@@ -202,7 +202,7 @@ public final class SessionUtil{
      * @see "org.springframework.web.util.WebUtils#setSessionAttribute"
      * @since 1.10.5
      */
-    public static void setAttribute(HttpServletRequest request,String attributeName,Object attributeValue){
+    public static void setAttribute(HttpServletRequest request,String attributeName,Serializable attributeValue){
         Validate.notNull(request, "request can't be null!");
 
         if (attributeValue == null){
