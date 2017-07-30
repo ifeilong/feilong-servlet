@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +99,120 @@ public final class SessionUtil{
         //AssertionError不是必须的. 但它可以避免不小心在类的内部调用构造器. 保证该类在任何情况下都不会被实例化.
         //see 《Effective Java》 2nd
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
+    }
+
+    //---------------------------------------------------------------
+
+    /**
+     * 获得给定request的session id,如果有的话.
+     *
+     * @param request
+     *            current HTTP request
+     * @return 如果没有session,将返回null,否则返回 session id<br>
+     *         如果 <code>request</code> 是null,抛出 {@link NullPointerException}<br>
+     * @see "org.springframework.web.util.WebUtils#getSessionId"
+     * @since 1.10.5
+     */
+    public static String getSessionId(HttpServletRequest request){
+        Validate.notNull(request, "request can't be null!");
+
+        HttpSession session = request.getSession(false);
+        return session == null ? null : session.getId();
+    }
+
+    /**
+     * 从指定的request 对应的session中获取指定的属性.
+     * 
+     * <h3>说明:</h3>
+     * <blockquote>
+     * <ol>
+     * <li>如果没有会话，则不创建新会话！</li>
+     * <li>如果没有session或者session没有指定的属性, 那么返回null</li>
+     * </ol>
+     * </blockquote>
+     *
+     * @param <T>
+     *            the generic type
+     * @param request
+     *            current HTTP request
+     * @param attributeName
+     *            the name of the session attribute
+     * @return 如果没有session,那么返回 null<br>
+     *         如果session中找不到指定的属性也返回null<br>
+     *         如果 <code>request</code> 是null,抛出 {@link NullPointerException}<br>
+     * @see "org.springframework.web.util.WebUtils#getSessionAttribute"
+     * @since 1.10.5
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getAttribute(HttpServletRequest request,String attributeName){
+        Validate.notNull(request, "request can't be null!");
+
+        HttpSession session = request.getSession(false);
+        return session == null ? null : (T) session.getAttribute(attributeName);
+    }
+
+    /**
+     * 从指定的request 对应的session中获取指定的属性.
+     * 
+     * <h3>说明:</h3>
+     * <blockquote>
+     * <ol>
+     * <li>如果没有会话，则不创建新会话！</li>
+     * <li>如果没有session或者session没有指定的属性, 那么抛出异常</li>
+     * </ol>
+     * </blockquote>
+     *
+     * @param <T>
+     *            the generic type
+     * @param request
+     *            current HTTP request
+     * @param attributeName
+     *            the name of the session attribute
+     * @return the value of the session attribute, or {@code null} if not found <br>
+     *         如果 <code>request</code> 是null,抛出 {@link NullPointerException}<br>
+     * @throws IllegalStateException
+     *             if the session attribute could not be found
+     * @see "org.springframework.web.util.WebUtils#getRequiredSessionAttribute"
+     * @since 1.10.5
+     */
+    public static <T> T getRequiredAttribute(HttpServletRequest request,String attributeName){
+        T value = getAttribute(request, attributeName);
+        Validate.validState(null != value, "No session attribute [%s] found", attributeName);
+        return value;
+    }
+
+    /**
+     * 设置 the session attribute with the given name to the given value.
+     * 
+     * <h3>说明:</h3>
+     * <blockquote>
+     * <ol>
+     * <li>如果 <code>attributeValue!=null</code>,那么调用 {@link HttpSession#setAttribute(String, Object)} 设置属性</li>
+     * <li>如果 <code>attributeValue==null</code>,看看当前有没有session,没有session 那么什么都不做, 有session 那么从session中删除指定的属性名称</li>
+     * <li>如果 <code>request</code> 是null,抛出 {@link NullPointerException}</li>
+     * </ol>
+     * </blockquote>
+     * 
+     * @param request
+     *            current HTTP request
+     * @param attributeName
+     *            the name of the session attribute
+     * @param attributeValue
+     *            the value of the session attribute
+     * @see "org.springframework.web.util.WebUtils#setSessionAttribute"
+     * @since 1.10.5
+     */
+    public static void setAttribute(HttpServletRequest request,String attributeName,Object attributeValue){
+        Validate.notNull(request, "request can't be null!");
+
+        if (attributeValue != null){
+            request.getSession().setAttribute(attributeName, attributeValue);
+        }else{
+            HttpSession session = request.getSession(false);
+            if (session != null){
+                session.removeAttribute(attributeName);
+            }
+        }
     }
 
     //---------------------------------------------------------------
