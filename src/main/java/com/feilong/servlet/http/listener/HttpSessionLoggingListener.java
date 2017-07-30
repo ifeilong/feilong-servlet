@@ -52,7 +52,10 @@ public class HttpSessionLoggingListener implements HttpSessionListener{
     public void sessionCreated(HttpSessionEvent httpSessionEvent){
         if (LOGGER.isDebugEnabled()){
             HttpSession session = httpSessionEvent.getSession();
-            LOGGER.debug("session [created],info:{}", JsonUtil.format(SessionUtil.getSessionInfoMapForLog(session)));
+            LOGGER.debug(
+                            "session [created],source:[{}],info:{}",
+                            httpSessionEvent.getSource(),
+                            JsonUtil.format(SessionUtil.getSessionInfoMapForLog(session)));
         }
     }
 
@@ -65,7 +68,10 @@ public class HttpSessionLoggingListener implements HttpSessionListener{
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent){
         if (LOGGER.isDebugEnabled()){
             HttpSession session = httpSessionEvent.getSession();
-            LOGGER.debug("session [destroyed],info:{}", JsonUtil.format(SessionUtil.getSessionInfoMapForLog(session)));
+            LOGGER.debug(
+                            "session [destroyed],source:[{}],info:{}",
+                            httpSessionEvent.getSource(),
+                            JsonUtil.format(SessionUtil.getSessionInfoMapForLog(session)));
         }
     }
 }
