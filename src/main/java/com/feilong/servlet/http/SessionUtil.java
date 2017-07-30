@@ -205,14 +205,43 @@ public final class SessionUtil{
     public static void setAttribute(HttpServletRequest request,String attributeName,Object attributeValue){
         Validate.notNull(request, "request can't be null!");
 
-        if (attributeValue != null){
-            request.getSession().setAttribute(attributeName, attributeValue);
-        }else{
+        if (attributeValue == null){
             HttpSession session = request.getSession(false);
             if (session != null){
                 session.removeAttribute(attributeName);
             }
+            return;
         }
+
+        request.getSession().setAttribute(attributeName, attributeValue);
+    }
+
+    /**
+     * 删除session 中指定的属性.
+     * 
+     * <h3>说明:</h3>
+     * <blockquote>
+     * <ol>
+     * <li>如果 <code>request</code> 是null,抛出 {@link NullPointerException}</li>
+     * <li>如果找不到session 什么都不做</li>
+     * <li>如果找到session,从中删除指定的属性</li>
+     * </ol>
+     * </blockquote>
+     *
+     * @param request
+     *            the request
+     * @param attributeName
+     *            the attribute name
+     * @since 1.10.5
+     */
+    public static void removeAttribute(HttpServletRequest request,String attributeName){
+        Validate.notNull(request, "request can't be null!");
+
+        HttpSession session = request.getSession(false);
+        if (null == session){
+            return;
+        }
+        session.removeAttribute(attributeName);
     }
 
     //---------------------------------------------------------------
