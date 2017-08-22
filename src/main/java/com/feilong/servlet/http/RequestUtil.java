@@ -698,6 +698,8 @@ public final class RequestUtil{
         //这样做的好处是,对开发透明
         String[] ipHeaderNames = { X_FORWARDED_FOR, X_REAL_IP, PROXY_CLIENT_IP, WL_PROXY_CLIENT_IP };
 
+        //---------------------------------------------------------------
+
         //先在代理里面找一找
         for (String ipHeaderName : ipHeaderNames){
             String ipHeaderValue = request.getHeader(ipHeaderName);//The header name is case insensitive (不区分大小写)
@@ -708,11 +710,15 @@ public final class RequestUtil{
             }
         }
 
+        //----------------------getRemoteAddr-----------------------------------------
+
         //如果都没有,那么读取 request.getRemoteAddr()
         if (isNullOrEmpty(ipAddress)){
             ipAddress = request.getRemoteAddr();
             map.put("request.getRemoteAddr()", ipAddress);
         }
+
+        //---------------------------------------------------------------
 
         // 对于通过多个代理的情况,第一个IP为客户端真实IP,多个IP按照','分割
         if (ipAddress != null && ipAddress.indexOf(',') > 0){
@@ -720,6 +726,8 @@ public final class RequestUtil{
             ipAddress = ipAddress.substring(0, ipAddress.indexOf(','));
             map.put("firstIp", ipAddress);
         }
+
+        //---------------------------------------------------------------
 
         if (LOGGER.isDebugEnabled()){
             LOGGER.debug("client real ips:{}", JsonUtil.format(map));
@@ -748,22 +756,123 @@ public final class RequestUtil{
     /**
      * 获得上个请求的URL.
      * 
-     * <pre class="code">
-     * 请用于常规请求,必须走http协议才有值,javascript跳转无效
-     * 
-     * 以下情况请慎用:
-     * 也就是说要通过&lt;a href=&quot;url&quot;&gt;sss&lt;/a&gt;标记才能获得那个值
-     * 而通过改变location或是&lt;a href=&quot;javascript:location='url'&quot;&gt;sss&lt;/a&gt;都是得不到那个值得
-     * 
+     * <p>
      * referer是浏览器在用户提交请求当前页面中的一个链接时,将当前页面的URL放在头域中提交给服务端的,如当前页面为a.html,
      * 它里面有一个b.html的链接,当用户要访问b.html时浏览器就会把a.html作为referer发给服务端.
+     * </p>
      * 
+     * <h3>注意:</h3>
+     * <blockquote>
+     * 请用于常规请求,必须走http/https协议才有值,javascript跳转无效
+     * 
+     * 也就是说要通过&lt;a href=&quot;url&quot;&gt;sss&lt;/a&gt;标记才能获得那个值
+     * 而通过改变location或是&lt;a href=&quot;javascript:location='url'&quot;&gt;sss&lt;/a&gt;都是得不到那个值得
+     * </blockquote>
+     * 
+     * <h3>不能正常取值的情况:</h3>
+     * <blockquote>
+     * <ol>
+     * <li>从收藏夹链接</li>
+     * <li>用Window.open打开地址或者自定义的地址</li>
+     * <li>利用Jscript的location.href or location.replace()</li>
+     * <li>在浏览器直接输入地址</li>
+     * <li><%Response.Redirect%></li>
+     * <li><%Response.AddHeader%>或<meta http-equiv=refresh>转向</li>
+     * </ol>
+     * </blockquote>
+     * 
+     * <h3>关于referer的获取问题</h3>
+     * 
+     * <blockquote>
+     * 在上一页面做跳转操作，可以在下一页面获得上一页面的Referer从而判断页面的来路。
+     * <br>
+     * 
+     * 目前web开发有以下几种页面跳转方式:
+     * 
+     * 
+     * <blockquote>
+     * 
+     * <table border="1" cellspacing="0" cellpadding="4" summary="">
+     * <tr style="background-color:#ccccff">
+     * <th align="left">方式</th>
+     * <th align="left">是否支持跨域</th>
+     * <th align="left">是否可以取到referer</th>
+     * <th align="left">代码示例</th>
+     * </tr>
+     * 
+     * <tr valign="top">
+     * <td>{@link RequestDispatcher} 跳转</td>
+     * <td>不支持跨域</td>
+     * <td>目的页面无法取得referer</td>
+     * <td>
+     * 
+     * <pre>
+     * RequestDispatcher rd = request.getRequestDispatcher(url);
+     * rd.forward(request, response);
      * </pre>
+     * 
+     * </td>
+     * </tr>
+     * 
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>response.setHeader</td>
+     * <td>支持跨域</td>
+     * <td>目的页面无法取得referer</td>
+     * <td>
+     * 
+     * <pre>
+     * response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+     * response.setHeader("Location", url);
+     * </pre>
+     * 
+     * </td>
+     * </tr>
+     * 
+     * 
+     * <tr valign="top">
+     * <td>response.sendRedirect(url)</td>
+     * <td>支持跨域</td>
+     * <td>目的页面无法取得referer</td>
+     * <td></td>
+     * </tr>
+     * 
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>用form表单, post方法提交</td>
+     * <td>既可跨域</td>
+     * <td>又能得到referer</td>
+     * <td>并且支持form表单的action属性中url使用参数</td>
+     * </tr>
+     * 
+     * <tr valign="top">
+     * <td>用form表单, get方法提交</td>
+     * <td>既可跨域</td>
+     * <td>又能得到referer</td>
+     * <td>
+     * 
+     * 但不支持form表单的action属性中url使用参数,<br>
+     * 这种方式不会将action的值后面添加"?"提交到web服务器。<br>
+     * 如果actio中的url就含有"?"则会将"?"后的数据忽略掉。而post方式不存在这个问题
+     * 
+     * </td>
+     * </tr>
+     * 
+     * <tr valign="top" style="background-color:#eeeeff">
+     * <td>使用html中href来跳转页面</td>
+     * <td></td>
+     * <td>目的页面可以获得referer</td>
+     * <td></td>
+     * </tr>
+     * </table>
+     * 
+     * </blockquote>
+     * 
+     * </blockquote>
      * 
      * @param request
      *            the request
      * @return 如果request没有指定名称 {@link HttpHeaders#REFERER} 的header,那么返回null
      * @see HttpHeaders#REFERER
+     * @see <a href="http://www.blogjava.net/jiangjf/archive/2014/01/27/201339.html">关于referer的获取问题</a>
      */
     public static String getHeaderReferer(HttpServletRequest request){
         return request.getHeader(REFERER);
