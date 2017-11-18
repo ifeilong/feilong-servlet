@@ -26,13 +26,7 @@ import com.feilong.servlet.http.SessionUtil;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * The listener interface for receiving httpSessionAttributeLogging events.
- * The class that is interested in processing a httpSessionAttributeLogging
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addHttpSessionAttributeLoggingListener</code> method. When
- * the httpSessionAttributeLogging event occurs, that object's appropriate
- * method is invoked.
+ * session属性的创建,删除,更新的监听器.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.10.4

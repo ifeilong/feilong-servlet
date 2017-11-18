@@ -26,13 +26,7 @@ import com.feilong.servlet.ServletContextUtil;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * The listener interface for receiving servletContextLogging events.
- * The class that is interested in processing a servletContextLogging
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addServletContextLoggingListener</code> method. When
- * the servletContextLogging event occurs, that object's appropriate
- * method is invoked.
+ * ServletContext 初始化以及销毁的监听器.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.10.4

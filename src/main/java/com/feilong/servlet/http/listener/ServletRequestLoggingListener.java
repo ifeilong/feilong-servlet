@@ -27,13 +27,7 @@ import com.feilong.servlet.http.RequestUtil;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * The listener interface for receiving servletRequestLogging events.
- * The class that is interested in processing a servletRequestLogging
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addServletRequestLoggingListener</code> method. When
- * the servletRequestLogging event occurs, that object's appropriate
- * method is invoked.
+ * request的初始化以及销毁的监听器.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see "org.springframework.web.context.request.RequestContextListener"
@@ -77,7 +71,6 @@ public class ServletRequestLoggingListener implements ServletRequestListener{
                             JsonUtil.format(RequestUtil.getRequestInfoMapForLog((HttpServletRequest) servletRequest)));
 
         }
-
     }
 
 }

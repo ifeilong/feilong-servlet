@@ -26,13 +26,7 @@ import com.feilong.servlet.http.SessionUtil;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * The listener interface for receiving httpSessionLogging events.
- * The class that is interested in processing a httpSessionLogging
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addHttpSessionLoggingListener</code> method. When
- * the httpSessionLogging event occurs, that object's appropriate
- * method is invoked.
+ * session创建和销毁的监听器.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see "org.springframework.web.util.HttpSessionMutexListener"

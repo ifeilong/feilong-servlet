@@ -31,13 +31,7 @@ import com.feilong.servlet.ServletContextUtil;
 import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
- * The listener interface for receiving servletContextAttributeLogging events.
- * The class that is interested in processing a servletContextAttributeLogging
- * event implements this interface, and the object created
- * with that class is registered with a component using the
- * component's <code>addServletContextAttributeLoggingListener</code> method. When
- * the servletContextAttributeLogging event occurs, that object's appropriate
- * method is invoked.
+ * ServletContext Attribute的创建 替换,删除的监听器.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.10.4
