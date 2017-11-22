@@ -219,13 +219,49 @@ public final class ResponseUtil{
     //   [start] PrintWriter
 
     /**
+     * 以text的方式输出.
+     *
+     * @param response
+     *            HttpServletResponse
+     * @param text
+     *            text字符串
+     * @see #writeText(HttpServletResponse, Object, String)
+     * @see com.feilong.io.entity.MimeType#TXT
+     * @since 1.10.6
+     */
+    public static void writeText(HttpServletResponse response,Object text){
+        writeText(response, text, UTF8);
+    }
+
+    /**
+     * 以text的方式输出.
+     *
+     * @param response
+     *            HttpServletResponse
+     * @param text
+     *            json字符串
+     * @param characterEncoding
+     *            the character encoding
+     * @see #write(HttpServletResponse, Object, String, String)
+     * @see com.feilong.io.entity.MimeType#TXT
+     * @since 1.10.6
+     */
+    public static void writeText(HttpServletResponse response,Object text,String characterEncoding){
+        String contentType = MimeType.TXT.getMime() + ";charset=" + characterEncoding;
+        write(response, text, contentType, characterEncoding);
+    }
+
+    //---------------------------------------------------------------
+
+    /**
      * 以json的方式输出.
      *
      * @param response
      *            HttpServletResponse
      * @param json
      *            json字符串
-     * @see #write(HttpServletResponse, Object, String, String)
+     * @see #writeJson(HttpServletResponse, Object, String)
+     * @see com.feilong.io.entity.MimeType#JSON
      * @since 1.0.9
      */
     public static void writeJson(HttpServletResponse response,Object json){
@@ -242,12 +278,15 @@ public final class ResponseUtil{
      * @param characterEncoding
      *            the character encoding
      * @see #write(HttpServletResponse, Object, String, String)
+     * @see com.feilong.io.entity.MimeType#JSON
      * @since 1.0.9
      */
     public static void writeJson(HttpServletResponse response,Object json,String characterEncoding){
         String contentType = MimeType.JSON.getMime() + ";charset=" + characterEncoding;
         write(response, json, contentType, characterEncoding);
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 输出.

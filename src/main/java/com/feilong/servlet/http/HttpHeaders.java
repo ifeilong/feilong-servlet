@@ -232,7 +232,13 @@ public final class HttpHeaders{
      */
     public static final String CONTENT_TYPE                = "Content-Type";
 
-    /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.6, RFC 2616 (HTTP/1.1) Section 14.18 */
+    /**
+     * Date头域表示消息发送的时间，时间的描述格式由rfc822定义。例如，Date: Mon, 20 Nov 2017 12:47:03 GMT.
+     * 
+     * <p>
+     * <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.6, RFC 2616 (HTTP/1.1) Section 14.18
+     * </p>
+     */
     public static final String DATE                        = "Date";
 
     /** <code>{@value}</code> RFC 2518 (WevDAV) Section 9.1 */
