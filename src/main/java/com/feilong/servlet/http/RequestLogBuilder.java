@@ -53,7 +53,7 @@ import com.feilong.servlet.http.entity.RequestIdentity;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 
 /**
- * request log 的构造器.
+ * 基于 {@link RequestLogSwitch} ,构造需要输出的Map,以便输出 request log.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @see org.apache.commons.lang3.builder.Builder
@@ -99,6 +99,8 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         Map<String, Object> map = new LinkedHashMap<>();
 
+        String clientIp = getClientIP(opRequestLogSwitch);
+
         //---------------------------------------------------------------
 
         // requestFullURL
@@ -107,7 +109,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         }
         // Method
         if (opRequestLogSwitch.getShowMethod()){
-            map.put("request method", request.getMethod());
+            map.put("requestMethod", request.getMethod());
         }
 
         // parameterMap
@@ -123,7 +125,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         //RequestIdentity
         if (opRequestLogSwitch.getShowIdentity()){
             RequestIdentity requestIdentity = new RequestIdentity();
-            requestIdentity.setClientIP(RequestUtil.getClientIp(request));
+            requestIdentity.setClientIP(clientIp);
             requestIdentity.setUserAgent(RequestUtil.getHeaderUserAgent(request));
             requestIdentity.setSessionId(getSessionId(request));
             map.put("requestIdentity", requestIdentity);
@@ -131,36 +133,36 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         // _headerMap
         if (opRequestLogSwitch.getShowHeaders()){
-            map.put("headerInfo", getHeaderMap());
+            map.put("headerInfos", getHeaderMap());
         }
 
         // _cookieMap
         if (opRequestLogSwitch.getShowCookies()){
-            MapUtil.putIfValueNotNullOrEmpty(map, "cookieInfo", CookieUtil.getCookieMap(request));
+            MapUtil.putIfValueNotNullOrEmpty(map, "cookieInfos", CookieUtil.getCookieMap(request));
         }
 
         // aboutURLMap
         if (opRequestLogSwitch.getShowURLs()){
-            map.put("about URL Info", getAboutURLMapForLog());
+            map.put("urlInfos", buildURLInfosMap());
         }
 
         // aboutElseMap
         if (opRequestLogSwitch.getShowElses()){
-            map.put("about Else Map", buildElseMap());
+            map.put("elseInfos", buildElseMap());
         }
 
         //-------------------ip--------------------------------------------
 
         // aboutIPMap
         if (opRequestLogSwitch.getShowIPs()){
-            map.put("about IP Info Map", buildIpsMap());
+            map.put("ipInfos", buildIpsMap(clientIp));
         }
 
         //-----------------------ports----------------------------------------
 
         // aboutPortMap
         if (opRequestLogSwitch.getShowPorts()){
-            map.put("about Port Info Map", buildPortsMap());
+            map.put("portInfos", buildPortsMap());
         }
 
         //------------------------errorInfos---------------------------------------
@@ -183,12 +185,34 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     }
 
     /**
+     * 如果需要显示客户端ip,那么显示,否则不显示.
+     *
+     * @param opRequestLogSwitch
+     *            the op request log switch
+     * @return the client IP
+     * @since 1.10.6
+     */
+    private String getClientIP(RequestLogSwitch opRequestLogSwitch){
+        return (opRequestLogSwitch.getShowIdentity() || opRequestLogSwitch.getShowIPs()) ? RequestUtil.getClientIp(request) : null;
+    }
+
+    /**
      * Builds the ports map.
+     * 
+     * <pre>
+    {@code
+        "about Port Info Map":         {
+            "request.getLocalPort()": "8084",
+            "request.getRemotePort()": "59225",
+            "request.getServerPort()": "8084"
+        }
+    }
+     * </pre>
      *
      * @return the map
      * @since 1.10.5
      */
-    public Map<String, String> buildPortsMap(){
+    private Map<String, String> buildPortsMap(){
         Map<String, String> aboutPortMap = new TreeMap<>();
 
         //Returns the Internet Protocol (IP) port number of the interface on which the request was received.
@@ -203,12 +227,26 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     }
 
     /**
-     * Builds the ips map.
+     * ip相关信息.
+     * 
+     * <pre>
+     *     {@code
+     *     "about IP Info Map":         {
+     *             "getClientIp": "127.0.0.1",
+     *             "request.getLocalAddr()": "127.0.0.1",
+     *             "request.getRemoteAddr()": "127.0.0.1",
+     *             "request.getRemoteHost()": "127.0.0.1",
+     *             "request.getServerName()": "127.0.0.1"
+     *         },
+     *     }
+     * </pre>
      *
+     * @param clientIP
+     *            the client IP
      * @return the map
      * @since 1.10.5
      */
-    public Map<String, String> buildIpsMap(){
+    private Map<String, String> buildIpsMap(String clientIP){
         Map<String, String> aboutIPMap = new TreeMap<>();
 
         //Returns the Internet Protocol (IP) address of the interface on which the request was received.
@@ -223,17 +261,38 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         //Returns the host name of the server to which the request was sent. It is the value of the part before ":" in the Host header value, if any, or the resolved server name, or the server IP address.
         aboutIPMap.put("request.getServerName()", request.getServerName());
 
-        aboutIPMap.put("getClientIp", RequestUtil.getClientIp(request));
+        aboutIPMap.put("getClientIp", clientIP);
         return aboutIPMap;
     }
 
     /**
-     * Builds the else map.
+     * 杂项相关信息.
+     * 
+     * <pre>
+    {@code
+    "about Else Map":         {
+            "request.getScheme()": "http",
+            "request.getProtocol()": "HTTP/1.1",
+            "request.getAuthType()": null,
+            "request.getCharacterEncoding()": "UTF-8",
+            "request.getContentType()": null,
+            "request.getContentLength()": "-1",
+            "request.getLocale()": "zh_CN",
+            "request.getLocalName()": "localhost",
+            "request.getRemoteUser()": null,
+            "request.isRequestedSessionIdFromCookie()": false,
+            "request.isRequestedSessionIdFromURL()": false,
+            "request.isRequestedSessionIdValid()": false,
+            "request.isSecure()": false,
+            "request.getUserPrincipal()": null
+        },
+    }
+     * </pre>
      *
      * @return the map
      * @since 1.10.5
      */
-    public Map<String, Object> buildElseMap(){
+    private Map<String, Object> buildElseMap(){
         Map<String, Object> aboutElseMap = new LinkedHashMap<>();
 
         //Returns the name of the scheme used to make this request, for example, http, https, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
@@ -289,6 +348,26 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
     }
 
     /**
+     * 取到session id信息.
+     * 
+     * <h3>说明:</h3>
+     * <blockquote>
+     * 
+     * 以前使用的方式是 先取session,再取sessionid
+     * 
+     * <pre>
+    {@code
+            try{
+                HttpSession session = request.getSession(false);
+                return null == session ? EMPTY : session.getId();
+            }catch (IllegalStateException e){//Cannot create a session after the response has been committed 
+                String msg = Slf4jUtil.format("uri:[{}],paramMap:{}", request.getRequestURI(), request.getParameterMap());
+                LOGGER.error(msg, e);
+                return e.getMessage();
+            }
+    }
+     * </pre>
+     * 
      * 有时候程序会报错.
      * 
      * <p>
@@ -305,7 +384,9 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * OK, but is there any other possible reason for the early commit? <br>
      * My session is created early enough, and in fact the JSP page creates it if necessary, by default.
      * </p>
-     *
+     * 
+     * </blockquote>
+     * 
      * @param request
      *            the request
      * @return the session id,如果有异常, 返回 {@link java.lang.Throwable#getMessage()}
@@ -313,15 +394,6 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      */
     private static String getSessionId(HttpServletRequest request){
         return CookieUtil.getCookieValue(request, "JSESSIONID");
-
-        //        try{
-        //            HttpSession session = request.getSession(false);
-        //            return null == session ? EMPTY : session.getId();
-        //        }catch (IllegalStateException e){//Cannot create a session after the response has been committed 
-        //            String msg = Slf4jUtil.format("uri:[{}],paramMap:{}", request.getRequestURI(), request.getParameterMap());
-        //            LOGGER.error(msg, e);
-        //            return e.getMessage();
-        //        }
     }
 
     //---------------------------------------------------------------
@@ -442,7 +514,7 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @return the about url map
      * @since 1.0.9
      */
-    private Map<String, String> getAboutURLMapForLog(){
+    private Map<String, String> buildURLInfosMap(){
         // 1.getServletContext().getRealPath("/") 后包含当前系统的文件夹分隔符(windows系统是"\",linux系统是"/"),而getPathInfo()以"/"开头.
         // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null.
         // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分.
@@ -451,18 +523,24 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
 
         map.put("request.getContextPath()", request.getContextPath());
 
+        // web.xml中定义的Servlet访问路径
+        map.put("request.getServletPath()", request.getServletPath());
+
         // Returns any extra path information associated with the URL the client sent when it made this request.
         // Servlet访问路径之后,QueryString之前的中间部分
         map.put("request.getPathInfo()", request.getPathInfo());
 
-        // web.xml中定义的Servlet访问路径
-        map.put("request.getServletPath()", request.getServletPath());
-
         // 等于getServletContext().getRealPath("/") + getPathInfo()
         map.put("request.getPathTranslated()", request.getPathTranslated());
 
-        // ***********************************************************************
-        map.put("getQueryStringLog", getQueryStringLog());
+        //---------------------------------------------------------------
+        // 等于getContextPath() + getServletPath() + getPathInfo()
+        map.put("request.getRequestURI()", request.getRequestURI());
+
+        // 等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()
+        map.put("request.getRequestURL()", "" + request.getRequestURL());
+
+        //---------------------------------------------------------------
 
         // &之后GET方法的参数部分
         //Returns the query string that is contained in the request URL after the path. 
@@ -470,20 +548,27 @@ public class RequestLogBuilder implements Builder<Map<String, Object>>{
         //Same as the value of the CGI variable QUERY_STRING. 
         map.put("request.getQueryString()", request.getQueryString());
 
-        // ***********************************************************************
-        // 等于getContextPath() + getServletPath() + getPathInfo()
-        map.put("request.getRequestURI()", request.getRequestURI());
-
-        // 等于getScheme() + "://" + getServerName() + ":" + getServerPort() + getRequestURI()
-        map.put("request.getRequestURL()", "" + request.getRequestURL());
+        map.put("getQueryStringLog", getQueryStringLog());
         return map;
     }
 
     /**
      * 遍历显示request的header 用于debug.
+     * 
      * <p>
      * 将 request header name 和value 封装到map.
      * </p>
+     * 
+     * <pre>
+    {@code
+        "headerInfo":         {
+            "accept-encoding": "gzip,deflate",
+            "connection": "Keep-Alive",
+            "host": "127.0.0.1:8084",
+            "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21"
+        },
+    }
+     * </pre>
      * 
      * @return the header map
      */

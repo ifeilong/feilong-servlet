@@ -18,7 +18,7 @@ package com.feilong.servlet.http.entity;
 import java.io.Serializable;
 
 /**
- * request log显示开关.
+ * request log显示开关,哪些信息需要显示,哪些不显示.
  * 
  * <p>
  * These classes are intended to be used as <code>Singletons</code>. There is no need to instantiate a new style each time. A program will
@@ -39,7 +39,6 @@ import java.io.Serializable;
  * 借鉴了 {@link org.apache.commons.lang3.builder.ToStringStyle} 的思想
  * </p>
  * 
- * 
  * <h3>readResolve()方法:</h3>
  * 
  * <blockquote>
@@ -59,7 +58,7 @@ public abstract class RequestLogSwitch implements Serializable{
     /** The Constant serialVersionUID. */
     private static final long            serialVersionUID                     = 288232184048495608L;
 
-    //---------------------------------------------------------------
+    //---------------------RequestLogSwitch------------------------------------------
 
     /**
      * 正常的的RequestLogSwitch.
