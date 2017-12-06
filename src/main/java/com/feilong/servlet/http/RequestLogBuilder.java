@@ -59,8 +59,9 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
  * @see org.apache.commons.lang3.builder.Builder
  * @see org.apache.commons.lang3.builder.HashCodeBuilder
  * @since 1.4.0
+ * @since 1.10.6 调整访问权限
  */
-public class RequestLogBuilder implements Builder<Map<String, Object>>{
+class RequestLogBuilder implements Builder<Map<String, Object>>{
 
     /** The request. */
     private final HttpServletRequest request;
