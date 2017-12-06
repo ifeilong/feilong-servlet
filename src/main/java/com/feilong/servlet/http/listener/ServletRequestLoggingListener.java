@@ -51,9 +51,7 @@ public class ServletRequestLoggingListener implements ServletRequestListener{
             LOGGER.trace(
                             "servletRequest request [Initialized] info:[{}] ",
                             JsonUtil.format(RequestUtil.getRequestInfoMapForLog((HttpServletRequest) servletRequest)));
-
         }
-
     }
 
     /*
@@ -65,12 +63,9 @@ public class ServletRequestLoggingListener implements ServletRequestListener{
     public void requestDestroyed(ServletRequestEvent servletRequestEvent){
         if (LOGGER.isTraceEnabled()){
             ServletRequest servletRequest = servletRequestEvent.getServletRequest();
-
             LOGGER.trace(
                             "servletRequest request [Destroyed] info:[{}] ",
                             JsonUtil.format(RequestUtil.getRequestInfoMapForLog((HttpServletRequest) servletRequest)));
-
         }
     }
-
 }

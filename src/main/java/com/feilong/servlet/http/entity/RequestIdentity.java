@@ -37,6 +37,8 @@ public class RequestIdentity implements Serializable{
     /** 用户 sessionId. */
     private String            sessionId;
 
+    //---------------------------------------------------------------
+
     /**
      * 获得 用户客户端ip.
      *

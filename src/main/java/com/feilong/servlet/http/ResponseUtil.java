@@ -105,6 +105,8 @@ public final class ResponseUtil{
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
 
+    //---------------------------------------------------------------
+
     /**
      * 跳转.
      * 

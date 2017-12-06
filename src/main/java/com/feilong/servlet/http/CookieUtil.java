@@ -449,9 +449,7 @@ public final class CookieUtil{
         Validate.notBlank(cookieEntity.getName(), "cookieName can't be null/empty!");
 
         //---------------------------------------------------------------
-
         if (LOGGER.isWarnEnabled()){
-
             String value = resolveWriteValue(cookieEntity);
 
             //如果长度超过4000,浏览器可能不支持

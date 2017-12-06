@@ -40,14 +40,11 @@ public class ServletRequestAttributeLoggingListener implements ServletRequestAtt
     @Override
     public void attributeAdded(ServletRequestAttributeEvent servletRequestAttributeEvent){
         if (LOGGER.isTraceEnabled()){
-
             LOGGER.trace(
                             "name:[{}],value:[{}] added to [servletRequest]",
                             servletRequestAttributeEvent.getName(),
                             servletRequestAttributeEvent.getValue());
-
         }
-
     }
 
     /*
@@ -62,9 +59,7 @@ public class ServletRequestAttributeLoggingListener implements ServletRequestAtt
                             "name:[{}],value:[{}] removed from [servletRequest]",
                             servletRequestAttributeEvent.getName(),
                             servletRequestAttributeEvent.getValue());
-
         }
-
     }
 
     /*
@@ -75,13 +70,10 @@ public class ServletRequestAttributeLoggingListener implements ServletRequestAtt
     @Override
     public void attributeReplaced(ServletRequestAttributeEvent servletRequestAttributeEvent){
         if (LOGGER.isTraceEnabled()){
-
             LOGGER.trace(
                             "name:[{}],value:[{}] replaced to [servletRequest]",
                             servletRequestAttributeEvent.getName(),
                             servletRequestAttributeEvent.getValue());
-
         }
-
     }
 }

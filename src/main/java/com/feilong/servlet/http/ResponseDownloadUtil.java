@@ -58,6 +58,8 @@ public final class ResponseDownloadUtil{
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
 
+    //---------------------------------------------------------------
+
     /**
      * 下载文件.
      *
