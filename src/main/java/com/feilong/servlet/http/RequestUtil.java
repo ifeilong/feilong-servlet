@@ -33,6 +33,7 @@ import static com.feilong.servlet.http.HttpHeaders.X_REQUESTED_WITH;
 import static com.feilong.servlet.http.HttpHeaders.X_REQUESTED_WITH_VALUE_AJAX;
 import static java.util.Collections.emptyMap;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -55,10 +56,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.CharsetType;
+import com.feilong.core.UncheckedIOException;
 import com.feilong.core.bean.ConvertUtil;
 import com.feilong.core.lang.StringUtil;
 import com.feilong.core.util.EnumerationUtil;
 import com.feilong.core.util.MapUtil;
+import com.feilong.io.ReaderUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
 import com.feilong.tools.jsonlib.JsonUtil;
 
@@ -1002,5 +1005,45 @@ public final class RequestUtil{
      */
     public static String getParameter(HttpServletRequest request,String paramName){
         return request.getParameter(paramName);
+    }
+
+    /**
+     * 获取request body中的内容.
+     * 
+     * <h3>使用场景:</h3>
+     * 
+     * <blockquote>
+     * wechat notify 的时候数据在 request body 里面,需要提取
+     * </blockquote>
+     * 
+     * <h3>说明:</h3>
+     * <blockquote>
+     * <ol>
+     * <li>request.getInputStream(); request.getReader();和request.getParameter("key");<br>
+     * 这三个函数中任何一个函数执行一次后（可正常读取body数据），之后再执行就无效了。</li>
+     * </ol>
+     * </blockquote>
+     *
+     * @param request
+     *            the request
+     * @return the request body
+     * @see "org.springframework.web.bind.annotation.RequestBody"
+     * @see "org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor"
+     * @see <a href="https://stackoverflow.com/questions/8100634/get-the-post-request-body-from-httpservletrequest">Get the POST request
+     *      body from HttpServletRequest
+     *      </a>
+     * @since 1.10.6
+     */
+    public static String getRequestBody(HttpServletRequest request){
+        try{
+            //Retrieves the body of the request as character data using a BufferedReader. 
+
+            //The reader translates the character data according to the character encoding used on the body.
+            //Either this method or getInputStream may be called to read the body, not both.
+            BufferedReader reader = request.getReader();
+            return ReaderUtil.toString(reader);
+        }catch (IOException e){
+            throw new UncheckedIOException(e);
+        }
     }
 }
