@@ -27,8 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.lang.SystemUtil;
+import com.feilong.json.jsonlib.JsonUtil;
 import com.feilong.servlet.ServletContextUtil;
-import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
  * 应用信息(用于监控查看).

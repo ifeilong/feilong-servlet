@@ -62,8 +62,8 @@ import com.feilong.core.lang.StringUtil;
 import com.feilong.core.util.EnumerationUtil;
 import com.feilong.core.util.MapUtil;
 import com.feilong.io.ReaderUtil;
+import com.feilong.json.jsonlib.JsonUtil;
 import com.feilong.servlet.http.entity.RequestLogSwitch;
-import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
  * {@link javax.servlet.http.HttpServletRequest HttpServletRequest}工具类.

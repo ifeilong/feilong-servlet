@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.feilong.json.jsonlib.JsonUtil;
 import com.feilong.servlet.http.RequestUtil;
-import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
  * request的初始化以及销毁的监听器.

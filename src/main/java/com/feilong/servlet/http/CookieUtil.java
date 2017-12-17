@@ -32,8 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.feilong.core.bean.PropertyUtil;
+import com.feilong.json.jsonlib.JsonUtil;
 import com.feilong.servlet.http.entity.CookieEntity;
-import com.feilong.tools.jsonlib.JsonUtil;
 
 /**
  * {@link javax.servlet.http.Cookie Cookie} 工具类.
