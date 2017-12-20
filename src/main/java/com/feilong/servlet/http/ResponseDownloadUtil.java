@@ -167,7 +167,7 @@ public final class ResponseDownloadUtil{
 
         setDownloadResponseHeader(saveFileName, contentLength, contentType, contentDisposition, response);
 
-        //**********************************下载数据********************************************************************
+        //下载数据
         downLoadData(saveFileName, inputStream, contentLength, request, response);
     }
 
@@ -249,7 +249,7 @@ public final class ResponseDownloadUtil{
         //在jsp向页面输出图片的时候,使用response.getOutputStream()会有这样的提示:java.lang.IllegalStateException:getOutputStream() has already been called for this response,会抛出Exception
         response.reset();
 
-        //*************************************************************************
+        //---------------------------------------------------------------
         response.addHeader(HttpHeaders.CONTENT_DISPOSITION, resolverContentDisposition(saveFileName, contentDisposition));
 
         // ===================== Default MIME Type Mappings =================== -->

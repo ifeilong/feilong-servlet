@@ -263,7 +263,7 @@ public class CookieEntity implements Serializable{
      */
     private int               maxAge           = -1;
 
-    //*******************************************************************************************
+    //---------------------------------------------------------------
 
     /**
      * ;Comment=VALUE ... describes cookie's use ;Discard ... implied by maxAge {@code <} 0

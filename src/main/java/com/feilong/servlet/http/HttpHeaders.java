@@ -521,7 +521,7 @@ public final class HttpHeaders{
     /** <code>{@value}</code> RFC 1945 (HTTP/1.0) Section 10.16, RFC 2616 (HTTP/1.1) Section 14.47 */
     public static final String WWW_AUTHENTICATE            = "WWW-Authenticate";
 
-    // ****************************************header**************************************************************************
+    //-------------------------header--------------------------------------
 
     /**
      * 1、Origin字段里只包含是谁发起的请求,并没有其他信息 (通常情况下是方案,主机和活动文档URL的端口).<br>
@@ -558,7 +558,7 @@ public final class HttpHeaders{
     /** <code>{@value}</code> 这个应该是WebLogic前置HttpClusterServlet提供的属性,一般不需要自己处理,在WebLogic控制台中已经可以指定使用这个属性来覆盖. */
     public static final String WL_PROXY_CLIENT_IP          = "WL-Proxy-Client-IP";
 
-    //******************************************************************************************
+    //---------------------------------------------------------------
 
     /**
      * <code>{@value}</code> 用于在服务器端判断request来自Ajax请求还是传统请求.

@@ -25,7 +25,8 @@ package com.feilong.servlet.http;
  */
 public final class RequestAttributes{
 
-    // ************************************include(Servlet 2.2)**************************************************************************
+    //---------------------------include(Servlet 2.2)------------------------------------
+
     /**
      * <code>{@value}</code> <br>
      * Standard Servlet 2.3+ spec request attributes for include URI and paths.
@@ -69,7 +70,7 @@ public final class RequestAttributes{
      */
     public static final String INCLUDE_QUERY_STRING    = "javax.servlet.include.query_string";
 
-    // *********************************forward (Servlet 2.4)******************************************************************************/
+    //---------------------------forward (Servlet 2.4)------------------------------------
     // 某些情况下一个forward()方法的目标servlet可能会需要知道真正原始的request URI
 
     /**
@@ -116,7 +117,8 @@ public final class RequestAttributes{
      */
     public static final String FORWARD_QUERY_STRING    = "javax.servlet.forward.query_string";
 
-    // *********************************error******************************************************************************/
+    //------------------------error---------------------------------------
+
     /**
      * <code>{@value}</code><br>
      * Standard Servlet 2.3+ spec request attributes for error pages.
@@ -169,7 +171,8 @@ public final class RequestAttributes{
      */
     public static final String ERROR_SERVLET_NAME      = "javax.servlet.error.servlet_name";
 
-    // **************************************Servlet API 2.3 ******************************************************************/
+    //----------------------------Servlet API 2.3 -----------------------------------
+
     // Servlet API 2.3 also adds two new request attributes that can help a servlet make an informed decision about how to handle secure
     // HTTPS connections.
     // For requests made using HTTPS, the server will provide these new request attributes:
@@ -180,7 +183,7 @@ public final class RequestAttributes{
     /** An Integer representing the bit size of the algorithm, if any. */
     public static final String REQUEST_KEY_SIZE        = "javax.servlet.request.key_size";
 
-    // ********************************************************************************************************/
+    //---------------------------------------------------------------
     /** ATTRIBUTE_REQUEST_X509CERTIFICATE. */
     public static final String REQUEST_X509CERTIFICATE = "javax.servlet.request.X509Certificate";
 
@@ -192,6 +195,8 @@ public final class RequestAttributes{
     public static final String REQUEST_SSL_SESSION     = "javax.servlet.request.ssl_session";
 
     // 暂时还用不到下面的属性 "javax.servlet.context.tempdir" "javax.security.auth.subject"
+
+    //---------------------------------------------------------------
 
     /** Don't let anyone instantiate this class. */
     private RequestAttributes(){

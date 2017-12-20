@@ -267,7 +267,8 @@ public final class RequestUtil{
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
     }
 
-    // ******************************是否包含******************************************
+    //-------------------------是否包含--------------------------------------
+
     /**
      * 请求路径中是否包含某个参数名称 (注意:这是判断是否包含参数,而不是判断参数值是否为空).
      *
@@ -413,7 +414,8 @@ public final class RequestUtil{
         return new RequestLogBuilder(request, requestLogSwitch).build();
     }
 
-    // ******************************* url参数相关 getAttribute*****************************************************.
+    //-------------------------url参数相关 getAttribute--------------------------------------
+
     // [start] url参数相关
 
     /**
@@ -577,7 +579,7 @@ public final class RequestUtil{
     public static String getServerRootWithContextPath(HttpServletRequest request){
         String scheme = request.getScheme();
         int port = request.getServerPort() < 0 ? 80 : request.getServerPort();// Work around java.net.URL bug
-        //*************************************************************************************
+        //---------------------------------------------------------------
         StringBuilder sb = new StringBuilder();
         sb.append(scheme);
         sb.append("://");
@@ -675,7 +677,7 @@ public final class RequestUtil{
         }
     }
 
-    // **************************Header*******************************************
+    //--------------------------Header-------------------------------------
 
     /**
      * 获得客户端真实ip地址.
@@ -737,8 +739,6 @@ public final class RequestUtil{
         }
         return ipAddress;
     }
-
-    // *****************************Header区域**************************************
 
     /**
      * User Agent中文名为用户代理,简称 UA.
@@ -956,7 +956,7 @@ public final class RequestUtil{
         return !isAjaxRequest(request);
     }
 
-    // *********************************************************************
+    //---------------------------------------------------------------
 
     /**
      * 遍历显示request的attribute,将 name /attributeValue 存入到map(TreeMap).
@@ -992,7 +992,7 @@ public final class RequestUtil{
         return map;
     }
 
-    // *********************************获取值********************************
+    //---------------------------------------------------------------
 
     /**
      * 获得request中的请求参数值.

@@ -471,7 +471,7 @@ public abstract class RequestLogSwitch implements Serializable{
         this.showIdentity = showIdentity;
     }
 
-    //***************************************************************************************
+    //---------------------------------------------------------------
 
     /**
      * This is an inner class to ensure its immutability.
