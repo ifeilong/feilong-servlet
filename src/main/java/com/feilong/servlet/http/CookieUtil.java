@@ -249,7 +249,7 @@ public final class CookieUtil{
         Cookie[] cookies = request.getCookies();
 
         if (isNullOrEmpty(cookies)){
-            LOGGER.info("request's cookies is null or empty!!");
+            LOGGER.debug("request's cookies is null or empty!!");
             return null;
         }
 
