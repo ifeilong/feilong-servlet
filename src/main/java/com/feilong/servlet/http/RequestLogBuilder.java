@@ -98,7 +98,7 @@ class RequestLogBuilder implements Builder<Map<String, Object>>{
     public Map<String, Object> build(){
         RequestLogSwitch opRequestLogSwitch = defaultIfNull(this.requestLogSwitch, NORMAL);
 
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = newLinkedHashMap();
 
         String clientIp = getClientIP(opRequestLogSwitch);
 
@@ -294,7 +294,7 @@ class RequestLogBuilder implements Builder<Map<String, Object>>{
      * @since 1.10.5
      */
     private Map<String, Object> buildElseMap(){
-        Map<String, Object> aboutElseMap = new LinkedHashMap<>();
+        Map<String, Object> aboutElseMap = newLinkedHashMap();
 
         //Returns the name of the scheme used to make this request, for example, http, https, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
         aboutElseMap.put("request.getScheme()", request.getScheme());
@@ -520,7 +520,7 @@ class RequestLogBuilder implements Builder<Map<String, Object>>{
         // 2.getPathInfo()与getPathTranslated()在servlet的url-pattern被设置为/*或/aa/*之类的pattern时才有值,其他时候都返回null.
         // 3.在servlet的url-pattern被设置为*.xx之类的pattern时,getServletPath()返回的是getRequestURI()去掉前面ContextPath的剩余部分.
 
-        Map<String, String> map = new LinkedHashMap<>();
+        Map<String, String> map = newLinkedHashMap();
 
         map.put("request.getContextPath()", request.getContextPath());
 

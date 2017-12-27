@@ -17,12 +17,12 @@ package com.feilong.servlet.http;
 
 import static com.feilong.core.CharsetType.UTF8;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
+import static com.feilong.core.util.MapUtil.newHashMap;
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -356,7 +356,7 @@ public final class ResponseUtil{
      * @since 1.5.4
      */
     public static Map<String, Object> getResponseInfoMapForLog(HttpServletResponse response){
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = newLinkedHashMap();
         map.put("response.getBufferSize()", response.getBufferSize());
         map.put("response.getCharacterEncoding()", response.getCharacterEncoding());
         map.put("response.getContentType()", response.getContentType());
@@ -375,7 +375,7 @@ public final class ResponseUtil{
      */
     private static Map<String, Object> getResponseHeaderMap(HttpServletResponse response){
         Collection<String> headerNames = response.getHeaderNames(); //Servlet 3.0
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = newHashMap();
         for (String headerName : headerNames){
             map.put(headerName, response.getHeader(headerName)); //Servlet 3.0
         }

@@ -16,11 +16,11 @@
 package com.feilong.servlet;
 
 import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 import static java.util.Collections.emptyMap;
 
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -65,7 +65,7 @@ public final class ServletContextUtil{
      * @return the servlet context info map for log
      */
     public static Map<String, Object> getServletContextInfoMapForLog(ServletContext servletContext){
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = newLinkedHashMap();
         // 返回servlet运行的servlet 容器的版本和名称.
         map.put("serverInfo", servletContext.getServerInfo());
 

@@ -19,13 +19,14 @@ import static com.feilong.core.DatePattern.COMMON_DATE_AND_TIME_WITH_MILLISECOND
 import static com.feilong.core.Validator.isNullOrEmpty;
 import static com.feilong.core.bean.ConvertUtil.toList;
 import static com.feilong.core.date.DateExtensionUtil.formatDuration;
+import static com.feilong.core.util.MapUtil.newHashMap;
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 import static com.feilong.core.util.SortUtil.sortList;
 import static java.util.Collections.emptyMap;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -266,7 +267,7 @@ public final class SessionUtil{
 
         //---------------------------------------------------------------
 
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = newLinkedHashMap();
         // 返回SESSION创建时JSP引擎为它设的惟一ID号 
         map.put("id", session.getId());
 
@@ -306,7 +307,7 @@ public final class SessionUtil{
      * @see javax.servlet.http.HttpSession#getAttribute(String)
      */
     public static Map<String, Serializable> getAttributeMap(HttpSession session){
-        Map<String, Serializable> map = new HashMap<>();
+        Map<String, Serializable> map = newHashMap();
 
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()){

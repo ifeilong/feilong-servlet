@@ -21,6 +21,7 @@ import static com.feilong.core.URIComponents.SCHEME_HTTP;
 import static com.feilong.core.URIComponents.SCHEME_HTTPS;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 import static com.feilong.core.util.SortUtil.sortMapByKeyAsc;
 import static com.feilong.servlet.http.HttpHeaders.ORIGIN;
 import static com.feilong.servlet.http.HttpHeaders.PROXY_CLIENT_IP;
@@ -37,7 +38,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -695,7 +695,7 @@ public final class RequestUtil{
         // Proxy-Client-IP=215.4.1.29
         // X-Forwarded-For=215.4.1.29
 
-        Map<String, String> map = new LinkedHashMap<>();
+        Map<String, String> map = newLinkedHashMap();
 
         String ipAddress = "";
 

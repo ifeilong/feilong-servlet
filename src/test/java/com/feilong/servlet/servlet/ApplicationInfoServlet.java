@@ -15,8 +15,9 @@
  */
 package com.feilong.servlet.servlet;
 
+import static com.feilong.core.util.MapUtil.newLinkedHashMap;
+
 import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -55,7 +56,7 @@ public class ApplicationInfoServlet extends HttpServlet{
     public void init() throws ServletException{
         ServletContext servletContext = getServletContext();
 
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = newLinkedHashMap();
         map.put("Charset defaultCharset", Charset.defaultCharset().name());
         map.put("ServletContext Info", ServletContextUtil.getServletContextInfoMapForLog(servletContext));
         map.put("ServletContext initParameter Map", ServletContextUtil.getInitParameterMap(servletContext));
