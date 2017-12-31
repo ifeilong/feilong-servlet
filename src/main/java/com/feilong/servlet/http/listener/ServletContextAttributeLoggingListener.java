@@ -41,6 +41,8 @@ public class ServletContextAttributeLoggingListener implements ServletContextAtt
     /** The Constant LOGGER. */
     private static final Logger LOGGER = LoggerFactory.getLogger(ServletContextAttributeLoggingListener.class);
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 
@@ -65,6 +67,8 @@ public class ServletContextAttributeLoggingListener implements ServletContextAtt
         }
 
     }
+
+    //---------------------------------------------------------------
 
     /**
      * Builds the attributes log message.
@@ -93,8 +97,9 @@ public class ServletContextAttributeLoggingListener implements ServletContextAtt
                             buildAttributesLogMessage(servletContextAttributeEvent.getServletContext()));
 
         }
-
     }
+
+    //---------------------------------------------------------------
 
     /*
      * (non-Javadoc)
