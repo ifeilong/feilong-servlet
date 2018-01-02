@@ -779,8 +779,8 @@ public final class RequestUtil{
      * <li>用Window.open打开地址或者自定义的地址</li>
      * <li>利用Jscript的location.href or location.replace()</li>
      * <li>在浏览器直接输入地址</li>
-     * <li><%Response.Redirect%></li>
-     * <li><%Response.AddHeader%>或<meta http-equiv=refresh>转向</li>
+     * <li>Response.Redirect</li>
+     * <li>Response.AddHeader或{@code <meta http-equiv=refresh>}转向</li>
      * </ol>
      * </blockquote>
      * 
