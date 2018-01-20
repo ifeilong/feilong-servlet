@@ -17,21 +17,39 @@
 package com.feilong.servlet.http;
 
 /**
- * Constants enumerating the HTTP headers.
+ * HTTP headers相关常量.
  * 
  * <p>
  * All headers defined in <a href="http://tools.ietf.org/html/rfc1945">RFC 1945</a> (HTTP/1.0),
  * <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a> (HTTP/1.1), and
  * <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a> (WebDAV) are listed.
  * </p>
+ * 
+ * <h3>关于大小写:</h3>
+ * <blockquote>
+ * both HTTP/1.1 and HTTP/2 headers are <span style="color:red">case-insensitive</span>.
+ * 
+ * <p>
+ * According to {@link <a href="https://tools.ietf.org/html/rfc7230#section-3.2">RFC 7230 (HTTP/1.1)</a>}:
+ * </p>
+ * 
+ * Each header field consists of a case-insensitive field name followed by a colon (":"), optional leading whitespace, the field value, and
+ * optional trailing whitespace.
+ * 
+ * <p>
+ * Also, {@link <a href="https://tools.ietf.org/html/rfc7540#section-8.1.2">RFC 7540 (HTTP/2)</a>}:
+ * </p>
+ * Just as in HTTP/1.x, header field names are strings of ASCII characters that are compared in a case-insensitive fashion.
+ * 
+ * </blockquote>
  *
  * @see "org.apache.http.HttpHeaders"
  * @see "org.springframework.http.HttpHeaders"
  * @see <a href="http://tools.ietf.org/html/rfc1945">RFC1945</a>
  * @see <a href="http://tools.ietf.org/html/rfc2616">RFC2616</a>
  * @see <a href="http://tools.ietf.org/html/rfc2518">RFC2518</a>
+ * @see <a href="https://stackoverflow.com/questions/5258977/are-http-headers-case-sensitive">Are HTTP headers case-sensitive?</a>
  * @since 1.0.8
- * @since httpcore 4.1
  */
 public final class HttpHeaders{
 
