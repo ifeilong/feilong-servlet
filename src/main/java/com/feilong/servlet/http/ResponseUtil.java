@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -113,6 +114,7 @@ public final class ResponseUtil{
      * <p>
      * {@link HttpServletResponse#sendRedirect(String)}方法用于生成302响应码和Location响应头,从而通知客户端重新访问Location响应头指定的URL.
      * </p>
+     * 
      * <p>
      * 在 {@link HttpServletResponse#sendRedirect(String)}之后,<span style="color:red">应该紧跟一句return;</span>; <br>
      * 我们已知道 {@link HttpServletResponse#sendRedirect(String)}是通过浏览器来做转向的,所以只有在页面处理完成后,才会有实际的动作.<br>
@@ -140,6 +142,8 @@ public final class ResponseUtil{
             throw new UncheckedIOException(e);
         }
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 设置页面不缓存.
@@ -199,23 +203,26 @@ public final class ResponseUtil{
      * 过期时间 = max-age 属性,单位<span style="color:red">秒</span>.
      * </p>
      * 
-     * <p>
-     * if value {@code <=0} 表示不缓存<br>
-     * 默认:0 不缓存
-     * </p>
-     * 
-     * 设置为int类型,int 最大值是{@link Integer#MAX_VALUE} 为 68.096259734906年,参见 {@link TimeInterval} ,绝对够用了
-     *
      * @param response
      *            the response
-     * @param value
+     * @param cacheTime
      *            过期时间 = max-age 属性,单位<span style="color:red">秒</span>,建议使用{@link TimeInterval}里面定义的常量.
+     *            <p>
+     *            if cacheTime {@code <=0} 表示不缓存<br>
+     *            默认:0 不缓存
+     *            </p>
+     * 
+     *            设置为int类型,int 最大值是{@link Integer#MAX_VALUE} 为 68.096259734906年,参见 {@link TimeInterval} ,绝对够用了
      * @see HttpHeaders#CACHE_CONTROL
      * @since 1.5.3
+     * @since 1.11.0 if cacheTime {@code <=0} 表示不缓存
      */
-    public static void setCacheHeader(HttpServletResponse response,int value){
-        Validate.isTrue(value > 0, "cache value [%s] must > 0,if you no need cache,you can call setNoCacheHeader method!", value);
-        response.setHeader(HttpHeaders.CACHE_CONTROL, "max-age=" + value);
+    public static void setCacheHeader(HttpServletResponse response,int cacheTime){
+        if (cacheTime <= 0){
+            setNoCacheHeader(response);
+        }else{
+            response.setHeader(HttpHeaders.CACHE_CONTROL, "max-age=" + cacheTime);
+        }
     }
 
     //   [start] PrintWriter
@@ -243,12 +250,16 @@ public final class ResponseUtil{
      * @param text
      *            json字符串
      * @param characterEncoding
-     *            the character encoding
+     *            编码<br>
+     *            如果 <code>characterEncoding</code> 是null,抛出 {@link NullPointerException}<br>
+     *            如果 <code>characterEncoding</code> 是blank,抛出 {@link IllegalArgumentException}<br>
      * @see #write(HttpServletResponse, Object, String, String)
      * @see com.feilong.io.entity.MimeType#TXT
      * @since 1.10.6
      */
     public static void writeText(HttpServletResponse response,Object text,String characterEncoding){
+        Validate.notBlank(characterEncoding, "characterEncoding can't be blank!");
+
         String contentType = MimeType.TXT.getMime() + ";charset=" + characterEncoding;
         write(response, text, contentType, characterEncoding);
     }
@@ -278,12 +289,16 @@ public final class ResponseUtil{
      * @param json
      *            json字符串
      * @param characterEncoding
-     *            the character encoding
+     *            编码<br>
+     *            如果 <code>characterEncoding</code> 是null,抛出 {@link NullPointerException}<br>
+     *            如果 <code>characterEncoding</code> 是blank,抛出 {@link IllegalArgumentException}<br>
      * @see #write(HttpServletResponse, Object, String, String)
      * @see com.feilong.io.entity.MimeType#JSON
      * @since 1.0.9
      */
     public static void writeJson(HttpServletResponse response,Object json,String characterEncoding){
+        Validate.notBlank(characterEncoding, "characterEncoding can't be blank!");
+
         String contentType = MimeType.JSON.getMime() + ";charset=" + characterEncoding;
         write(response, json, contentType, characterEncoding);
     }
@@ -316,9 +331,12 @@ public final class ResponseUtil{
      * @param content
      *            相应内容
      * @param contentType
-     *            the content type
+     *            内容类型, 可以为null或者empty; <br>
+     *            如果不为null或者empty,将会设置 {@link ServletResponse#setContentType(String)}
      * @param characterEncoding
-     *            字符编码,建议使用 {@link CharsetType} 定义好的常量
+     *            字符编码,建议使用 {@link CharsetType} 定义好的常量;<br>
+     *            可以为null或者empty; <br>
+     *            如果不为null或者empty,将会设置 {@link ServletResponse#setCharacterEncoding(String)}
      * @see javax.servlet.ServletResponse#getWriter()
      * @see java.io.PrintWriter#print(Object)
      * @see java.io.PrintWriter#flush()
@@ -333,6 +351,8 @@ public final class ResponseUtil{
             response.setCharacterEncoding(characterEncoding);
         }
 
+        //---------------------------------------------------------------
+
         try{
             PrintWriter printWriter = response.getWriter();
             printWriter.print(content);
@@ -346,6 +366,8 @@ public final class ResponseUtil{
     }
 
     // [end]
+
+    //---------------------------------------------------------------
 
     /**
      * 获得 response info map for LOGGER.
