@@ -38,7 +38,6 @@ import static com.feilong.servlet.http.entity.RequestLogSwitch.NORMAL;
 import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 import java.util.Enumeration;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
