@@ -142,6 +142,8 @@ public final class ServletContextUtil{
             return emptyMap();
         }
 
+        //---------------------------------------------------------------
+
         Map<String, String> map = new TreeMap<>();
         while (initParameterNames.hasMoreElements()){
             String name = initParameterNames.nextElement();

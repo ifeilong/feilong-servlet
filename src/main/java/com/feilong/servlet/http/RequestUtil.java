@@ -984,6 +984,8 @@ public final class RequestUtil{
             return emptyMap();
         }
 
+        //---------------------------------------------------------------
+
         Map<String, Object> map = new TreeMap<>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();

@@ -253,6 +253,8 @@ public final class CookieUtil{
             return null;
         }
 
+        //---------------------------------------------------------------
+
         for (Cookie cookie : cookies){
             if (cookie.getName().equals(cookieName)){
                 if (LOGGER.isDebugEnabled()){
@@ -283,6 +285,8 @@ public final class CookieUtil{
         if (isNullOrEmpty(cookies)){
             return emptyMap();
         }
+
+        //---------------------------------------------------------------
 
         Map<String, String> map = new TreeMap<>();
         for (Cookie cookie : cookies){
