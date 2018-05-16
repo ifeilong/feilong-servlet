@@ -287,21 +287,26 @@ public final class RequestUtil{
         return EnumerationUtil.contains(request.getParameterNames(), paramName);
     }
 
+    //---------------------------------------------------------------
+
     /**
-     * 获得参数 map(结果转成了 TreeMap).
+     * 获得参数map(结果转成了key自然排序的TreeMap).
      * 
      * <p>
-     * 此方式会将tomcat返回的map 转成TreeMap 处理返回,便于log;也可以<span style="color:red">对这个map进行操作</span>
+     * 此方式会将tomcat返回的map 转成TreeMap 返回,便于log; 也可以<span style="color:red">对这个返回的map进行操作</span>
      * </p>
      * 
      * <h3>tomcat getParameterMap() <span style="color:red">locked</span>(只能读):</h3>
      * 
      * <blockquote>
      * 注意:tomcat 默认实现,返回的是 {@code org.apache.catalina.util#ParameterMap<K, V>},tomcat返回之前,会将此map的状态设置为locked,<br>
+     * 
      * <p>
-     * 不像普通的map数据一样可以修改.这是因为服务器为了实现一定的安全规范,所作的限制,WebLogic,Tomcat,Resin,JBoss等服务器均实现了此规范.
+     * 不像普通的map数据一样可以修改.<br>
+     * 这是因为服务器为了实现一定的安全规范,所作的限制,WebLogic,Tomcat,Resin,JBoss等服务器均实现了此规范.
      * </p>
-     * 此时,不能做以下的map操作:
+     * 
+     * 不能做以下的map操作:
      * 
      * <ul>
      * <li>{@link Map#clear()}</li>
@@ -325,10 +330,16 @@ public final class RequestUtil{
     }
 
     /**
-     * 获得参数 and 单值map.
+     * 获得请求参数和单值map.
      * 
      * <p>
-     * 由于 j2ee{@link ServletRequest#getParameterMap()}返回的map值是数组形式,对于一些确认是单值的请求时(比如支付宝notify/return request),不便于后续处理
+     * 由于调用的 {@link #getParameterMap(HttpServletRequest)}结果是<span style="color:green">有序的</span>,
+     * 此方法返回的map也是<span style="color:green">有序的</span>
+     * </p>
+     * 
+     * <p>
+     * 由于j2ee{@link ServletRequest#getParameterMap()}返回的map值是数组形式,<br>
+     * 对于一些确认是单值的请求(比如支付宝notify/return request),不便后续处理
      * </p>
      * 
      * @param request
@@ -341,6 +352,8 @@ public final class RequestUtil{
     public static Map<String, String> getParameterSingleValueMap(HttpServletRequest request){
         return MapUtil.toSingleValueMap(getParameterMap(request));
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 将 {@link HttpServletRequest} 相关属性,数据转成json格式 以便log显示(目前仅作log使用).
@@ -459,6 +472,8 @@ public final class RequestUtil{
         return ConvertUtil.convert(value, klass);
     }
 
+    //---------------------------------------------------------------
+
     /**
      * 获得请求的?部分前面的地址.
      * <p>
@@ -530,6 +545,8 @@ public final class RequestUtil{
         return isNullOrEmpty(queryString) ? requestURL : requestURL + QUESTIONMARK + decodeISO88591String(queryString, charsetType);
     }
 
+    //---------------------------------------------------------------
+
     /**
      * {@link CharsetType#ISO_8859_1} 的方式去除乱码.
      * 
@@ -593,6 +610,8 @@ public final class RequestUtil{
         sb.append(request.getContextPath());
         return sb.toString();
     }
+
+    //---------------------------------------------------------------
 
     // [end]
 
