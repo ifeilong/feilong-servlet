@@ -31,8 +31,56 @@ import com.feilong.json.jsonlib.JsonUtil;
 import com.feilong.servlet.ServletContextUtil;
 
 /**
- * ServletContext Attribute的创建 替换,删除的监听器.
+ * ServletContext Attribute的创建/替换,删除的监听器.
+ * 
+ * <h3>作用:</h3>
+ * 
+ * <blockquote>
+ * 
+ * <p>
+ * 可以在日志文件或者控制台输出如下信息:
+ * </p>
+ * 
+ * <pre class="code">
  *
+14:39:39 INFO  (ServletContextAttributeLoggingListener.java:62) attributeAdded() - name:[org.springframework.web.servlet.FrameworkServlet.CONTEXT.springmvc],value:[WebApplicationContext for namespace 'springmvc-servlet': startup date [Sun May 20 14:39:36 CST 2018]; parent: Root WebApplicationContext] added to [servletContext],now servletContext attribute:[    {
+        "base": "",
+        "domainCSS": "http://rs.feilong.com:8888",
+        "domainImage": "",
+        "domainJS": "",
+        "domainResource": "http://127.0.0.1:6666",
+        "javax.servlet.context.tempdir": "/Users/feilong/workspace/feilong/feilong-test/feilong-web-springmvc-test/target/tomcat/work/Tomcat/localhost/_",
+        "javax.websocket.server.ServerContainer": "org.apache.tomcat.websocket.server.WsServerContainer@3dfa5f07",
+        "org.apache.tiles.CONTAINER": "org.apache.tiles.impl.BasicTilesContainer@701e0b2e",
+        "org.apache.tiles.request.ApplicationContext.ATTRIBUTE": "org.springframework.web.servlet.view.tiles3.SpringWildcardServletTilesApplicationContext@3a9c60b5",
+        "org.springframework.web.context.WebApplicationContext.ROOT": "Root WebApplicationContext: startup date [Sun May 20 14:39:36 CST 2018]; root of context hierarchy",
+        "org.springframework.web.context.support.ServletContextScope": "org.springframework.web.context.support.ServletContextScope@5f08994b",
+        "org.springframework.web.servlet.FrameworkServlet.CONTEXT.springmvc": "WebApplicationContext for namespace 'springmvc-servlet': startup date [Sun May 20 14:39:36 CST 2018]; parent: Root WebApplicationContext"
+    }]
+ * 
+ * 
+ * </pre>
+ * 
+ * </blockquote>
+ * 
+ * <h3>参考配置:</h3>
+ * 
+ * <blockquote>
+ * 
+ * <p>
+ * web.xml:
+ * </p>
+ * 
+ * <pre class="code">
+{@code 
+    <listener>
+        <listener-class>com.feilong.servlet.http.listener.ServletContextAttributeLoggingListener</listener-class>
+    </listener>
+}
+ * </pre>
+ * 
+ * </blockquote>
+ * 
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.10.4
  */
