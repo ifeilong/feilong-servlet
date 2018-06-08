@@ -247,14 +247,12 @@ public final class CookieUtil{
      */
     public static Cookie getCookie(HttpServletRequest request,String cookieName){
         Cookie[] cookies = request.getCookies();
-
         if (isNullOrEmpty(cookies)){
-            LOGGER.debug("request's cookies is null or empty!!");
+            LOGGER.debug("when get cookieName:[{}],but request's cookies is null or empty!!", cookieName);
             return null;
         }
 
         //---------------------------------------------------------------
-
         for (Cookie cookie : cookies){
             if (cookie.getName().equals(cookieName)){
                 if (LOGGER.isDebugEnabled()){
@@ -263,7 +261,6 @@ public final class CookieUtil{
                 return cookie;
             }
         }
-
         LOGGER.debug("can't find the cookie:[{}]", cookieName);
         return null;
     }
