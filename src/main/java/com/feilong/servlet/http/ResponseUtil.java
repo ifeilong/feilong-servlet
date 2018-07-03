@@ -135,9 +135,77 @@ public final class ResponseUtil{
      */
     public static void sendRedirect(HttpServletResponse response,String url){
         Validate.notBlank(url, "url can't be blank!");
+
+        //---------------------------------------------------------------
         try{
             LOGGER.debug("response sendRedirect to:[{}]", url);
             response.sendRedirect(url);
+        }catch (IOException e){
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    //---------------------------------------------------------------
+
+    /**
+     * Sends an error response to the client using the specified status code and clears the buffer.
+     * 
+     * The server will preserve cookies and may clear or update any headers needed to serve the error page as a valid response.
+     * 
+     * If an error-page declaration has been made for the web application corresponding to the status code passed in, it will be served back
+     * the error page
+     * 
+     * <p>
+     * If the response has already been committed, this method throws an IllegalStateException.
+     * After using this method, the response should be considered to be committed and should not be written to.
+     *
+     * @param response
+     *            the response
+     * @param errorStatusCode
+     *            错误码
+     * @since 1.11.5
+     * @exception IllegalStateException
+     *                If the response was committed before this method call
+     */
+    public static void sendError(HttpServletResponse response,int errorStatusCode){
+        sendError(response, errorStatusCode, "");
+    }
+
+    /**
+     * Sends an error response to the client using the specified
+     * status and clears the buffer. The server defaults to creating the
+     * response to look like an HTML-formatted server error page
+     * containing the specified message, setting the content type
+     * to "text/html". The server will preserve cookies and may clear or
+     * update any headers needed to serve the error page as a valid response.
+     * 
+     * If an error-page declaration has been made for the web application
+     * corresponding to the status code passed in, it will be served back in
+     * preference to the suggested msg parameter and the msg parameter will
+     * be ignored.
+     * 
+     * <p>
+     * If the response has already been committed, this method throws
+     * an IllegalStateException.
+     * After using this method, the response should be considered
+     * to be committed and should not be written to.
+     *
+     * @param response
+     *            the response
+     * @param errorStatusCode
+     *            错误码
+     * @param errorMessage
+     *            the descriptive message
+     * @since 1.11.5
+     * @exception IllegalStateException
+     *                If the response was committed before this method call
+     */
+    public static void sendError(HttpServletResponse response,int errorStatusCode,String errorMessage){
+        Validate.notNull(errorMessage, "errorMessage can't be null!");
+
+        try{
+            LOGGER.debug("will sendError,errorStatusCode:[{}],errorMessage:[{}]", errorStatusCode, errorMessage);
+            response.sendError(errorStatusCode, errorMessage);
         }catch (IOException e){
             throw new UncheckedIOException(e);
         }
