@@ -652,8 +652,7 @@ public final class RequestUtil{
         try{
             requestDispatcher.forward(request, response);
         }catch (ServletException | IOException e){
-            LOGGER.error("", e);
-            throw new RequestException(e);
+            throw new RequestException("when forward to :" + path, e);
         }
     }
 
@@ -691,8 +690,7 @@ public final class RequestUtil{
         try{
             requestDispatcher.include(request, response);
         }catch (ServletException | IOException e){
-            LOGGER.error("", e);
-            throw new RequestException(e);
+            throw new RequestException("when include:" + path, e);
         }
     }
 
@@ -752,7 +750,6 @@ public final class RequestUtil{
         }
 
         //---------------------------------------------------------------
-
         if (LOGGER.isDebugEnabled()){
             LOGGER.debug("client real ips:{}", JsonUtil.format(map));
         }

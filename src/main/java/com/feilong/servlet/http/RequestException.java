@@ -15,13 +15,15 @@
  */
 package com.feilong.servlet.http;
 
+import com.feilong.core.DefaultRuntimeException;
+
 /**
  * 请求异常.
  *
  * @author <a href="http://feitianbenyue.iteye.com/">feilong</a>
  * @since 1.4.0
  */
-public final class RequestException extends RuntimeException{
+public final class RequestException extends DefaultRuntimeException{
 
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -1699987643831455524L;
