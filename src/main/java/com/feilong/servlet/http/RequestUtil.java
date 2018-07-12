@@ -21,6 +21,7 @@ import static com.feilong.core.URIComponents.SCHEME_HTTP;
 import static com.feilong.core.URIComponents.SCHEME_HTTPS;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.Validator.isNullOrEmpty;
+import static com.feilong.core.bean.ConvertUtil.toArray;
 import static com.feilong.core.util.MapUtil.newLinkedHashMap;
 import static com.feilong.core.util.SortUtil.sortMapByKeyAsc;
 import static com.feilong.servlet.http.HttpHeaders.ORIGIN;
@@ -265,6 +266,68 @@ public final class RequestUtil{
         //AssertionError不是必须的. 但它可以避免不小心在类的内部调用构造器. 保证该类在任何情况下都不会被实例化.
         //see 《Effective Java》 2nd
         throw new AssertionError("No " + getClass().getName() + " instances for you!");
+    }
+
+    //---------------------------------------------------------------
+
+    /**
+     * 静态资源的后缀.
+     * <code>{@value}</code>.
+     *
+     * @see com.feilong.io.entity.MimeType
+     * @since 1.12.0
+     */
+    private static final String[] STATIC_RESOURCE_SUFFIX = toArray(
+                    ".bmp",
+                    ".jpe",
+                    ".jpg",
+                    ".jpeg",
+                    ".png",
+                    ".gif",
+                    ".ico",
+                    ".js",
+                    ".css",
+                    ".html",
+                    ".htm",
+                    ".xml",
+                    ".swf",
+                    ".woff",
+                    ".woff2",
+                    ".ttf",
+                    ".mp3",
+                    ".zip",
+                    ".tar");
+
+    //---------------------------------------------------------------
+
+    /**
+     * 判断请求是否是静态资源.
+     *
+     * @param requestURI
+     *            the request URI
+     * @return 如果 <code>requestURI</code> 是null或者empty,返回 false<br>
+     *         如果 <code>requestURI</code> 不包含.,返回 false<br>
+     *         其他循环 {@link #STATIC_RESOURCE_SUFFIX} ,忽视大小写判断后缀<br>
+     * @see HttpServletRequest#getRequestURI()
+     * @since 1.12.0
+     */
+    public static boolean isStaticResource(String requestURI){
+        if (isNullOrEmpty(requestURI)){
+            return false;
+        }
+
+        //---------------------------------------------------------------
+        if (!requestURI.contains(".")){
+            return false;
+        }
+        //---------------------------------------------------------------
+        for (String uriSuffix : STATIC_RESOURCE_SUFFIX){
+            //XXX 性能
+            if (StringUtils.endsWithIgnoreCase(requestURI, uriSuffix)){
+                return true;
+            }
+        }
+        return false;
     }
 
     //-------------------------是否包含--------------------------------------
