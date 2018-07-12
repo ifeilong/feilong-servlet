@@ -648,6 +648,8 @@ public final class RequestUtil{
      * @since 1.2.2
      */
     public static void forward(String path,HttpServletRequest request,HttpServletResponse response){
+        LOGGER.debug("will forward to path:[{}]", path);
+
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         try{
             requestDispatcher.forward(request, response);
@@ -686,6 +688,8 @@ public final class RequestUtil{
      * @since 1.2.2
      */
     public static void include(String path,HttpServletRequest request,HttpServletResponse response){
+        LOGGER.debug("will include to path:[{}]", path);
+
         RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         try{
             requestDispatcher.include(request, response);
@@ -1001,7 +1005,6 @@ public final class RequestUtil{
         }
 
         //---------------------------------------------------------------
-
         Map<String, Object> map = new TreeMap<>();
         while (attributeNames.hasMoreElements()){
             String name = attributeNames.nextElement();
