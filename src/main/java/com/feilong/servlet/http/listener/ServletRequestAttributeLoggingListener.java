@@ -47,6 +47,8 @@ public class ServletRequestAttributeLoggingListener implements ServletRequestAtt
         }
     }
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 
@@ -61,6 +63,8 @@ public class ServletRequestAttributeLoggingListener implements ServletRequestAtt
                             servletRequestAttributeEvent.getValue());
         }
     }
+
+    //---------------------------------------------------------------
 
     /*
      * (non-Javadoc)

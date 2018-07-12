@@ -106,6 +106,8 @@ public class ServletContextLoggingListener implements ServletContextListener{
         }
     }
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 
@@ -120,6 +122,5 @@ public class ServletContextLoggingListener implements ServletContextListener{
                             "servletContext [Destroyed] info:[{}] ",
                             JsonUtil.format(ServletContextUtil.getServletContextInfoMapForLog(servletContext)));
         }
-
     }
 }

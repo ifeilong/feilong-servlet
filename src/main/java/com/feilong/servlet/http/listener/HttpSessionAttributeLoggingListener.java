@@ -55,6 +55,8 @@ public class HttpSessionAttributeLoggingListener implements HttpSessionAttribute
         }
     }
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 
@@ -70,6 +72,8 @@ public class HttpSessionAttributeLoggingListener implements HttpSessionAttribute
 
         }
     }
+
+    //---------------------------------------------------------------
 
     /*
      * (non-Javadoc)
@@ -88,6 +92,5 @@ public class HttpSessionAttributeLoggingListener implements HttpSessionAttribute
                             JsonUtil.format(SessionUtil.getSessionInfoMapForLog(session)));
 
         }
-
     }
 }

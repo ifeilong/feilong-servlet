@@ -53,6 +53,8 @@ public class HttpSessionLoggingListener implements HttpSessionListener{
         }
     }
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 

@@ -130,6 +130,8 @@ public class ServletContextAttributeLoggingListener implements ServletContextAtt
         return JsonUtil.formatSimpleMap(attributeMap);
     }
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 

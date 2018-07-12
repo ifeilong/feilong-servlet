@@ -54,6 +54,8 @@ public class ServletRequestLoggingListener implements ServletRequestListener{
         }
     }
 
+    //---------------------------------------------------------------
+
     /*
      * (non-Javadoc)
      * 
