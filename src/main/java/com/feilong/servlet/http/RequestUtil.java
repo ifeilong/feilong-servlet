@@ -330,6 +330,40 @@ public final class RequestUtil{
         return false;
     }
 
+    //---------------------------------------------------------------
+
+    /**
+     * 判断传入的<code>method</code> 是否在 支持的<code>supportHttpMethods</code>数组中.
+     * 
+     * @param supportHttpMethods
+     *            支持的method 数组
+     * @param method
+     *            the method
+     * @return 如果 <code>method</code> 是null,抛出 {@link NullPointerException}<br>
+     *         如果 <code>method</code> 是blank,抛出 {@link IllegalArgumentException}<br>
+     *         如果 <code>supportHttpMethods</code> 是null或者empty,返回 false <br>
+     *         循环 supportHttpMethods, 忽视大小写判断和 method 是否equalsIgnoreCase, 如果是返回true,否则false
+     * @since 1.12.1
+     */
+    public static boolean isSupportMethod(String[] supportHttpMethods,String method){
+        Validate.notBlank(method, "method can't be blank!");
+
+        //---------------------------------------------------------------
+        //null 或者 empty 表示没有一个 method 支持的,不过滤
+        if (isNullOrEmpty(supportHttpMethods)){
+            return false;
+        }
+
+        //---------------------------------------------------------------
+        for (String supportHttpMethod : supportHttpMethods){
+            //如果当前的请求 method ,在支持的列表里面, 那么表示要过滤
+            if (StringUtils.equalsIgnoreCase(supportHttpMethod, method)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     //-------------------------是否包含--------------------------------------
 
     /**
