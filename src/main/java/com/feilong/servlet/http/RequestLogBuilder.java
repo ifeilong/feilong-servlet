@@ -552,6 +552,8 @@ class RequestLogBuilder implements Builder<Map<String, Object>>{
         return map;
     }
 
+    //---------------------------------------------------------------
+
     /**
      * 遍历显示request的header 用于debug.
      * 
@@ -581,6 +583,8 @@ class RequestLogBuilder implements Builder<Map<String, Object>>{
         }
         return map;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 获取queryString (支持 post/get).

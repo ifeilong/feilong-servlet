@@ -61,7 +61,7 @@ public abstract class RequestLogSwitch implements Serializable{
     //---------------------RequestLogSwitch------------------------------------------
 
     /**
-     * 正常的的RequestLogSwitch.
+     * 正常的RequestLogSwitch.
      * 
      * <h3>以下值会为true:</h3>
      * 
@@ -76,6 +76,24 @@ public abstract class RequestLogSwitch implements Serializable{
      * @since 1.4.0
      */
     public static final RequestLogSwitch NORMAL                               = new NormalRequestLogSwitch();
+
+    /**
+     * 正常的RequestLogSwitch.
+     * 
+     * <h3>以下值会为true:</h3>
+     * 
+     * <blockquote>
+     * <ul>
+     * <li>{@link #showFullURL} 请求路径</li>
+     * <li>{@link #showMethod} 提交方法</li>
+     * <li>{@link #showParams} 参数</li>
+     * <li>{@link #showHeaders} 参数</li>
+     * </ul>
+     * </blockquote>
+     *
+     * @since 1.12.4
+     */
+    public static final RequestLogSwitch NORMAL_WITH_HEADER                   = new NormalWithHeadersRequestLogSwitch();
 
     /**
      * 带身份信息的RequestLogSwitch.
@@ -577,6 +595,38 @@ public abstract class RequestLogSwitch implements Serializable{
         //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
         private Object readResolve(){
             return RequestLogSwitch.NORMAL;
+        }
+    }
+
+    /**
+     * This is an inner class to ensure its immutability.
+     * 
+     * @since 1.12.4
+     */
+    private static final class NormalWithHeadersRequestLogSwitch extends RequestLogSwitch{
+
+        /** The Constant serialVersionUID. */
+        private static final long serialVersionUID = 4824997202393095960L;
+
+        /**
+         * Use the static constant rather than instantiating.
+         */
+        NormalWithHeadersRequestLogSwitch(){
+            this.setShowFullURL(true);
+            this.setShowParams(true);
+            this.setShowMethod(true);
+            this.setShowHeaders(true);
+        }
+
+        /**
+         * Ensure <code>Singleton</code> after serialization.
+         *
+         * @return the singleton
+         */
+        @SuppressWarnings("static-method")
+        //这样当JVM从内存中反序列化地"组装"一个新对象时,就会自动调用这个 readResolve方法来返回我们指定好的对象了, 单例规则也就得到了保证.
+        private Object readResolve(){
+            return RequestLogSwitch.NORMAL_WITH_HEADER;
         }
     }
 
