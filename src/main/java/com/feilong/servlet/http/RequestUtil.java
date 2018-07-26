@@ -287,8 +287,8 @@ public final class RequestUtil{
                     ".ico",
                     ".js",
                     ".css",
-                    ".html",
-                    ".htm",
+                    //  ".html",  since 1.12.4 排除, 很多 restful 的地址 会伪装成 htm和html ,导致误判断
+                    //  ".htm", since 1.12.4 排除, 很多 restful 的地址 会伪装成 htm和html ,导致误判断
                     ".xml",
                     ".swf",
                     ".woff",
