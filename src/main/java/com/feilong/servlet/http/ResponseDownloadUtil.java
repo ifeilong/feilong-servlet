@@ -171,6 +171,8 @@ public final class ResponseDownloadUtil{
         downLoadData(saveFileName, inputStream, contentLength, request, response);
     }
 
+    //---------------------------------------------------------------
+
     /**
      * Down load data.
      *
@@ -221,6 +223,8 @@ public final class ResponseDownloadUtil{
             }
         }
     }
+
+    //---------------------------------------------------------------
 
     /**
      * 设置 download response header.
