@@ -28,7 +28,7 @@ feilong-servlet jar你可以直接在 [仓库](https://github.com/venusdrogon/fe
 
 	....
 	<properties>
-		<version.feilong-platform>1.12.9</version.feilong-platform>
+		<version.feilong-platform>1.12.10</version.feilong-platform>
 		....
 	</properties>
 	
@@ -65,7 +65,7 @@ feilong-servlet jar你可以直接在 [仓库](https://github.com/venusdrogon/fe
 
 	....
 	<properties>
-		<version.feilong-platform>1.12.9</version.feilong-platform>
+		<version.feilong-platform>1.12.10</version.feilong-platform>
 		....
 	</properties>
 
