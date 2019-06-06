@@ -114,6 +114,20 @@ import com.feilong.servlet.http.entity.CookieEntity;
  * 
  * <blockquote>
  * 
+ * <h5>
+ * 特殊说明:
+ * </h5>
+ * 
+ * <p style="color:red">
+ * 在读取Cookie 操作时，除了 {@link Cookie#getName()},{@link Cookie#getValue()} 外，不要妄图得到其他信息，如下方法不会得到值的：
+ * 
+ * {@link Cookie#getMaxAge()};
+ * {@link Cookie#getDomain()};
+ * ...
+ * 
+ * 因为,客户端传来的时候，就只剩下key和value
+ * </p>
+ * 
  * <p>
  * 1.可以使用 {@link #getCookie(HttpServletRequest, String)}来获得 {@link Cookie}对象
  * <br>
