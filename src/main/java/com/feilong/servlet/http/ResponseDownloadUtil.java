@@ -18,6 +18,7 @@ package com.feilong.servlet.http;
 import static com.feilong.core.CharsetType.UTF8;
 import static com.feilong.core.Validator.isNotNullOrEmpty;
 import static com.feilong.core.date.DateExtensionUtil.formatDuration;
+import static com.feilong.core.date.DateUtil.now;
 
 import java.io.File;
 import java.io.IOException;
@@ -193,7 +194,7 @@ public final class ResponseDownloadUtil{
                     Number contentLength,
                     HttpServletRequest request,
                     HttpServletResponse response){
-        Date beginDate = new Date();
+        Date beginDate = now();
         String length = FileUtil.formatSize(contentLength.longValue());
         LOGGER.info("begin download~~,saveFileName:[{}],contentLength:[{}]", saveFileName, length);
         try{
