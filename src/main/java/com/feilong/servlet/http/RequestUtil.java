@@ -259,7 +259,19 @@ import com.feilong.servlet.http.entity.RequestLogSwitch;
 public final class RequestUtil{
 
     /** The Constant LOGGER. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtil.class);
+    private static final Logger LOGGER                            = LoggerFactory.getLogger(RequestUtil.class);
+
+    //---------------------------------------------------------------
+
+    /**
+     * 存放到 request 作用域中的 requestbody 名字.
+     * 
+     * @since 1.14.2
+     * @see #getRequestBody(HttpServletRequest)
+     */
+    private static String       REQUEST_BODY_SCOPE_ATTRIBUTE_NAME = RequestUtil.class.getName() + ".REQUEST_BODY";
+
+    //---------------------------------------------------------------
 
     /** Don't let anyone instantiate this class. */
     private RequestUtil(){
@@ -1151,8 +1163,37 @@ public final class RequestUtil{
      *      body from HttpServletRequest
      *      </a>
      * @since 1.10.6
+     * @since 1.14.2 add 多次获取特性
      */
     public static String getRequestBody(HttpServletRequest request){
+        //since 1.14.2
+        String requestBodyInRequestScope = getAttribute(request, REQUEST_BODY_SCOPE_ATTRIBUTE_NAME);
+        if (null != requestBodyInRequestScope){
+            //有就返回
+            return requestBodyInRequestScope;
+        }
+
+        //---------------------------------------------------------------
+        //解析
+        String requestBody = parseBody(request);
+        if (null != requestBody){
+            request.setAttribute(REQUEST_BODY_SCOPE_ATTRIBUTE_NAME, requestBody);
+        }
+
+        return requestBody;
+    }
+
+    /**
+     * Parses the body.
+     *
+     * @param request
+     *            the request
+     * @return the string
+     * @throws UncheckedIOException
+     *             the unchecked IO exception
+     * @since 1.14.2
+     */
+    private static String parseBody(HttpServletRequest request) throws UncheckedIOException{
         try{
             //Retrieves the body of the request as character data using a BufferedReader. 
 
