@@ -20,7 +20,11 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ IsSupportMethodTest.class
+@SuiteClasses({
+                IsSupportMethodTest.class,
+
+                ForwardTest.class,
+                IncludeTest.class
         //
 })
 public class FeiLongRequstUtilSuiteTests{

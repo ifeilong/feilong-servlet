@@ -747,8 +747,17 @@ public final class RequestUtil{
      * the response buffer is automatically cleared before the forward.
      * </p>
      * 
+     * <p>
+     * 如果 <code>path</code> 是null,抛出 {@link NullPointerException}<br>
+     * </p>
+     * 
      * @param path
-     *            the path
+     *            a String specifying the pathname to the resource.<br>
+     *            If it is relative, it must be relative against the current servlet.The
+     *            pathname specified may be relative, although it cannot extend outside the current servlet context. <br>
+     *            If the path begins with a "/" it is interpreted as relative to the current context root.<br>
+     *            This method returns null if the servlet container cannot return a RequestDispatcher.<br>
+     *            如果 <code>path</code> 是null,抛出 {@link NullPointerException}<br>
      * @param request
      *            a {@link ServletRequest} object that represents the request the client makes of the servlet
      * @param response
@@ -788,7 +797,12 @@ public final class RequestUtil{
      * </p>
      * 
      * @param path
-     *            the path
+     *            a String specifying the pathname to the resource.<br>
+     *            If it is relative, it must be relative against the current servlet.The
+     *            pathname specified may be relative, although it cannot extend outside the current servlet context. <br>
+     *            If the path begins with a "/" it is interpreted as relative to the current context root.<br>
+     *            This method returns null if the servlet container cannot return a RequestDispatcher.<br>
+     *            如果 <code>path</code> 是null,抛出 {@link NullPointerException}<br>
      * @param request
      *            a {@link ServletRequest} object,that contains the client's request
      * @param response
