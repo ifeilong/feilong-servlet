@@ -28,6 +28,8 @@ public final class RequestException extends DefaultRuntimeException{
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -1699987643831455524L;
 
+    //---------------------------------------------------------------
+
     /**
      * The Constructor.
      *

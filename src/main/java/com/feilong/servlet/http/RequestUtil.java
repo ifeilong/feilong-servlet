@@ -45,9 +45,7 @@ import java.util.TreeMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
-import javax.servlet.ServletRequestWrapper;
 import javax.servlet.ServletResponse;
-import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -725,7 +723,11 @@ public final class RequestUtil{
     // [end]
 
     /**
-     * 用于将请求转发到 {@link RequestDispatcher} 对象封装的资源,Servlet程序在调用该方法进行转发之前可以对请求进行前期预处理.
+     * 用于将请求转发到 {@link RequestDispatcher} 对象封装的资源,Servlet程序在调用该方法转发之前可以对请求进行前期预处理.
+     * 
+     * <p style="color:red">
+     * 该方法将 checked exception 转成了 unchecked exception,方便书写和调用
+     * </p>
      * 
      * <p>
      * Forwards a request from a servlet to another resource (servlet, JSP file, or HTML file) on the server.<br>
@@ -738,14 +740,11 @@ public final class RequestUtil{
      * </p>
      * 
      * <p>
-     * <code>forward</code> should be called before the response has been committed to the client (before response body output has been
-     * flushed). If the response already has been committed, this method throws an <code>IllegalStateException</code>. Uncommitted output in
-     * the response buffer is automatically cleared before the forward.
-     * </p>
+     * <code>forward</code> <span style="color:red">should be called before the response has been committed to the client</span> (before
+     * response body output has been flushed). <br>
      * 
-     * <p>
-     * The request and response parameters must be either the same objects as were passed to the calling servlet's service method or be
-     * subclasses of the {@link ServletRequestWrapper} or {@link ServletResponseWrapper} classes that wrap them.
+     * If the response already has been committed, this method throws an <code>IllegalStateException</code>. Uncommitted output in
+     * the response buffer is automatically cleared before the forward.
      * </p>
      * 
      * @param path
@@ -757,18 +756,25 @@ public final class RequestUtil{
      * @since 1.2.2
      */
     public static void forward(String path,HttpServletRequest request,HttpServletResponse response){
+        //since 2.0.1
+        Validate.notNull(path, "path can't be null!");
+
         LOGGER.debug("will forward to path:[{}]", path);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         try{
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
             requestDispatcher.forward(request, response);
         }catch (ServletException | IOException e){
-            throw new RequestException("when forward to :" + path, e);
+            throw new RequestException("when forward to:" + path, e);
         }
     }
 
     /**
      * 用于将 {@link RequestDispatcher} 对象封装的资源内容作为当前响应内容的一部分包含进来,从而实现可编程服务器的服务器端包含功能.
+     * 
+     * <p style="color:red">
+     * 该方法将 checked exception 转成了 unchecked exception,方便书写和调用
+     * </p>
      * 
      * <p>
      * Includes the content of a resource (servlet, JSP page,HTML file) in the response. <br>
@@ -779,11 +785,6 @@ public final class RequestUtil{
      * 注:被包含的Servlet程序不能改变响应信息的状态码和响应头,如果里面包含这样的语句将被忽略.<br>
      * The {@link ServletResponse} object has its path elements and parameters remain unchanged from the caller's. <br>
      * The included servlet cannot change the response status code or set headers; any attempt to make a change is ignored.
-     * </p>
-     * 
-     * <p>
-     * The request and response parameters must be either the same objects as were passed to the calling servlet's service method or be
-     * subclasses of the {@link ServletRequestWrapper} or {@link ServletResponseWrapper} classes that wrap them.
      * </p>
      * 
      * @param path
@@ -797,10 +798,13 @@ public final class RequestUtil{
      * @since 1.2.2
      */
     public static void include(String path,HttpServletRequest request,HttpServletResponse response){
+        //since 2.0.1
+        Validate.notNull(path, "path can't be null!");
+
         LOGGER.debug("will include to path:[{}]", path);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
         try{
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(path);
             requestDispatcher.include(request, response);
         }catch (ServletException | IOException e){
             throw new RequestException("when include:" + path, e);
@@ -825,16 +829,25 @@ public final class RequestUtil{
         // Proxy-Client-IP=215.4.1.29
         // X-Forwarded-For=215.4.1.29
 
-        Map<String, String> map = newLinkedHashMap();
-
-        String ipAddress = "";
-
-        //ip header可控制的, 以后如果有新增 加在这里(比如 多CDN 可能是cdn_real_ip),而不是通过传参的形式
+        //ip header可控制的, 以后如果有新增加在这里(比如多CDN 可能是cdn_real_ip),而不是通过传参的形式
         //这样做的好处是,对开发透明
         String[] ipHeaderNames = { X_FORWARDED_FOR, X_REAL_IP, PROXY_CLIENT_IP, WL_PROXY_CLIENT_IP };
+        return getClientIp(request, ipHeaderNames);
+    }
+
+    /**
+     * 获得客户端真实ip地址.
+     * 
+     * @param request
+     * @param ipHeaderNames
+     * @return
+     * @since 2.0.1
+     */
+    private static String getClientIp(HttpServletRequest request,String...ipHeaderNames){
+        String ipAddress = "";
 
         //---------------------------------------------------------------
-
+        Map<String, String> map = newLinkedHashMap();
         //先在代理里面找一找
         for (String ipHeaderName : ipHeaderNames){
             String ipHeaderValue = request.getHeader(ipHeaderName);//The header name is case insensitive (不区分大小写)
@@ -846,7 +859,6 @@ public final class RequestUtil{
         }
 
         //----------------------getRemoteAddr-----------------------------------------
-
         //如果都没有,那么读取 request.getRemoteAddr()
         if (isNullOrEmpty(ipAddress)){
             ipAddress = request.getRemoteAddr();
@@ -868,6 +880,8 @@ public final class RequestUtil{
         }
         return ipAddress;
     }
+
+    //---------------------------------------------------------------
 
     /**
      * User Agent中文名为用户代理,简称 UA.
